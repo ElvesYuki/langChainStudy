@@ -68,6 +68,8 @@ test("speaker notes and learning notes are separate per-slide panels", async () 
   assert.match(deck, /调用一次搜索或文件读取工具不等于智能体/);
   assert.match(deck, /这四层是培训中的职责模型/);
   assert.match(deck, /AI 应用不一定包含智能体/);
+  assert.match(deck, /材料是任务可以使用的文件、数据和原文依据，不是模型已经看到的上下文/);
+  assert.match(deck, /目标、材料、边界、产物和验收，共同组成一份可执行的任务说明/);
 });
 
 test("page changes reset reveal state atomically without reusing visible nodes", async () => {
@@ -91,9 +93,11 @@ test("reveal steps follow semantic groups and match each slide declaration", asy
   assert.equal(stepsFor("scenarios"), 3);
   assert.equal(stepsFor("material-workflow"), 3);
   assert.equal(stepsFor("summary"), 6);
-  assert.match(visuals, /order=\{Math\.floor\(index \/ 2\) \+ 1\}/);
+  assert.match(visuals, /groups\.map\(\(group, index\) => <Reveal className="min-h-0" key=\{group\.label\} order=\{index \+ 1\}>/);
   assert.match(visuals, /export function SummaryChain[\s\S]*order=\{6\}/);
   assert.match(visuals, /export function FailureBranches[\s\S]*有限重试[\s\S]*等待授权[\s\S]*停止并接管/);
+  assert.match(visuals, /export function MaterialWorkflow[\s\S]*OCR \+ 原图[\s\S]*工具读取、计算与检查/);
+  assert.match(visuals, /export function ScenarioMatrix[\s\S]*汇总与沟通[\s\S]*分析与归纳[\s\S]*精确与变更[\s\S]*共同边界/);
 });
 
 test("the presentation uses a light canvas without full-slide dark surfaces", async () => {
@@ -185,7 +189,8 @@ test("presentation typography is sized for projection instead of dense web readi
   assert.ok(maximumSizes.filter((size) => size >= 18).length >= 70);
   assert.match(primitives, /text-\[clamp\(16px,1\.25vw,24px\)\]/);
   assert.match(primitives, /text-\[clamp\(13px,0\.95vw,18px\)\]/);
-  assert.match(visuals, /grid h-\[88%\] grid-rows-6/);
+  assert.match(visuals, /grid min-h-0 flex-1 grid-rows-3/);
+  assert.match(visuals, /grid h-full grid-cols-2/);
 });
 
 test("the clean stack contains only the intended site foundation", async () => {

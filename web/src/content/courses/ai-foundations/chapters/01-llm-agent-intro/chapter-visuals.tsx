@@ -1025,43 +1025,67 @@ export function FailureBranches() {
 }
 
 function BriefSheet({ good }: { good?: boolean }) {
-  const rows = good ? [["目标","形成培训需求汇报"],["材料","报名表 + 访谈记录"],["权限","只读取指定文件"],["产物","不超过 5 页 PPT"],["验收","数字和结论可追溯"]] : [["目标","帮我分析一下"],["材料","未提供"],["权限","未说明"],["产物","未说明"],["验收","未说明"]];
-  return <div className={cn("relative h-full rounded-[1.8rem] border bg-white p-[5.5%] shadow-xl", good ? "border-emerald-200" : "border-rose-200")}><div className="flex items-center justify-between"><Kicker>{good ? "STRUCTURED TASK BRIEF" : "VAGUE REQUEST"}</Kicker>{good ? <ListChecks className="size-[11%] text-emerald-500" /> : <CircleAlert className="size-[11%] text-rose-400" />}</div><h2 className="mt-[4%] text-[clamp(17px,1.55vw,30px)] font-semibold">{good ? "目标、材料和验收都可检查" : "“帮我做一份培训需求分析”"}</h2><dl className="mt-[5%] space-y-[2%]">{rows.map(([label,value]) => <div className="grid grid-cols-[4.5rem_1fr] border-t border-slate-100 pt-[2.5%] text-[clamp(12px,1vw,19px)]" key={label}><dt className="font-semibold text-slate-800">{label}</dt><dd className={good ? "text-slate-500" : "text-rose-400"}>{value}</dd></div>)}</dl><p className={cn("absolute bottom-[5%] left-[5.5%] right-[5.5%] rounded-lg px-[4%] py-[2%] text-center text-[clamp(12px,.95vw,18px)] font-medium", good ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-800")}>{good ? "一份可以执行和验收的任务说明" : "模型只能补全一个看起来合理的答案"}</p></div>;
+  const rows = good
+    ? [["目标","形成培训需求汇报"],["材料","报名表 + 访谈；结论保留来源"],["边界","只读指定文件；缺失信息待确认"],["产物","不超过 5 页 PPT；包含统计、问题和建议"],["验收","数字对原件；结论能够回到原文"]]
+    : [["目标","形成培训需求汇报"],["材料","“这些材料”范围不明"],["边界","未说明"],["产物","“一份汇报”形式不明"],["验收","未说明"]];
+  return <div className={cn("flex h-full flex-col rounded-[1.8rem] border bg-white p-[4.5%] shadow-xl", good ? "border-emerald-200" : "border-rose-200")}><div className="flex items-center justify-between"><Kicker>{good ? "STRUCTURED TASK BRIEF" : "VAGUE REQUEST"}</Kicker>{good ? <ListChecks className="size-[9%] text-emerald-500" /> : <CircleAlert className="size-[9%] text-rose-400" />}</div><h2 className="mt-[3%] text-[clamp(17px,1.55vw,30px)] font-semibold">{good ? "同一目标，补全执行条件" : "“根据这些材料，帮我做一份培训需求汇报”"}</h2><dl className="mt-[4%] space-y-[1.5%]">{rows.map(([label,value]) => <div className="grid grid-cols-[4.5rem_1fr] border-t border-slate-100 pt-[1.8%] text-[clamp(12px,1vw,19px)]" key={label}><dt className="font-semibold text-slate-800">{label}</dt><dd className={good ? "text-slate-500" : label === "目标" ? "text-slate-500" : "text-rose-400"}>{value}</dd></div>)}</dl><p className={cn("mt-auto rounded-lg px-[4%] py-[1.6%] text-center text-[clamp(12px,.95vw,18px)] font-medium", good ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-800")}>{good ? "可执行 · 可停止 · 可验收" : "信息不足：系统只能猜测，或者先停下来询问"}</p></div>;
 }
 
 export function TaskBriefComparison() {
-  return <div className="grid h-full grid-cols-[1fr_.16fr_1fr] gap-[2%]"><Reveal order={1}><BriefSheet /></Reveal><div className="flex flex-col items-center justify-center text-slate-300"><ArrowRight className="size-[40%]" /><span className="mt-[15%] font-mono text-[clamp(9px,.68vw,13px)] [writing-mode:vertical-rl]">DEFINE THE TASK</span></div><Reveal order={2}><BriefSheet good /></Reveal></div>;
+  return <div className="grid h-full grid-cols-[1fr_.16fr_1fr] gap-[2%] pb-[clamp(48px,3.2vw,62px)]"><Reveal order={1}><BriefSheet /></Reveal><div className="flex flex-col items-center justify-center text-slate-300"><ArrowRight className="size-[40%]" /><span className="mt-[15%] font-mono text-[clamp(9px,.68vw,13px)] [writing-mode:vertical-rl]">DEFINE THE TASK</span></div><Reveal order={2}><BriefSheet good /></Reveal></div>;
 }
 
 export function MaterialWorkflow() {
   const sources = [
-    { label: "Word / PDF", detail: "叙述性材料", icon: FileText },
-    { label: "Excel", detail: "精确表格", icon: FileSpreadsheet },
+    { label: "Word / 普通 PDF", detail: "文字与版式", icon: FileText },
+    { label: "Excel / CSV", detail: "字段、数字与公式", icon: FileSpreadsheet },
+    { label: "图片 / 扫描件", detail: "文字与视觉位置", icon: ScanSearch },
   ];
   const workingCopies = [
-    { label: "Markdown", detail: "标题、原文、规则", icon: FilePenLine, itemTone: "border-blue-200 bg-blue-50 text-blue-950" },
-    { label: "CSV / JSON / Excel", detail: "字段、公式、口径", icon: FileSpreadsheet, itemTone: "border-emerald-200 bg-emerald-50 text-emerald-950" },
+    { label: "Markdown / 文本", detail: "标题 · 原文 · 来源位置", icon: FilePenLine, itemTone: "border-blue-200 bg-blue-50 text-blue-950" },
+    { label: "Excel / CSV", detail: "字段 · 公式 · 统计口径", icon: FileSpreadsheet, itemTone: "border-emerald-200 bg-emerald-50 text-emerald-950" },
+    { label: "OCR + 原图", detail: "识别文字 · 页码 · 视觉依据", icon: ScanSearch, itemTone: "border-amber-200 bg-amber-50 text-amber-950" },
   ];
 
-  return <div className="grid h-full grid-cols-[.86fr_.12fr_1.22fr_.12fr_.9fr] items-center gap-[1.2%]">
-    <Reveal order={1}><div className="h-[72%] rounded-[1.8rem] border border-slate-200 bg-white p-[8%] shadow-lg"><Kicker>ORIGINALS · 权威依据</Kicker><div className="mt-[9%] space-y-[7%]">{sources.map(({ label, detail, icon: Icon }) => <div className="flex items-center gap-[7%]" key={label}><span className="flex size-[clamp(38px,3.6vw,68px)] shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600"><Icon className="size-[46%]" /></span><div><strong className="block text-[clamp(14px,1.15vw,22px)]">{label}</strong><span className="text-[clamp(11px,.86vw,16px)] text-slate-400">{detail}</span></div></div>)}</div><p className="mt-[10%] border-t border-slate-100 pt-[7%] text-[clamp(11px,.86vw,16px)] leading-relaxed text-slate-500">原件不覆盖，用于核对数据、格式和来源。</p></div></Reveal>
+  return <div className="grid h-full grid-cols-[.9fr_.1fr_1.32fr_.1fr_.9fr] items-center gap-[1.2%] pb-[clamp(48px,3.2vw,62px)]">
+    <Reveal order={1}><div className="h-[84%] rounded-[1.8rem] border border-slate-200 bg-white p-[7%] shadow-lg"><Kicker>ORIGINALS · 权威依据</Kicker><div className="mt-[6%] space-y-[4%]">{sources.map(({ label, detail, icon: Icon }) => <div className="flex items-center gap-[6%]" key={label}><span className="flex size-[clamp(36px,3vw,56px)] shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600"><Icon className="size-[46%]" /></span><div><strong className="block text-[clamp(13px,1.06vw,20px)]">{label}</strong><span className="text-[clamp(11px,.86vw,16px)] text-slate-400">{detail}</span></div></div>)}</div><p className="mt-[6%] border-t border-slate-100 pt-[5%] text-[clamp(11px,.86vw,16px)] leading-relaxed text-slate-500">原件不覆盖、不丢弃，始终作为格式、数据和来源依据。</p></div></Reveal>
     <ArrowRight className="mx-auto text-slate-300" />
-    <Reveal order={2}><div className="h-[86%] rounded-[2rem] border border-blue-200 bg-white p-[6%] shadow-xl"><div className="flex items-center justify-between"><Kicker>WORKING REPRESENTATION</Kicker><Settings2 className="size-[9%] text-blue-500" /></div><h3 className="mt-[3%] text-[clamp(18px,1.55vw,30px)] font-semibold tracking-[-.035em]">按内容类型选择工作副本</h3><div className="mt-[5%] grid grid-cols-2 gap-[4%]">{workingCopies.map(({ label, detail, icon: Icon, itemTone }) => <div className={cn("rounded-[1.2rem] border p-[8%]", itemTone)} key={label}><Icon className="size-[22%]" /><strong className="mt-[7%] block text-[clamp(13px,1.08vw,21px)]">{label}</strong><span className="mt-[3%] block text-[clamp(10px,.8vw,15px)] opacity-60">{detail}</span></div>)}</div><div className="mt-[5%] flex items-center justify-center gap-[5%] rounded-full bg-violet-50 px-[5%] py-[3%] text-[clamp(11px,.9vw,17px)] font-medium text-violet-800"><BrainCircuit className="size-[1.2em]" />AI 归纳与写作<ArrowRight className="size-[1em]" /><SquareFunction className="size-[1.2em]" />工具精确计算</div></div></Reveal>
+    <Reveal order={2}><div className="h-[94%] rounded-[2rem] border border-blue-200 bg-white p-[5%] shadow-xl"><div className="flex items-center justify-between"><Kicker>WORKING COPY · 中间表示</Kicker><Settings2 className="size-[7%] text-blue-500" /></div><h3 className="mt-[2%] text-[clamp(18px,1.45vw,28px)] font-semibold tracking-[-.035em]">按内容类型选择工作副本</h3><p className="mt-[1.5%] text-[clamp(11px,.86vw,16px)] text-slate-500">为了分析临时整理，不是新的权威原件。</p><div className="mt-[4%] grid grid-cols-3 gap-[2.5%]">{workingCopies.map(({ label, detail, icon: Icon, itemTone }) => <div className={cn("rounded-[1.1rem] border p-[7%]", itemTone)} key={label}><Icon className="size-[20%]" /><strong className="mt-[6%] block text-[clamp(12px,.98vw,19px)] leading-tight">{label}</strong><span className="mt-[4%] block text-[clamp(10px,.76vw,15px)] leading-snug opacity-65">{detail}</span></div>)}</div><div className="mt-[4%] grid grid-cols-[1fr_auto_1.25fr] items-center gap-[3%] rounded-[1rem] bg-violet-50 px-[4%] py-[2.6%] text-[clamp(11px,.84vw,16px)] font-medium text-violet-800"><span className="flex items-center justify-center gap-[5%]"><BrainCircuit className="size-[1.2em]" />模型归纳与写作</span><span className="text-violet-300">＋</span><span className="flex items-center justify-center gap-[5%]"><SquareFunction className="size-[1.2em]" />工具读取、计算与检查</span></div></div></Reveal>
     <ArrowRight className="mx-auto text-slate-300" />
-    <Reveal order={3}><div className="h-[72%] rounded-[1.8rem] border border-emerald-200 bg-emerald-50 p-[8%] text-emerald-950 shadow-lg"><Kicker>DELIVER & VERIFY</Kicker><FileOutput className="mt-[10%] size-[22%] text-emerald-600" /><strong className="mt-[7%] block text-[clamp(17px,1.45vw,28px)]">Word · Excel · PPT</strong><p className="mt-[5%] text-[clamp(11px,.9vw,17px)] leading-relaxed text-emerald-900/65">按业务场景生成最终产物，再回到原件核对数字、原文和版式。</p><div className="mt-[9%] flex items-center gap-[4%] rounded-xl bg-white/75 px-[6%] py-[4%] text-[clamp(11px,.86vw,16px)] font-semibold"><ClipboardCheck className="size-[1.2em]" />转换不是验收</div></div></Reveal>
+    <Reveal order={3}><div className="h-[84%] rounded-[1.8rem] border border-emerald-200 bg-emerald-50 p-[7%] text-emerald-950 shadow-lg"><Kicker>DELIVER & VERIFY</Kicker><FileOutput className="mt-[8%] size-[20%] text-emerald-600" /><strong className="mt-[6%] block text-[clamp(17px,1.4vw,27px)]">Word · Excel · PPT</strong><p className="mt-[4%] text-[clamp(11px,.9vw,17px)] leading-relaxed text-emerald-900/65">按业务场景生成最终产物，再回到原件核对数字、原文、来源和版式。</p><div className="mt-[7%] flex items-center gap-[4%] rounded-xl bg-white/75 px-[6%] py-[3.5%] text-[clamp(11px,.86vw,16px)] font-semibold"><ClipboardCheck className="size-[1.2em]" />工作副本不是验收结果</div></div></Reveal>
   </div>;
 }
 
 export function ScenarioMatrix() {
-  const rows = [
-    ["行政 / 人事","报名表、制度、模板","名单汇总、通知、待确认"],
-    ["市场 / 运营","活动数据、用户反馈","复盘、问题归纳、建议"],
-    ["产品","访谈、需求池、历史版本","分类、冲突点、优先级"],
-    ["财务","费用明细、口径、预算规则","异常清单；数字必须复核"],
-    ["研发","代码、日志、接口说明","定位、修改方案、测试清单"],
-    ["管理者","周报、纪要和计划","进度、风险、待决策问题"],
+  const groups = [
+    {
+      label: "汇总与沟通",
+      items: [
+        { department: "行政 / 人事", material: "名单、制度、模板", action: "汇总、对照、起草", output: "名单、通知、待确认项", check: "人员和制度准确", icon: UserRoundCheck, tone: "border-cyan-200 bg-cyan-50/70", iconTone: "bg-cyan-500" },
+        { department: "管理者", material: "周报、纪要、计划", action: "合并、比较、提取", output: "进度、风险、决策项", check: "信息完整、范围合适", icon: ListChecks, tone: "border-slate-200 bg-slate-50/80", iconTone: "bg-slate-600" },
+      ],
+    },
+    {
+      label: "分析与归纳",
+      items: [
+        { department: "市场 / 运营", material: "活动数据、用户反馈", action: "统计、聚类、归纳", output: "复盘、问题、建议", check: "数据口径和原文依据", icon: ScanSearch, tone: "border-blue-200 bg-blue-50/70", iconTone: "bg-blue-500" },
+        { department: "产品", material: "访谈、需求池、历史版本", action: "分类、找冲突、追溯", output: "分类、冲突点、优先级草案", check: "不改变原意，优先级由人判断", icon: FileSearch, tone: "border-violet-200 bg-violet-50/70", iconTone: "bg-violet-500" },
+      ],
+    },
+    {
+      label: "精确与变更",
+      items: [
+        { department: "财务", material: "费用明细、预算规则", action: "计算、核对、找异常", output: "异常清单、核查结果", check: "公式、口径和数字复核", icon: SquareFunction, tone: "border-amber-200 bg-amber-50/70", iconTone: "bg-amber-500" },
+        { department: "研发", material: "代码、日志、接口说明", action: "搜索、定位、测试", output: "原因、修改方案、测试清单", check: "测试通过、影响范围明确", icon: Wrench, tone: "border-emerald-200 bg-emerald-50/70", iconTone: "bg-emerald-500" },
+      ],
+    },
   ];
-  return <div className="h-full overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white"><div className="grid grid-cols-[.55fr_1fr_1fr] border-b border-slate-200 bg-slate-100 px-[4%] py-[1.5%] text-[clamp(12px,.95vw,18px)] font-medium text-slate-500"><span>部门</span><span>输入材料</span><span>可能产物</span></div><div className="grid h-[88%] grid-rows-6">{rows.map(([department,input,output], index) => <Reveal className="min-h-0" key={department} order={Math.floor(index / 2) + 1}><div className="grid h-full grid-cols-[.55fr_1fr_1fr] items-center border-b border-slate-100 px-[4%]"><strong className="text-[clamp(13px,1.08vw,21px)] text-slate-900">{department}</strong><span className="text-[clamp(12px,.95vw,18px)] leading-snug text-slate-500">{input}</span><span className="text-[clamp(12px,.95vw,18px)] leading-snug text-blue-700">{output}</span></div></Reveal>)}</div></div>;
+  return <div className="flex h-full min-h-0 flex-col pb-[clamp(48px,3.2vw,62px)]">
+    <div className="grid min-h-0 flex-1 grid-rows-3 gap-[2%]">
+      {groups.map((group, index) => <Reveal className="min-h-0" key={group.label} order={index + 1}><div className="grid h-full grid-cols-2 gap-[2%]">{group.items.map(({ department, material, action, output, check, icon: Icon, tone, iconTone }) => <article className={cn("flex h-full min-h-0 flex-col overflow-hidden rounded-[1.25rem] border px-[clamp(18px,1.35vw,26px)] py-[clamp(6px,.45vw,9px)] shadow-[0_10px_32px_rgba(15,23,42,.05)]", tone)} key={department}><div className="flex items-center justify-between gap-[3%]"><div className="flex min-w-0 items-center gap-[clamp(9px,.65vw,13px)]"><span className={cn("flex size-[clamp(30px,1.9vw,36px)] shrink-0 items-center justify-center rounded-[.65rem] text-white", iconTone)}><Icon className="size-[48%]" /></span><strong className="whitespace-nowrap text-[clamp(15px,1vw,19px)] tracking-[-.025em] text-slate-950">{department}</strong></div><span className="shrink-0 rounded-full border border-white/80 bg-white/75 px-[clamp(10px,.8vw,15px)] py-[clamp(2px,.16vw,3px)] text-[clamp(10px,.65vw,15px)] font-medium leading-none text-slate-500">{group.label}</span></div><div className="mt-[clamp(2px,.16vw,3px)] grid grid-cols-[.9fr_.9fr_1.2fr] gap-[3%] border-y border-slate-900/5 py-[clamp(2px,.16vw,3px)]">{[["材料", material], ["动作", action], ["产物", output]].map(([label, value]) => <div className="min-w-0" key={label}><span className="font-mono text-[clamp(9px,.6vw,15px)] leading-none tracking-[.12em] text-slate-400">{label}</span><p className={cn("truncate text-[clamp(11px,.78vw,15px)] leading-none", label === "产物" ? "font-medium text-blue-700" : "text-slate-600")}>{value}</p></div>)}</div><div className="mt-auto flex min-w-0 items-center gap-[clamp(6px,.45vw,9px)] pt-[clamp(2px,.16vw,3px)] text-[clamp(10px,.72vw,15px)] leading-none text-slate-600"><ClipboardCheck className="size-[1.05em] shrink-0 text-emerald-500" /><span className="shrink-0 font-medium text-slate-800">重点验收</span><span className="truncate">{check}</span></div></article>)}</div></Reveal>)}
+    </div>
+    <div className="mt-[2%] flex shrink-0 items-center justify-center gap-[2%] rounded-full border border-violet-200 bg-violet-50 px-[4%] py-[1.2%] text-[clamp(11px,.88vw,17px)] text-violet-900"><KeyRound className="size-[1.15em]" /><strong>共同边界</strong><span>默认只处理已授权材料；发送、修改系统或执行代码，需要明确授权。</span></div>
+  </div>;
 }
 
 export function QuizPanels() {
