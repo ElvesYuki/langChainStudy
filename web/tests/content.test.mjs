@@ -43,6 +43,21 @@ test("course registry exposes reader and presentation components", async () => {
   assert.match(presentRoute, /<Deck \/>/);
 });
 
+test("speaker notes and learning notes are separate per-slide panels", async () => {
+  const presenter = await read("src/components/presentation/presentation-deck.tsx");
+  const deck = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/slides.tsx");
+
+  assert.match(presenter, /learningNotes\?:/);
+  assert.match(presenter, /aria-label="演讲者备注"/);
+  assert.match(presenter, /aria-label="学习笔记"/);
+  assert.match(presenter, /SPEAKER NOTES/);
+  assert.match(presenter, /LEARNING NOTES/);
+  assert.match(deck, /id: "cover",[\s\S]*?learningNotes:/);
+  assert.match(deck, /id: "case",[\s\S]*?learningNotes:/);
+  assert.match(deck, /准确性：汇报中的人数和统计结果必须与源文件一致/);
+  assert.match(deck, /诚实边界：材料没有提供的信息不能自行补全/);
+});
+
 test("page changes reset reveal state atomically without reusing visible nodes", async () => {
   const presenter = await read("src/components/presentation/presentation-deck.tsx");
 
@@ -57,7 +72,8 @@ test("reveal steps follow semantic groups and match each slide declaration", asy
   const visuals = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/chapter-visuals.tsx");
   const stepsFor = (id) => Number(deck.match(new RegExp(`id: "${id}",[\\s\\S]*?steps: (\\d+)`))?.[1]);
 
-  assert.equal(stepsFor("cover"), 3);
+  assert.equal(stepsFor("cover"), 1);
+  assert.equal(stepsFor("case"), 2);
   assert.equal(stepsFor("concept-map"), 4);
   assert.equal(stepsFor("scenarios"), 3);
   assert.equal(stepsFor("summary"), 6);
@@ -112,7 +128,7 @@ test("the case workbench reserves space above the takeaway", async () => {
   const visuals = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/chapter-visuals.tsx");
 
   assert.match(visuals, /export function CaseWorkbench[\s\S]*grid-rows-\[minmax\(0,1fr\)\][\s\S]*pb-\[4%\]/);
-  assert.match(visuals, /Reveal className="min-h-0" order=\{3\}/);
+  assert.match(visuals, /Reveal className="min-h-0" order=\{2\}/);
   assert.match(visuals, /h-full overflow-hidden rounded-\[2rem\][\s\S]*p-\[6%\]/);
 });
 

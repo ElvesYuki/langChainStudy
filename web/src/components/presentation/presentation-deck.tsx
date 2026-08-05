@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
-import { ChevronsLeft, ChevronsRight, Expand, FileText, StickyNote, X } from "lucide-react";
+import { BookOpenText, ChevronsLeft, ChevronsRight, Expand, FileText, StickyNote, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -14,6 +14,11 @@ export interface DeckSlide {
   id: string;
   title: string;
   notes: string;
+  learningNotes?: {
+    summary: string;
+    points: string[];
+    connection: string;
+  };
   steps: number;
   content: ReactNode;
 }
@@ -26,7 +31,7 @@ export function PresentationDeck({
   readerHref: string;
 }) {
   const [{ index, step }, setPosition] = useState({ index: 0, step: 0 });
-  const [notesOpen, setNotesOpen] = useState(false);
+  const [notePanel, setNotePanel] = useState<"speaker" | "learning" | null>(null);
   const [jumpOpen, setJumpOpen] = useState(false);
   const jumpAreaRef = useRef<HTMLDivElement>(null);
 
@@ -74,8 +79,12 @@ export function PresentationDeck({
         backward();
       } else if (event.key === "Home") goTo(0);
       else if (event.key === "End") goTo(slides.length - 1, 1);
-      else if (event.key === "Escape") setJumpOpen(false);
-      else if (event.key.toLowerCase() === "n") setNotesOpen((value) => !value);
+      else if (event.key === "Escape") {
+        setJumpOpen(false);
+        setNotePanel(null);
+      }
+      else if (event.key.toLowerCase() === "n") setNotePanel((value) => value === "speaker" ? null : "speaker");
+      else if (event.key.toLowerCase() === "l") setNotePanel((value) => value === "learning" ? null : "learning");
       else if (event.key.toLowerCase() === "f") void toggleFullscreen();
     };
     window.addEventListener("keydown", onKeyDown);
@@ -104,7 +113,8 @@ export function PresentationDeck({
       </div>
 
       <div className="fixed right-3 top-3 flex items-center gap-2 md:right-5 md:top-5">
-        <Tooltip><TooltipTrigger render={<Button size="icon-sm" variant="secondary" onClick={() => setNotesOpen((value) => !value)} aria-label="演讲者备注"><StickyNote /></Button>} /><TooltipContent>演讲者备注（N）</TooltipContent></Tooltip>
+        <Tooltip><TooltipTrigger render={<Button size="icon-sm" variant={notePanel === "speaker" ? "default" : "secondary"} onClick={() => setNotePanel((value) => value === "speaker" ? null : "speaker")} aria-label="演讲者备注"><StickyNote /></Button>} /><TooltipContent>演讲者备注（N）</TooltipContent></Tooltip>
+        <Tooltip><TooltipTrigger render={<Button size="icon-sm" variant={notePanel === "learning" ? "default" : "secondary"} onClick={() => setNotePanel((value) => value === "learning" ? null : "learning")} aria-label="学习笔记"><BookOpenText /></Button>} /><TooltipContent>学习笔记（L）</TooltipContent></Tooltip>
         <Tooltip><TooltipTrigger render={<Button size="icon-sm" variant="secondary" onClick={() => void toggleFullscreen()} aria-label="全屏"><Expand /></Button>} /><TooltipContent>全屏（F）</TooltipContent></Tooltip>
       </div>
 
@@ -127,10 +137,20 @@ export function PresentationDeck({
         </button>
       </div>
 
-      {notesOpen && (
-        <aside className="fixed bottom-20 right-4 z-70 w-[min(28rem,calc(100vw-2rem))] rounded-2xl border border-slate-200 bg-white/96 p-5 shadow-2xl backdrop-blur">
-          <div className="mb-3 flex items-start justify-between gap-4"><div><span className="font-mono text-xs text-blue-600">SPEAKER NOTES</span><h2 className="mt-1 font-semibold">{current.title}</h2></div><Button size="icon-sm" variant="ghost" onClick={() => setNotesOpen(false)} aria-label="关闭备注"><X /></Button></div>
-          <p className="text-sm leading-6 text-slate-600">{current.notes}</p>
+      {notePanel && (
+        <aside className="fixed bottom-20 right-4 z-70 max-h-[72vh] w-[min(34rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-slate-200 bg-white/96 p-5 shadow-2xl backdrop-blur">
+          <div className="mb-4 flex items-start justify-between gap-4"><div><span className="font-mono text-xs text-blue-600">{notePanel === "speaker" ? "SPEAKER NOTES" : "LEARNING NOTES"}</span><h2 className="mt-1 font-semibold">{current.title}</h2></div><Button size="icon-sm" variant="ghost" onClick={() => setNotePanel(null)} aria-label="关闭笔记"><X /></Button></div>
+          {notePanel === "speaker" ? (
+            <p className="text-sm leading-6 text-slate-600">{current.notes}</p>
+          ) : current.learningNotes ? (
+            <div className="space-y-5 text-sm leading-6 text-slate-600">
+              <section><h3 className="font-semibold text-slate-950">本页在讲什么</h3><p className="mt-1">{current.learningNotes.summary}</p></section>
+              <section><h3 className="font-semibold text-slate-950">理解要点</h3><ul className="mt-2 space-y-2">{current.learningNotes.points.map((point) => <li className="flex gap-2" key={point}><span className="mt-[.65rem] size-1.5 shrink-0 rounded-full bg-blue-500" />{point}</li>)}</ul></section>
+              <section className="rounded-xl bg-blue-50 px-4 py-3"><h3 className="font-semibold text-blue-950">与后续内容的关系</h3><p className="mt-1 text-blue-900/75">{current.learningNotes.connection}</p></section>
+            </div>
+          ) : (
+            <p className="rounded-xl bg-slate-50 px-4 py-5 text-sm leading-6 text-slate-500">本页学习笔记尚未整理，将在逐页分析后补充。</p>
+          )}
         </aside>
       )}
     </main>

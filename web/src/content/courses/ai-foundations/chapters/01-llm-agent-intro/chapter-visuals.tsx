@@ -58,22 +58,79 @@ function DocumentSheet({ icon: Icon, name, meta, accent }: { icon: LucideIcon; n
 }
 
 export function CoverVisual() {
-  const nodes = [
-    { icon: BrainCircuit, label: "模型生成", text: "理解当前输入", color: "text-cyan-600" },
-    { icon: Wrench, label: "工具执行", text: "接触文件和系统", color: "text-violet-600" },
-    { icon: Bot, label: "智能体推进", text: "观察结果并继续", color: "text-emerald-600" },
-  ];
-  return <div className="relative mx-auto mt-[5%] h-[55%] w-[82%]"><div className="absolute left-[11%] right-[11%] top-1/2 h-px bg-gradient-to-r from-cyan-400/20 via-violet-400/60 to-emerald-400/20" />{nodes.map(({ icon: Icon, label, text, color }, index) => <Reveal className={cn("absolute top-[8%] h-[84%] w-[26%]", index === 0 ? "left-0" : index === 1 ? "left-[37%]" : "right-0")} key={label} order={index + 1}><div className="flex h-full flex-col justify-between rounded-[2rem] border border-slate-200 bg-white/90 p-[10%] shadow-xl shadow-slate-950/5 backdrop-blur"><div className={cn("flex size-[27%] items-center justify-center rounded-full border border-current/20 bg-current/5", color)}><Icon className="size-[42%]" /></div><div><strong className="block text-[clamp(18px,1.65vw,32px)] text-slate-950">{label}</strong><span className="mt-[4%] block text-[clamp(12px,1vw,19px)] text-slate-500">{text}</span></div><span className="font-mono text-[clamp(10px,.85vw,16px)] text-slate-300">0{index + 1}</span></div></Reveal>)}</div>;
+  const journey = ["一句任务要求", "软件处理过程", "可验收结果"];
+
+  return (
+    <section className="relative h-full overflow-hidden rounded-[2.25rem] bg-[#f7f9fc] text-slate-950">
+      <div className="pointer-events-none absolute -right-[4%] -top-[18%] size-[62%] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,.12),transparent_68%)]" />
+      <div className="pointer-events-none absolute bottom-[-28%] left-[24%] size-[48%] rounded-full bg-[radial-gradient(circle,rgba(34,211,238,.08),transparent_70%)]" />
+
+      <div className="grid h-full grid-cols-[1.04fr_.96fr] items-center gap-[3%] px-[5%] py-[4.2%]">
+        <div className="relative z-10 max-w-[96%]">
+          <h1 className="mt-[4%] text-[clamp(48px,4.9vw,94px)] font-semibold leading-[.98] tracking-[-.065em]">
+            大模型与智能体
+            <span className="mt-[2%] block bg-gradient-to-r from-blue-600 via-cyan-500 to-violet-500 bg-clip-text text-transparent">从理解到行动</span>
+          </h1>
+
+          <div>
+            <p className="mt-[7%] max-w-[96%] text-[clamp(20px,1.6vw,31px)] font-medium leading-[1.35] tracking-[-.025em] text-slate-800">
+              <span className="block">一项办公任务，怎样从一句要求</span>
+              <span className="block">变成可以验收的结果？</span>
+            </p>
+            <p className="mt-[3%] max-w-[88%] text-[clamp(14px,1.08vw,21px)] leading-relaxed text-slate-500">
+              从报名表和访谈材料出发，看懂智能软件内部如何协作。
+            </p>
+          </div>
+
+          <Reveal className="mt-[8%]" order={1}>
+            <div className="relative grid max-w-[92%] grid-cols-3 gap-[6%]">
+              <span className="absolute left-[8%] right-[8%] top-[14px] h-px bg-gradient-to-r from-cyan-300 via-blue-400 to-emerald-300" />
+              {journey.map((item, index) => (
+                <div className="relative z-10" key={item}>
+                  <span className={cn("block size-[29px] rounded-full border-[7px] border-[#f7f9fc] shadow-[0_0_0_1px_rgba(148,163,184,.25)]", index === 0 ? "bg-cyan-400" : index === 1 ? "bg-blue-500" : "bg-emerald-500")} />
+                  <strong className="mt-[8%] block text-[clamp(13px,1vw,19px)] font-medium text-slate-700">{item}</strong>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="relative flex h-full items-center justify-center" aria-hidden="true">
+          <div className="relative aspect-square w-[min(31vw,560px)] -translate-x-[5%]">
+            <div className="absolute inset-[3%] rounded-full border border-blue-200/80 bg-white/45 shadow-[0_32px_90px_rgba(59,130,246,.12)] backdrop-blur-sm cover-orbit-track cover-orbit-outer">
+              <span className="cover-orbit-tag cover-orbit-tag-outer left-[43%] top-[-18px]">XLS</span>
+              <span className="cover-orbit-tag cover-orbit-tag-outer right-[-18px] top-[55%]">DOC</span>
+              <span className="cover-orbit-tag cover-orbit-tag-outer bottom-[3%] left-[5%]">PPT</span>
+            </div>
+
+            <div className="absolute inset-[20%] rounded-full border border-dashed border-violet-300/70 bg-white/25 cover-orbit-track cover-orbit-inner">
+              <span className="cover-orbit-tag cover-orbit-tag-inner left-[-19px] top-[13%]">理解</span>
+              <span className="cover-orbit-tag cover-orbit-tag-inner right-[-27px] top-[48%]">行动</span>
+              <span className="cover-orbit-tag cover-orbit-tag-inner bottom-[-18px] left-[42%]">检查</span>
+            </div>
+
+            <div className="absolute inset-[32%] grid -rotate-6 place-content-center rounded-[31%] border border-white/80 bg-[linear-gradient(145deg,rgba(255,255,255,.96),rgba(226,239,255,.9))] text-center shadow-[0_26px_80px_rgba(59,130,246,.22),inset_0_1px_0_rgba(255,255,255,1)]">
+              <strong className="bg-gradient-to-br from-blue-600 via-cyan-500 to-violet-500 bg-clip-text text-[clamp(54px,5.2vw,100px)] leading-none tracking-[-.08em] text-transparent">AI</strong>
+              <span className="mt-[7%] font-mono text-[clamp(9px,.7vw,14px)] font-semibold tracking-[.28em] text-slate-500">SOFTWARE</span>
+            </div>
+
+            <span className="absolute right-[15%] top-[9%] size-3 rounded-full bg-cyan-400 shadow-[0_0_25px_rgba(34,211,238,.9)]" />
+            <span className="absolute bottom-[13%] left-[16%] size-2.5 rounded-full bg-violet-500 shadow-[0_0_24px_rgba(139,92,246,.75)]" />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export function CaseWorkbench() {
   return <div className="grid h-full grid-cols-[1.08fr_.2fr_.92fr] grid-rows-[minmax(0,1fr)] items-stretch gap-[3%] pb-[4%]">
     <div className="grid grid-cols-2 gap-[4%]">
-      <Reveal className="min-h-0" order={1}><DocumentSheet icon={FileSpreadsheet} name="培训报名统计.xlsx" meta="128 条 · 部门字段 · 需要统计" accent="cyan" /></Reveal>
-      <Reveal className="min-h-0" order={2}><DocumentSheet icon={FileText} name="需求访谈记录.docx" meta="6 段访谈 · 需要找到原文依据" accent="violet" /></Reveal>
+      <DocumentSheet icon={FileSpreadsheet} name="培训报名统计.xlsx" meta="128 条 · 部门字段 · 需要统计" accent="cyan" />
+      <DocumentSheet icon={FileText} name="需求访谈记录.docx" meta="6 段访谈 · 需要找到原文依据" accent="violet" />
     </div>
-    <div className="flex flex-col items-center justify-center gap-[7%] text-blue-500"><ArrowRight className="size-[34%]" /><span className="font-mono text-[clamp(9px,.68vw,13px)] tracking-[.15em] [writing-mode:vertical-rl]">PROCESS</span></div>
-    <Reveal className="min-h-0" order={3}><div className="relative h-full overflow-hidden rounded-[2rem] border border-emerald-200 bg-emerald-50 p-[6%] text-emerald-950 shadow-xl shadow-emerald-950/5"><FileOutput className="size-[12%] text-emerald-600" /><h2 className="mt-[3%] text-[clamp(18px,1.6vw,31px)] font-semibold">5 页培训需求汇报</h2><div className="mt-[4%] space-y-[2%]">{["人数合计等于 128", "结论有数据或原文", "未知事实明确标记", "建议与问题对应"].map((item) => <div className="flex items-center gap-[4%] rounded-xl border border-emerald-100 bg-white/85 px-[5%] py-[2.5%] text-[clamp(12px,1vw,19px)] text-slate-600" key={item}><CheckCircle2 className="size-[1.2em] text-emerald-600" />{item}</div>)}</div><span className="absolute bottom-[4%] right-[6%] font-mono text-[clamp(10px,.85vw,16px)] text-emerald-700/45">ACCEPTANCE</span></div></Reveal>
+    <Reveal className="min-h-0" order={1}><div className="flex h-full flex-col items-center justify-center gap-[7%] text-blue-500"><ArrowRight className="size-[34%]" /><span className="font-mono text-[clamp(9px,.68vw,13px)] tracking-[.15em] [writing-mode:vertical-rl]">PROCESS</span></div></Reveal>
+    <Reveal className="min-h-0" order={2}><div className="relative h-full overflow-hidden rounded-[2rem] border border-emerald-200 bg-emerald-50 p-[6%] text-emerald-950 shadow-xl shadow-emerald-950/5"><FileOutput className="size-[12%] text-emerald-600" /><h2 className="mt-[3%] text-[clamp(18px,1.6vw,31px)] font-semibold">5 页培训需求汇报</h2><div className="mt-[4%] space-y-[2%]">{["数字与源文件一致", "每个结论都有依据", "缺失信息标记为待确认", "每条建议对应具体问题"].map((item) => <div className="flex items-center gap-[4%] rounded-xl border border-emerald-100 bg-white/85 px-[5%] py-[2.5%] text-[clamp(12px,1vw,19px)] text-slate-600" key={item}><CheckCircle2 className="size-[1.2em] text-emerald-600" />{item}</div>)}</div><span className="absolute bottom-[4%] right-[6%] font-mono text-[clamp(10px,.85vw,16px)] text-emerald-700/45">ACCEPTANCE</span></div></Reveal>
   </div>;
 }
 
