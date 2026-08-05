@@ -235,13 +235,130 @@ export function ToolActions() {
 }
 
 export function ToolCallConsole() {
+  const revealStep = Math.min(useRevealStep(), 4);
   const stages = [
-    { order: 1, label: "MODEL INTENT", icon: BrainCircuit, title: "模型提出调用", content: <pre>analyze_spreadsheet{`\n`}file: 报名统计.xlsx{`\n`}group_by: 部门</pre>, color: "text-cyan-600" },
-    { order: 2, label: "RUNTIME CHECK", icon: KeyRound, title: "应用检查", content: <ul><li>工具存在</li><li>文件允许访问</li><li>参数与字段有效</li></ul>, color: "text-blue-600" },
-    { order: 3, label: "EXECUTION", icon: SquareFunction, title: "工具执行", content: <p>打开文件，定位“部门”列，统计并检查空值。</p>, color: "text-violet-600" },
-    { order: 4, label: "TOOL RESULT", icon: CheckCircle2, title: "结果返回", content: <pre>status: success{`\n`}46 · 31 · 27 · 24{`\n`}total: 128</pre>, color: "text-emerald-600" },
+    {
+      order: 1,
+      code: "REQUESTED",
+      label: "MODEL INTENT",
+      title: "模型提出调用",
+      headline: "请求读取并分析报名表",
+      summary: "模型生成工具名称与参数，但外部动作还没有发生。",
+      icon: BrainCircuit,
+      tone: "text-cyan-600",
+      line: "bg-cyan-500",
+      visual: <div className="flex h-full flex-col rounded-[1.35rem] bg-slate-950 p-[6%] text-cyan-100 shadow-[0_24px_65px_rgba(15,23,42,.2)]"><div className="flex items-center justify-between text-[clamp(11px,.82vw,16px)] text-slate-400"><span>TOOL REQUEST</span><span>intent only</span></div><pre className="my-auto whitespace-pre-wrap text-[clamp(16px,1.35vw,26px)] leading-[1.7]">{"analyze_spreadsheet\nfile: 报名统计.xlsx\ngroup_by: 部门"}</pre><div className="flex gap-[3%] text-[clamp(11px,.82vw,16px)] text-slate-400"><span>tool ✓</span><span>arguments ✓</span><span>permission ?</span></div></div>,
+    },
+    {
+      order: 2,
+      code: "VALIDATED",
+      label: "RUNTIME CHECK",
+      title: "应用检查",
+      headline: "运行环境决定能不能执行",
+      summary: "软件检查工具、文件权限和参数，而不是模型自己获得权限。",
+      icon: KeyRound,
+      tone: "text-blue-600",
+      line: "bg-blue-600",
+      visual: <div className="grid h-full grid-rows-3 divide-y divide-slate-200 border-y border-slate-200">{[["工具存在","analyze_spreadsheet","AVAILABLE"],["文件允许访问","报名统计.xlsx","ALLOWED"],["参数与字段有效","group_by: 部门","VALID"]].map(([title,detail,status]) => <div className="grid grid-cols-[auto_1fr_auto] items-center gap-[5%] px-[5%]" key={title}><span className="flex size-[clamp(34px,3vw,58px)] items-center justify-center rounded-full bg-blue-50 text-blue-600"><CheckCircle2 className="size-[48%]" /></span><div><strong className="block text-[clamp(15px,1.25vw,24px)] text-slate-900">{title}</strong><span className="mt-[1%] block font-mono text-[clamp(11px,.85vw,16px)] text-slate-400">{detail}</span></div><span className="font-mono text-[clamp(11px,.82vw,16px)] text-blue-600">{status}</span></div>)}</div>,
+    },
+    {
+      order: 3,
+      code: "RUNNING",
+      label: "EXECUTION",
+      title: "工具执行",
+      headline: "真正打开文件并完成统计",
+      summary: "工具定位“部门”列，读取记录、检查空值并计算分组结果。",
+      icon: SquareFunction,
+      tone: "text-violet-600",
+      line: "bg-violet-600",
+      visual: <div className="flex h-full flex-col justify-between border-y border-violet-200 bg-violet-50/55 p-[6%]"><div className="flex items-center gap-[5%]"><span className="flex size-[clamp(48px,4.5vw,86px)] items-center justify-center rounded-full bg-violet-600 text-white"><FileSpreadsheet className="size-[42%]" /></span><div><Kicker>报名统计.xlsx</Kicker><strong className="mt-[2%] block text-[clamp(18px,1.55vw,30px)]">读取 Sheet1 · 部门列</strong></div></div><div><div className="mb-[3%] flex items-center justify-between text-[clamp(12px,.9vw,17px)] text-violet-700"><span>正在统计并检查空值</span><span className="font-mono">128 rows</span></div><div className="h-2 overflow-hidden rounded-full bg-violet-100"><div className="h-full w-[86%] rounded-full bg-gradient-to-r from-violet-500 to-blue-500" /></div></div><div className="grid grid-cols-3 divide-x divide-violet-200 border-y border-violet-200 py-[3%] text-center text-[clamp(12px,.92vw,18px)] text-violet-800"><span>字段已定位</span><span>记录已读取</span><span>空值检查中</span></div></div>,
+    },
+    {
+      order: 4,
+      code: "RETURNED",
+      label: "TOOL RESULT",
+      title: "结果返回",
+      headline: "工具返回事实，模型才能继续",
+      summary: "执行结果进入当前任务状态，但业务正确性仍然需要检查。",
+      icon: CheckCircle2,
+      tone: "text-emerald-600",
+      line: "bg-emerald-500",
+      visual: <div className="grid h-full grid-cols-[.42fr_.58fr] border-y border-emerald-200 bg-emerald-50/45"><div className="flex flex-col items-center justify-center border-r border-emerald-200"><span className="font-mono text-[clamp(11px,.82vw,16px)] tracking-[.16em] text-emerald-700">TOTAL</span><strong className="bg-gradient-to-br from-emerald-500 to-blue-600 bg-clip-text text-[clamp(76px,7.4vw,142px)] leading-none tracking-[-.08em] text-transparent">128</strong><span className="mt-[3%] text-[clamp(13px,1vw,19px)] text-slate-500">条有效报名记录</span></div><div className="grid grid-cols-2 grid-rows-2">{[["销售","46"],["产品","31"],["研发","27"],["职能","24"]].map(([name,value],index) => <div className={cn("flex flex-col items-center justify-center", index % 2 === 0 && "border-r border-emerald-200", index < 2 && "border-b border-emerald-200")} key={name}><strong className="text-[clamp(26px,2.4vw,46px)] text-slate-950">{value}</strong><span className="mt-[2%] text-[clamp(12px,.92vw,18px)] text-slate-500">{name}</span></div>)}</div></div>,
+    },
   ];
-  return <div className="h-full overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white p-[3%] font-mono text-slate-950 shadow-xl shadow-slate-950/5"><div className="mb-[3%] flex items-center gap-2 border-b border-slate-200 bg-slate-50/80 pb-[2%]"><span className="size-2 rounded-full bg-rose-400" /><span className="size-2 rounded-full bg-amber-400" /><span className="size-2 rounded-full bg-emerald-400" /><span className="ml-3 text-[clamp(9px,.68vw,13px)] text-slate-400">task-run / tool-call-01</span></div><div className="grid h-[82%] grid-cols-4 gap-[1.5%]">{stages.map(({ order, label, icon: Icon, title, content, color }) => <Reveal key={label} order={order}><div className="h-full border-l border-slate-200 px-[8%]"><div className={cn("flex items-center gap-[5%]", color)}><Icon className="size-[13%]" /><Kicker>{label}</Kicker></div><strong className="mt-[10%] block font-sans text-[clamp(15px,1.3vw,25px)]">{title}</strong><div className="mt-[8%] text-[clamp(12px,.95vw,18px)] leading-[1.8] text-slate-500 [&_pre]:rounded-lg [&_pre]:bg-slate-950 [&_pre]:p-[7%] [&_pre]:text-cyan-100 [&_pre]:whitespace-pre-wrap [&_ul]:space-y-2">{content}</div></div></Reveal>)}</div></div>;
+  const runtimeStates = [
+    { code: "WAITING", fact: "等待模型提出工具调用", boundary: "还没有发生外部动作" },
+    { code: "REQUESTED", fact: "收到分析报名表的调用意图", boundary: "意图不代表已获授权" },
+    { code: "VALIDATED", fact: "工具、权限和参数检查完成", boundary: "运行环境允许执行" },
+    { code: "RUNNING", fact: "正在读取“报名统计.xlsx”", boundary: "等待工具真实返回" },
+    { code: "RETURNED", fact: "工具返回四部门共 128 人", boundary: "仍需检查业务正确性" },
+  ];
+  const activeStage = revealStep > 0 ? stages[revealStep - 1] : null;
+  const runtimeState = runtimeStates[revealStep];
+
+  return (
+    <div className="h-full overflow-hidden rounded-[1.8rem] border border-slate-200 bg-white p-[2.7%] font-mono text-slate-950 shadow-xl shadow-slate-950/5">
+      <div className="flex h-[7%] items-start gap-2 border-b border-slate-200">
+        <span className="size-2 rounded-full bg-rose-400" />
+        <span className="size-2 rounded-full bg-amber-400" />
+        <span className="size-2 rounded-full bg-emerald-400" />
+        <span className="ml-3 text-[clamp(10px,.76vw,15px)] text-slate-400">task-run / tool-call-01</span>
+      </div>
+
+      <div className="relative grid h-[14%] grid-cols-4 border-b border-slate-200">
+        <span className="absolute left-[5%] right-[5%] top-[58%] h-px bg-slate-200" />
+        {stages.map((stage) => {
+          const active = revealStep === stage.order;
+          const completed = revealStep > stage.order;
+          const StageIcon = stage.icon;
+          return (
+            <div className="relative z-10 flex items-center gap-[6%] px-[8%]" key={stage.code}>
+              <span className={cn("flex size-[clamp(26px,2.2vw,42px)] shrink-0 items-center justify-center rounded-full border bg-white transition-all duration-500", active ? cn("scale-110 border-current shadow-[0_0_0_7px_rgba(37,99,235,.08)]", stage.tone) : completed ? "border-slate-300 text-slate-500" : "border-slate-200 text-slate-300")}><StageIcon className="size-[44%]" /></span>
+              <div className={cn("transition-colors duration-500", active ? stage.tone : completed ? "text-slate-600" : "text-slate-300")}>
+                <span className="block text-[clamp(10px,.76vw,15px)] tracking-[.12em]">0{stage.order}</span>
+                <strong className="font-sans text-[clamp(12px,.98vw,19px)]">{stage.title}</strong>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div aria-live="polite" className="h-[55%] py-[2.5%]">
+        {activeStage ? (
+          <div className="grid h-full grid-cols-[.34fr_.66fr] gap-[5%] animate-in fade-in-0 slide-in-from-bottom-3 duration-500" key={activeStage.code}>
+            <div className="flex flex-col justify-center">
+              <span className={cn("text-[clamp(11px,.8vw,16px)] tracking-[.18em]", activeStage.tone)}>{activeStage.label}</span>
+              <strong className="mt-[5%] font-sans text-[clamp(24px,2.15vw,42px)] leading-tight tracking-[-.045em]">{activeStage.headline}</strong>
+              <p className="mt-[6%] font-sans text-[clamp(13px,1vw,19px)] leading-relaxed text-slate-500">{activeStage.summary}</p>
+              <span className={cn("mt-[10%] h-1.5 w-[30%] rounded-full", activeStage.line)} />
+            </div>
+            <div className="min-h-0">{activeStage.visual}</div>
+          </div>
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center text-center animate-in fade-in-0 duration-500">
+            <span className="text-[clamp(11px,.8vw,16px)] tracking-[.18em] text-blue-600">CONTROLLED EXECUTION</span>
+            <strong className="mt-[3%] font-sans text-[clamp(28px,2.6vw,50px)] tracking-[-.05em]">工具调用，不是一句话。</strong>
+            <p className="mt-[3%] font-sans text-[clamp(14px,1.08vw,21px)] text-slate-500">它是一段有意图、有检查、有执行、有返回的过程。</p>
+          </div>
+        )}
+      </div>
+
+      <div className="grid h-[18%] grid-cols-[.24fr_1.12fr_.82fr] items-center border-t border-slate-200 px-[1%] pt-[1.5%]">
+        <div>
+          <span className="text-[clamp(10px,.76vw,15px)] tracking-[.16em] text-blue-600">RUNTIME STATUS</span>
+          <strong className="mt-[3%] block text-[clamp(14px,1.05vw,20px)] text-slate-950">{runtimeState.code}</strong>
+        </div>
+        <div className="border-l border-slate-200 px-[7%]">
+          <span className="text-[clamp(10px,.76vw,15px)] text-slate-400">当前事实</span>
+          <strong className="mt-[1.5%] block font-sans text-[clamp(15px,1.22vw,23px)] tracking-[-.02em] text-slate-900">{runtimeState.fact}</strong>
+        </div>
+        <div className="border-l border-slate-200 pl-[8%]">
+          <span className="text-[clamp(10px,.76vw,15px)] text-slate-400">边界</span>
+          <span className="mt-[2%] block font-sans text-[clamp(13px,1vw,19px)] text-slate-600">{runtimeState.boundary}</span>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function AgentTriangle() {
