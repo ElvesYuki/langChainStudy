@@ -4,7 +4,7 @@ import test from "node:test";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("the first chapter separates detailed MDX from the 23-slide presentation", async () => {
+test("the first chapter separates detailed MDX from the 24-slide presentation", async () => {
   const article = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/article.mdx");
   const deck = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/slides.tsx");
   const visuals = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/chapter-visuals.tsx");
@@ -20,7 +20,9 @@ test("the first chapter separates detailed MDX from the 23-slide presentation", 
   assert.doesNotMatch(article, /export const slides/);
 
   const slideIds = deck.match(/^    id: "/gm) ?? [];
-  assert.equal(slideIds.length, 23);
+  assert.equal(slideIds.length, 24);
+  assert.match(deck, /id: "workbuddy-overview"/);
+  assert.match(visuals, /function WorkBuddyOverview/);
   assert.match(visuals, /function ConceptExplorer/);
   assert.match(visuals, /function ToolCallConsole/);
   assert.match(visuals, /function ResponsibilitySwimlanes/);
@@ -85,11 +87,13 @@ test("reveal steps follow semantic groups and match each slide declaration", asy
   assert.equal(stepsFor("cover"), 1);
   assert.equal(stepsFor("case"), 2);
   assert.equal(stepsFor("concept-map"), 4);
+  assert.equal(stepsFor("failures"), 4);
   assert.equal(stepsFor("scenarios"), 3);
   assert.equal(stepsFor("material-workflow"), 3);
   assert.equal(stepsFor("summary"), 6);
   assert.match(visuals, /order=\{Math\.floor\(index \/ 2\) \+ 1\}/);
   assert.match(visuals, /export function SummaryChain[\s\S]*order=\{6\}/);
+  assert.match(visuals, /export function FailureBranches[\s\S]*有限重试[\s\S]*等待授权[\s\S]*停止并接管/);
 });
 
 test("the presentation uses a light canvas without full-slide dark surfaces", async () => {

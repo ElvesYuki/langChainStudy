@@ -25,6 +25,7 @@ import {
   TaskBriefComparison,
   ToolActions,
   ToolCallConsole,
+  WorkBuddyOverview,
 } from "./chapter-visuals";
 
 const readerHref = "/courses/ai-foundations/llm-agent-intro";
@@ -64,6 +65,25 @@ const slides: DeckSlide[] = [
     content: <SlideFrame eyebrow="01 · 先看任务" title="两份材料，怎样变成一份可以验收的汇报？" lead="一份表格提供准确数字，一份访谈记录提供原文依据；最终产物必须能够按标准检查。"><CaseWorkbench /><SlideTakeaway>任务同时包含必须算准的数字、必须有依据的归纳，以及需要人判断的建议。</SlideTakeaway></SlideFrame>,
   },
   {
+    id: "workbuddy-overview",
+    title: "WorkBuddy 是一个 AI 应用，不是一个模型",
+    steps: 2,
+    notes: "约 1 分 20 秒。把 WorkBuddy 作为观察智能软件的真实窗口，而不是在这里教学具体操作。第一次推进看任务工作区：任务、工作空间、模型选择、文件和权限共同决定一次工作怎样开始；第二次推进看能力目录：专家、技能和连接器是应用层封装的能力入口，可能组合角色规则、模型、工具和外部系统。界面和模型列表会随版本变化，本页重点是看懂稳定的软件结构。",
+    learningNotes: {
+      summary: "WorkBuddy 是用户实际操作的完整 AI 应用，不是某一个大模型。它把任务入口、模型、材料、权限、能力组件和任务记录组织在同一个软件里。",
+      points: [
+        "左图的任务工作区同时出现任务、空间、模型选择、文件和权限，说明一次结果并不只由模型名称决定。",
+        "同一个应用可以连接多个模型；模型是应用调用的能力之一，不等于整个 WorkBuddy。",
+        "文件被添加到软件、软件有权读取文件、文件内容进入本次模型输入，是三个不同状态。",
+        "右图的专家、技能和连接器是应用层能力入口：它们可能组合提示规则、模型、工具、数据源和权限。",
+        "专家入口不一定代表另一个模型，也不表示相关知识已经永久存在于模型内部。",
+        "这些截图用于观察软件结构，不代表所有版本都采用完全相同的界面或固定实现。",
+      ],
+      connection: "下一页会把普通对话与任务型智能体放在一起比较，进一步判断软件何时只是生成一次回答，何时会维护状态并持续推进。",
+    },
+    content: <SlideFrame eyebrow="02 · 观察窗口" title="WorkBuddy 是一个 AI 应用，不是一个模型" lead="借助真实界面，先观察任务、模型、材料、权限和能力入口怎样被组合在同一个软件里。"><WorkBuddyOverview /><Reveal className="absolute inset-0" order={2}><SlideTakeaway>WorkBuddy 把模型、文件、权限、技能和任务记录组合成一个可以操作的 AI 应用。</SlideTakeaway></Reveal></SlideFrame>,
+  },
+  {
     id: "chat-vs-agent",
     title: "智能体软件不是一个更大的聊天框",
     steps: 2,
@@ -79,7 +99,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页会进一步拆开 AI 应用内部的使用层、能力层、行动层和运行层，解释界面背后分别由哪些部分完成这些工作。",
     },
-    content: <SlideFrame eyebrow="02 · 软件差异" title="智能体软件不是一个更大的聊天框" lead="区别不在聊天框大小，而在软件是否保存任务状态、调用工具，并根据结果继续。"><ChatAgentTimeline /><SlideTakeaway>差异不在界面，而在软件是否把目标、状态、行动、观察和下一步连接成任务循环。</SlideTakeaway></SlideFrame>,
+    content: <SlideFrame eyebrow="03 · 软件差异" title="智能体软件不是一个更大的聊天框" lead="区别不在聊天框大小，而在软件是否保存任务状态、调用工具，并根据结果继续。"><ChatAgentTimeline /><SlideTakeaway>差异不在界面，而在软件是否把目标、状态、行动、观察和下一步连接成任务循环。</SlideTakeaway></SlideFrame>,
   },
   {
     id: "application",
@@ -98,7 +118,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页会从这套完整应用中进一步定位 AI 应用、上下文、大模型、工具和智能体五个概念，明确它们分别出现在哪里。",
     },
-    content: <SlideFrame eyebrow="03 · AI 应用" title="你打开的是一个软件，不是直接面对一个模型" lead="用户操作的是由界面、模型、上下文、工具、权限、状态和记录共同组成的完整应用。"><ApplicationLayers /><SlideTakeaway>WorkBuddy 是一个 AI 应用；大模型只是应用内部的一项能力。</SlideTakeaway></SlideFrame>,
+    content: <SlideFrame eyebrow="04 · AI 应用" title="你打开的是一个软件，不是直接面对一个模型" lead="用户操作的是由界面、模型、上下文、工具、权限、状态和记录共同组成的完整应用。"><ApplicationLayers /><SlideTakeaway>WorkBuddy 是一个 AI 应用；大模型只是应用内部的一项能力。</SlideTakeaway></SlideFrame>,
   },
   {
     id: "concept-map",
@@ -118,7 +138,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "后续页面会分别深入上下文、大模型、工具和智能体的工作机制；这一页可以作为概念索引，遇到混淆时回到这里重新定位。",
     },
-    content: <SlideFrame eyebrow="04 · 概念定位" title="五个概念，各自在软件里做什么？" lead="先分清产品、输入、生成、行动和推进，后面就不容易混用。"><ConceptExplorer /></SlideFrame>,
+    content: <SlideFrame eyebrow="05 · 概念定位" title="五个概念，各自在软件里做什么？" lead="先分清产品、输入、生成、行动和推进，后面就不容易混用。"><ConceptExplorer /></SlideFrame>,
   },
   {
     id: "context-mechanism",
@@ -137,7 +157,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页继续解释上下文的边界：为什么不是放得越多越好，而要做到相关、充分、经过授权并且能够追溯。",
     },
-    content: <SlideFrame eyebrow="05 · 上下文机制" title="文件放进软件，不等于模型已经知道内容" lead="文件存在、工具读取和内容进入上下文，是三个不同过程。"><ContextPipeline /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>模型能力决定会不会做；上下文决定这一次根据什么做。</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="06 · 上下文机制" title="文件放进软件，不等于模型已经知道内容" lead="文件存在、工具读取和内容进入上下文，是三个不同过程。"><ContextPipeline /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>模型能力决定会不会做；上下文决定这一次根据什么做。</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "context-boundary",
@@ -156,7 +176,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页进入大模型本身：当前上下文作为输入交给模型后，模型怎样根据这些信息逐步生成不同形式的输出。",
     },
-    content: <SlideFrame eyebrow="06 · 上下文边界" title="上下文不是资料仓库，也不是越多越好" lead="资料先按任务和权限筛选，并保留来源，才形成本次上下文。"><ContextFunnel /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>好的上下文不是“尽可能多”，而是相关、充分、已授权并且可追溯。</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="07 · 上下文边界" title="上下文不是资料仓库，也不是越多越好" lead="资料先按任务和权限筛选，并保留来源，才形成本次上下文。"><ContextFunnel /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>好的上下文不是“尽可能多”，而是相关、充分、已授权并且可追溯。</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "model-io",
@@ -177,7 +197,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页继续讨论大模型的能力边界：哪些工作适合模型生成，哪些事实、计算、外部动作和责任需要上下文、工具或人补齐。",
     },
-    content: <SlideFrame eyebrow="07 · 大模型基础" title="最基本的理解：接收输入，再逐步生成输出" lead="训练让模型形成通用规律；本次上下文决定它现在要生成什么。"><ModelStage /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>输出形式可以很规整，但仍然是生成结果，可能遗漏、误解或出错。</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="08 · 大模型基础" title="最基本的理解：接收输入，再逐步生成输出" lead="训练让模型形成通用规律；本次上下文决定它现在要生成什么。"><ModelStage /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>输出形式可以很规整，但仍然是生成结果，可能遗漏、误解或出错。</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "model-boundary",
@@ -197,7 +217,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页进入工具本身，从读、写、改、执行四类基础动作理解软件怎样真正接触文件、数据和系统。",
     },
-    content: <SlideFrame eyebrow="08 · 大模型边界" title="大模型擅长生成，但不天然拥有事实和行动能力" lead="先判断工作需要生成、事实、行动还是责任，再决定由谁完成。"><ModelBoundaryQuadrants /><Reveal className="absolute inset-0" order={4}><SlideTakeaway>能生成 ≠ 知道事实 ≠ 拥有权限 ≠ 已经执行 ≠ 能够负责</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="09 · 大模型边界" title="大模型擅长生成，但不天然拥有事实和行动能力" lead="先判断工作需要生成、事实、行动还是责任，再决定由谁完成。"><ModelBoundaryQuadrants /><Reveal className="absolute inset-0" order={4}><SlideTakeaway>能生成 ≠ 知道事实 ≠ 拥有权限 ≠ 已经执行 ≠ 能够负责</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "tool-nature",
@@ -217,7 +237,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页会把一次真实工具调用拆成模型提出意图、平台检查、工具执行和结果返回四个阶段，进一步区分“想调用”和“已经执行”。",
     },
-    content: <SlideFrame eyebrow="09 · 工具的本质" title="复杂工具可以从“读、写、改、执行”理解" lead="工具以明确参数接触文件、数据和系统，并返回结果或错误。"><ToolActions /><Reveal className="absolute inset-0" order={4}><SlideTakeaway>专业工具 = 基础动作 + 业务规则 + 权限检查 + 可验证结果</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="10 · 工具的本质" title="复杂工具可以从“读、写、改、执行”理解" lead="工具以明确参数接触文件、数据和系统，并返回结果或错误。"><ToolActions /><Reveal className="absolute inset-0" order={4}><SlideTakeaway>专业工具 = 基础动作 + 业务规则 + 权限检查 + 可验证结果</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "tool-call",
@@ -238,7 +258,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页进入智能体定义：工具调用提供一次行动能力，而智能体负责围绕目标组织多次判断、行动、观察和继续推进。",
     },
-    content: <SlideFrame eyebrow="10 · 工具调用" title="一次真实工具调用经历四个阶段" lead="这不是一句“帮我读表格”，而是一条有参数、有检查、有结果的调用记录。"><ToolCallConsole /><Reveal className="absolute inset-0" order={4}><SlideTakeaway>调用意图 ≠ 已获授权 ≠ 执行成功 ≠ 业务结果正确</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="11 · 工具调用" title="一次真实工具调用经历四个阶段" lead="这不是一句“帮我读表格”，而是一条有参数、有检查、有结果的调用记录。"><ToolCallConsole /><Reveal className="absolute inset-0" order={4}><SlideTakeaway>调用意图 ≠ 已获授权 ≠ 执行成功 ≠ 业务结果正确</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "agent-definition",
@@ -259,7 +279,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页会展开“状态”到底保存什么，以及为什么状态能让任务继续、恢复、检查和人工接管。",
     },
-    content: <SlideFrame eyebrow="11 · 智能体定义" title="智能体不是另一个模型，而是一套任务推进机制" lead="它围绕目标维护状态，调用模型与工具，并根据真实结果决定继续、询问或停止。"><AgentTriangle /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>大模型提供判断与生成；工具提供行动；智能体负责组织状态与循环</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="12 · 智能体定义" title="智能体不是另一个模型，而是一套任务推进机制" lead="它围绕目标维护状态，调用模型与工具，并根据真实结果决定继续、询问或停止。"><AgentTriangle /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>大模型提供判断与生成；工具提供行动；智能体负责组织状态与循环</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "agent-state",
@@ -281,7 +301,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页会展示智能体怎样在每一轮读取状态、作出判断、调用能力、观察结果并更新状态。",
     },
-    content: <SlideFrame eyebrow="12 · 智能体状态" title="智能体一边推进，一边维护当前任务状态" lead="状态不是聊天记录，而是决定下一步所依据的结构化任务事实。"><AgentStateBoard /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>被可靠保存的状态，才能支持继续、恢复、检查和人工接管</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="13 · 智能体状态" title="智能体一边推进，一边维护当前任务状态" lead="状态不是聊天记录，而是决定下一步所依据的结构化任务事实。"><AgentStateBoard /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>被可靠保存的状态，才能支持继续、恢复、检查和人工接管</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "agent-loop",
@@ -303,7 +323,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页会进一步定位智能体与 AI 应用、大模型之间的层级关系，避免把运行机制、能力和完整产品混为一谈。",
     },
-    content: <SlideFrame eyebrow="13 · 智能体循环" title="智能体通过“判断—行动—观察—更新”继续推进" lead="每次工具返回都会改变当前状态，也可能改变原来的计划。"><AgentLoop /><Reveal className="absolute inset-0" order={4}><SlideTakeaway variant="editorial">可靠循环必须有停止条件、重试上限和人工接管点。</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="14 · 智能体循环" title="智能体通过“判断—行动—观察—更新”继续推进" lead="每次工具返回都会改变当前状态，也可能改变原来的计划。"><AgentLoop /><Reveal className="absolute inset-0" order={4}><SlideTakeaway variant="editorial">可靠循环必须有停止条件、重试上限和人工接管点。</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "relationship",
@@ -325,7 +345,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页会进一步按职责区分模型生成、工具执行、智能体推进和人工负责，建立清晰的责任边界。",
     },
-    content: <SlideFrame eyebrow="14 · 概念关系" title="AI 应用、大模型和智能体不在同一层" lead="应用是完整产品，模型是可调用能力，智能体是其中可选的任务推进机制。"><RelationshipNest /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>有模型不等于有智能体；智能体通常运行在应用内部，并调用模型与工具</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="15 · 概念关系" title="AI 应用、大模型和智能体不在同一层" lead="应用是完整产品，模型是可调用能力，智能体是其中可选的任务推进机制。"><RelationshipNest /><Reveal className="absolute inset-0" order={3}><SlideTakeaway>有模型不等于有智能体；智能体通常运行在应用内部，并调用模型与工具</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "boundaries",
@@ -344,7 +364,7 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页会把应用接收、工具读取、上下文组织、模型生成、智能体检查和人工验收连成完整任务链，观察这些凭证怎样沿流程累积。",
     },
-    content: <SlideFrame eyebrow="15 · 分工与边界" title="生成、执行、推进和负责，是四件不同的事" lead="同一项任务中，四类角色产生不同动作、证据和责任。"><ResponsibilitySwimlanes /><Reveal className="absolute inset-0" order={4}><SlideTakeaway>模型生成，工具执行，智能体推进；人负责目标、权限、业务判断和验收。</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="16 · 分工与边界" title="生成、执行、推进和负责，是四件不同的事" lead="同一项任务中，四类角色产生不同动作、证据和责任。"><ResponsibilitySwimlanes /><Reveal className="absolute inset-0" order={4}><SlideTakeaway>模型生成，工具执行，智能体推进；人负责目标、权限、业务判断和验收。</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "complete-flow",
@@ -364,42 +384,56 @@ const slides: DeckSlide[] = [
       ],
       connection: "下一页会在这条正常任务链旁边加入材料缺失、结论无依据、权限拒绝、工具异常和验收未通过等失败分支，说明系统何时应该停止或交给人处理。",
     },
-    content: <SlideFrame eyebrow="16 · 软件如何工作" title="把概念连成一条有证据的任务链" lead="最终文件只是结果；任务记录让每一步都能够回到输入、动作和依据。"><EvidenceTimeline /><Reveal className="absolute inset-0" order={6}><SlideTakeaway>最终文件只是结果；过程记录和证据链，才让结果能够被解释、复核和验收。</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame eyebrow="17 · 软件如何工作" title="把概念连成一条有证据的任务链" lead="最终文件只是结果；任务记录让每一步都能够回到输入、动作和依据。"><EvidenceTimeline /><Reveal className="absolute inset-0" order={6}><SlideTakeaway>最终文件只是结果；过程记录和证据链，才让结果能够被解释、复核和验收。</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "failures",
-    title: "任何一环都可能停下来",
-    steps: 5,
-    notes: "约 1 分 30 秒。失败不是抽象风险。讲清系统何时可以重试，何时必须等待授权或人工判断。",
-    content: <SlideFrame eyebrow="17 · 失败与接管" title="智能体会推进任务，但任何一环都可能停下来" lead="正常流程旁边始终存在失败分支，可靠软件必须知道怎样停止。"><FailureBranches /><SlideTakeaway>可靠的软件允许观察、停止、补充、重试和人工接管。</SlideTakeaway></SlideFrame>,
+    title: "发现异常后，系统要知道下一步是什么",
+    steps: 4,
+    notes: "约 1 分 40 秒。先沿顶部讲正常推进、观察异常和控制点：工具返回、权限反馈或验收结果与预期不同时，智能体不能假装成功或无限重试。第一次推进讲补充信息：3 条报名记录缺少部门，任务保留已有结果并等待负责人补充；第二次推进讲有限重试：字段名称不一致时可以调整映射，但必须有次数上限，超过上限转人工；第三次推进讲等待授权：没有访谈文件读取权限就暂停，不绕过权限继续；第四次推进讲停止并接管：结论无依据或数字验收失败时阻止交付，由人判断修改或终止。接管通常只是补信息、授权或决策，不一定从头重做。",
+    learningNotes: {
+      summary: "可靠系统不是永不遇到失败，而是能够观察异常、保存当前状态，并根据问题性质选择补充、有限重试、等待授权或停止接管。",
+      points: [
+        "工具返回值、权限反馈和验收结果都是观察；它们可能改变下一步，不能预设每次行动都会成功。",
+        "材料缺失适合暂停并补充信息，系统应保留已经完成的统计和来源，而不是让人从头开始。",
+        "字段映射或短暂执行错误可以有限重试，但必须设置次数、超时和停止条件。",
+        "重试写文件、发送消息、创建记录或调用付费服务可能产生重复副作用，不能无条件重复执行。",
+        "权限被拒绝不是技术故障，系统应等待授权或调整任务范围，不能依靠模型绕过权限。",
+        "结论无依据或数字验收失败时，应阻止交付并返回修改；文件已经生成不代表任务完成。",
+        "人工接管可以只是补充一项信息、批准一次权限或做出业务判断，不等于接手全部工作。",
+        "异常、重试次数、人工补充和最终决定都应写入任务记录，才能支持恢复、审计和责任追溯。",
+      ],
+      connection: "下一页会回到任务开始之前，说明目标、材料、权限、产物和验收条件写得越清楚，越能提前减少不必要的失败与人工接管。",
+    },
+    content: <SlideFrame eyebrow="18 · 失败与接管" title="发现异常后，系统要知道下一步是什么" lead="不是所有问题都应该重试：补充、有限重试、等待授权和人工接管，处理的是不同情况。"><FailureBranches /><SlideTakeaway>可靠不是永不失败，而是知道该补充、重试、等待，还是停止并交给人。</SlideTakeaway></SlideFrame>,
   },
   {
     id: "task-definition",
     title: "同一个目标，为什么结果可能完全不同？",
     steps: 2,
     notes: "约 1 分 30 秒。复杂任务不是靠神奇提示词，而是靠完整任务说明和可检查的验收条件。",
-    content: <SlideFrame eyebrow="18 · 软件需要什么输入" title="同一个目标，为什么结果可能完全不同？"><TaskBriefComparison /><SlideTakeaway>目标 · 上下文 · 工具权限 · 产物 · 验收，共同决定任务结果。</SlideTakeaway></SlideFrame>,
+    content: <SlideFrame eyebrow="19 · 软件需要什么输入" title="同一个目标，为什么结果可能完全不同？"><TaskBriefComparison /><SlideTakeaway>目标 · 上下文 · 工具权限 · 产物 · 验收，共同决定任务结果。</SlideTakeaway></SlideFrame>,
   },
   {
     id: "material-workflow",
     title: "先转换成适合分析的中间表示",
     steps: 3,
     notes: "约 1 分 20 秒，可作为实用方法选讲。强调不是把所有文件都转成 Markdown：文字适合 Markdown，精确表格适合 CSV、JSON 或 Excel；原始文件始终保留，最终产物必须回到原件验收。",
-    content: <SlideFrame eyebrow="19 · 实用方法" title="先转换成适合分析的中间表示" lead="原始文件负责保真，工作副本负责分析，业务文件负责交付。"><MaterialWorkflow /><SlideTakeaway>格式不是越统一越好；关键是按内容类型选择工作副本，并始终保留原始依据。</SlideTakeaway></SlideFrame>,
+    content: <SlideFrame eyebrow="20 · 实用方法" title="先转换成适合分析的中间表示" lead="原始文件负责保真，工作副本负责分析，业务文件负责交付。"><MaterialWorkflow /><SlideTakeaway>格式不是越统一越好；关键是按内容类型选择工作副本，并始终保留原始依据。</SlideTakeaway></SlideFrame>,
   },
   {
     id: "scenarios",
     title: "不同部门材料不同，但任务结构相同",
     steps: 3,
     notes: "约 1 分 30 秒。每一行同时出现两个场景，因为它们共享相同讲解层级；财务、制度和决策类结果尤其需要人工复核。",
-    content: <SlideFrame eyebrow="20 · 典型场景" title="不同部门材料不同，但任务结构相同" lead="把部门名称放到一边，真正稳定的是“输入材料 → 处理动作 → 可验收产物”。"><ScenarioMatrix /><SlideTakeaway>识别任务时先找：材料、动作、产物、权限和验收标准。</SlideTakeaway></SlideFrame>,
+    content: <SlideFrame eyebrow="21 · 典型场景" title="不同部门材料不同，但任务结构相同" lead="把部门名称放到一边，真正稳定的是“输入材料 → 处理动作 → 可验收产物”。"><ScenarioMatrix /><SlideTakeaway>识别任务时先找：材料、动作、产物、权限和验收标准。</SlideTakeaway></SlideFrame>,
   },
   {
     id: "quiz",
     title: "三个说法，检验是否真正理解边界",
     steps: 3,
     notes: "约 1 分钟。邀请大家先判断，再逐项出现解释。三项都是错误说法。",
-    content: <SlideFrame eyebrow="21 · 快速判断" title="三个说法，检验是否真正理解边界"><QuizPanels /></SlideFrame>,
+    content: <SlideFrame eyebrow="22 · 快速判断" title="三个说法，检验是否真正理解边界"><QuizPanels /></SlideFrame>,
   },
   {
     id: "summary",

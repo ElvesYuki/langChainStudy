@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, type ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -132,6 +133,79 @@ export function CaseWorkbench() {
     <Reveal className="min-h-0" order={1}><div className="flex h-full flex-col items-center justify-center gap-[7%] text-blue-500"><ArrowRight className="size-[34%]" /><span className="font-mono text-[clamp(9px,.68vw,13px)] tracking-[.15em] [writing-mode:vertical-rl]">PROCESS</span></div></Reveal>
     <Reveal className="min-h-0" order={2}><div className="relative h-full overflow-hidden rounded-[2rem] border border-emerald-200 bg-emerald-50 p-[6%] text-emerald-950 shadow-xl shadow-emerald-950/5"><FileOutput className="size-[12%] text-emerald-600" /><h2 className="mt-[3%] text-[clamp(18px,1.6vw,31px)] font-semibold">5 页培训需求汇报</h2><div className="mt-[4%] space-y-[2%]">{["数字与源文件一致", "每个结论都有依据", "缺失信息标记为待确认", "每条建议对应具体问题"].map((item) => <div className="flex items-center gap-[4%] rounded-xl border border-emerald-100 bg-white/85 px-[5%] py-[2.5%] text-[clamp(12px,1vw,19px)] text-slate-600" key={item}><CheckCircle2 className="size-[1.2em] text-emerald-600" />{item}</div>)}</div><span className="absolute bottom-[4%] right-[6%] font-mono text-[clamp(10px,.85vw,16px)] text-emerald-700/45">ACCEPTANCE</span></div></Reveal>
   </div>;
+}
+
+export function WorkBuddyOverview() {
+  const revealStep = Math.min(useRevealStep(), 2);
+  const panels = [
+    {
+      order: 1,
+      eyebrow: "TASK WORKSPACE",
+      title: "任务工作区",
+      image: "/images/workbuddy/task-home.png",
+      alt: "WorkBuddy 任务首页，包含任务、工作空间、模型选择、文件与权限入口",
+      caption: "从任务入口选择模型、添加材料，并在工作空间与权限范围内推进。",
+      chips: ["任务入口", "模型选择", "文件与权限"],
+      activeClass: "border-cyan-300 shadow-[0_24px_70px_rgba(8,145,178,.14)]",
+      accentClass: "bg-cyan-500",
+      chipClass: "border-cyan-200 bg-cyan-50 text-cyan-800",
+    },
+    {
+      order: 2,
+      eyebrow: "CAPABILITY CATALOG",
+      title: "能力目录",
+      image: "/images/workbuddy/capability-market.png",
+      alt: "WorkBuddy 专家、技能与连接器页面，展示多种场景化能力入口",
+      caption: "专家、技能和连接器，把常见任务与外部能力封装成可选择的入口。",
+      chips: ["专家", "技能", "连接器"],
+      activeClass: "border-violet-300 shadow-[0_24px_70px_rgba(124,58,237,.13)]",
+      accentClass: "bg-violet-500",
+      chipClass: "border-violet-200 bg-violet-50 text-violet-800",
+    },
+  ];
+
+  return (
+    <div className="grid h-full min-h-0 grid-cols-2 gap-[2.4%] pb-[4.5%]">
+      {panels.map((panel) => {
+        const active = revealStep >= panel.order;
+        return (
+          <article
+            className={cn(
+              "relative flex min-h-0 flex-col overflow-hidden rounded-[1.7rem] border bg-white transition-[opacity,filter,border-color,box-shadow] duration-500",
+              active ? panel.activeClass : "border-slate-200 opacity-55 grayscale-[.65] shadow-[0_16px_45px_rgba(15,23,42,.06)]",
+            )}
+            key={panel.title}
+          >
+            <span className={cn("absolute inset-x-0 top-0 h-1", active ? panel.accentClass : "bg-slate-200")} />
+            <div className="flex items-end justify-between gap-[4%] px-[5%] pb-[2.4%] pt-[3.6%]">
+              <div>
+                <Kicker>{panel.eyebrow}</Kicker>
+                <h2 className="mt-1 text-[clamp(22px,1.8vw,35px)] font-semibold leading-none tracking-[-.035em] text-slate-950">{panel.title}</h2>
+              </div>
+              <span className="font-mono text-[clamp(11px,.8vw,15px)] text-slate-400">0{panel.order}</span>
+            </div>
+
+            <div className="relative mx-[3%] min-h-0 flex-1 overflow-hidden rounded-[1rem] border border-slate-200 bg-slate-50">
+              <Image
+                alt={panel.alt}
+                className="object-contain"
+                fill
+                sizes="(max-width: 1200px) 50vw, 760px"
+                src={panel.image}
+              />
+            </div>
+
+            <Reveal className="px-[5%] pb-[4%] pt-[2.8%]" order={panel.order}>
+              <p className="text-[clamp(13px,1.02vw,20px)] leading-[1.5] text-slate-700">{panel.caption}</p>
+              <div className="mt-[2.2%] flex flex-wrap gap-2">
+                {panel.chips.map((chip) => <span className={cn("rounded-full border px-[3%] py-[1.1%] text-[clamp(11px,.78vw,15px)] font-medium", panel.chipClass)} key={chip}>{chip}</span>)}
+              </div>
+            </Reveal>
+          </article>
+        );
+      })}
+    </div>
+  );
 }
 
 function TimelineRow({ label, items, active }: { label: string; items: string[]; active?: boolean }) {
@@ -891,9 +965,9 @@ export function EvidenceTimeline() {
     ["ACCEPTED", "验收完成"],
   ][revealStep];
   const runtimeStages = [
-    { order: 2, label: "TOOL", title: "工具读取", subtitle: "读取真实材料", icon: FileSearch, tone: "border-violet-200 bg-violet-50", iconTone: "bg-violet-500", evidence: ["128 行报名数据", "6 段访谈原文", "来源位置"] },
-    { order: 3, label: "CONTEXT", title: "上下文快照", subtitle: "组织本次输入", icon: MessageSquareText, tone: "border-blue-200 bg-blue-50", iconTone: "bg-blue-500", evidence: ["数字事实", "相关原文", "规则与当前状态"] },
-    { order: 4, label: "MODEL", title: "模型草稿", subtitle: "生成结构和内容", icon: BrainCircuit, tone: "border-cyan-200 bg-cyan-50", iconTone: "bg-cyan-500", evidence: ["3 个问题", "对应依据", "3 条建议 · 3 项待确认"] },
+    { order: 2, label: "TOOL", title: "工具读取", subtitle: "读取真实材料", icon: FileSearch, tone: "border-violet-200 bg-violet-50", iconTone: "bg-violet-500", evidence: ["128 行报名数据 · 6 段访谈", "来源位置"] },
+    { order: 3, label: "CONTEXT", title: "上下文快照", subtitle: "组织本次输入", icon: MessageSquareText, tone: "border-blue-200 bg-blue-50", iconTone: "bg-blue-500", evidence: ["数字事实 · 相关原文", "规则与当前状态"] },
+    { order: 4, label: "MODEL", title: "模型草稿", subtitle: "生成结构和内容", icon: BrainCircuit, tone: "border-cyan-200 bg-cyan-50", iconTone: "bg-cyan-500", evidence: ["3 个问题 · 对应依据", "3 条建议 · 3 项待确认"] },
   ];
 
   return <div className="h-full pb-[clamp(50px,3.4vw,66px)]">
@@ -910,32 +984,44 @@ export function EvidenceTimeline() {
         <ArrowRight className="my-auto size-[clamp(20px,1.6vw,31px)] text-slate-300" />
 
         <section className="flex min-h-0 flex-col overflow-hidden rounded-[1.4rem] border border-emerald-200 bg-emerald-50/45">
-          <header className="flex items-center justify-between border-b border-emerald-200 bg-white/75 px-[4%] py-[clamp(8px,.55vw,11px)]"><div className="flex items-center gap-[3%]"><span className="flex size-[clamp(30px,2.3vw,44px)] items-center justify-center rounded-[.75rem] bg-emerald-500 text-white"><Bot className="size-[50%]" /></span><div><Kicker>AGENT RUNTIME</Kicker><strong className="mt-[1%] block text-[clamp(14px,1.08vw,21px)] text-emerald-950">智能体组织中间过程</strong></div></div><span className="rounded-full bg-emerald-100 px-[4%] py-[1.5%] text-[clamp(10px,.78vw,15px)] font-medium text-emerald-700">目标 · 状态 · 循环</span></header>
+          <header className="flex shrink-0 items-center justify-between border-b border-emerald-200 bg-white/75 px-[3%] py-[clamp(6px,.42vw,8px)]"><div className="flex min-w-0 flex-1 items-center gap-[3%]"><span className="flex size-[clamp(30px,2.15vw,41px)] shrink-0 items-center justify-center rounded-[.7rem] bg-emerald-500 text-white"><Bot className="size-[50%]" /></span><div className="flex min-w-0 items-baseline gap-[clamp(12px,1vw,19px)]"><Kicker>AGENT RUNTIME</Kicker><strong className="whitespace-nowrap text-[clamp(13px,1vw,19px)] text-emerald-950">智能体组织中间过程</strong></div></div><span className="shrink-0 rounded-full bg-emerald-100 px-[3%] py-[1.2%] text-[clamp(10px,.78vw,15px)] font-medium text-emerald-700">目标 · 状态 · 循环</span></header>
 
           <div className="grid min-h-0 flex-1 grid-cols-3 gap-[2%] p-[2%]">
-            {runtimeStages.map(({ order, label, title, subtitle, icon: Icon, tone, iconTone, evidence }) => <article className={cn("flex min-h-0 flex-col rounded-[1.05rem] border p-[5%] transition-all duration-300", tone, revealStep >= order ? "opacity-100 shadow-sm" : "opacity-30 grayscale")} key={title}><div className="flex items-center gap-[5%]"><span className={cn("flex size-[clamp(32px,2.25vw,43px)] shrink-0 items-center justify-center rounded-[.75rem] text-white", iconTone)}><Icon className="size-[48%]" /></span><div className="min-w-0"><Kicker>0{order} · {label}</Kicker><h3 className="mt-[1%] text-[clamp(15px,1.12vw,22px)] font-semibold tracking-[-.03em]">{title}</h3></div></div><span className="mt-[2%] text-[clamp(10px,.78vw,15px)] text-slate-500">{subtitle}</span><Reveal className="mt-auto" order={order}><div className="space-y-[2%] border-t border-black/5 pt-[4%]">{evidence.map(item => <div className="flex items-center gap-[4%] text-[clamp(10px,.78vw,15px)] font-medium leading-snug text-slate-700" key={item}><span className={cn("size-1.5 shrink-0 rounded-full", iconTone)} />{item}</div>)}</div></Reveal></article>)}
+            {runtimeStages.map(({ order, label, title, icon: Icon, tone, iconTone, evidence }) => <article className={cn("flex min-h-0 flex-col rounded-[1.05rem] border p-[4%] transition-all duration-300", tone, revealStep >= order ? "opacity-100 shadow-sm" : "opacity-30 grayscale")} key={title}><div className="flex items-center gap-[5%]"><span className={cn("flex size-[clamp(32px,2.25vw,43px)] shrink-0 items-center justify-center rounded-[.75rem] text-white", iconTone)}><Icon className="size-[48%]" /></span><div className="min-w-0"><Kicker>0{order} · {label}</Kicker><h3 className="mt-[1%] text-[clamp(15px,1.12vw,22px)] font-semibold tracking-[-.03em]">{title}</h3></div></div><Reveal className="mt-auto" order={order}><div className="space-y-[2%] border-t border-black/5 pt-[4%]">{evidence.map(item => <div className="flex items-center gap-[4%] text-[clamp(10px,.78vw,15px)] font-medium leading-snug text-slate-700" key={item}><span className={cn("size-1.5 shrink-0 rounded-full", iconTone)} />{item}</div>)}</div></Reveal></article>)}
           </div>
 
-          <div className={cn("mx-[2%] mb-[2%] flex shrink-0 items-center justify-between rounded-[.9rem] border border-emerald-200 bg-white px-[3%] py-[1.6%] transition-all duration-300", revealStep >= 5 ? "opacity-100 shadow-sm" : "opacity-30 grayscale")}><div className="flex min-w-0 items-center gap-[3%]"><RefreshCw className={cn("size-[clamp(21px,1.6vw,31px)] shrink-0 text-emerald-500 transition-transform duration-700", revealStep >= 5 && "rotate-180")} /><div className="min-w-0"><Kicker>05 · AGENT CONTROL</Kicker><strong className="mt-[1%] block truncate text-[clamp(11px,.88vw,17px)] text-emerald-950">观察结果，决定继续 / 重试 / 停止</strong></div></div><Reveal order={5}><div className="flex shrink-0 gap-[clamp(6px,.55vw,11px)] text-[clamp(10px,.78vw,15px)]"><span className="rounded-full bg-slate-100 px-[clamp(9px,.75vw,14px)] py-[clamp(4px,.3vw,6px)] text-slate-600">step 4 / 5</span><span className="rounded-full bg-amber-100 px-[clamp(9px,.75vw,14px)] py-[clamp(4px,.3vw,6px)] text-amber-700">3 项待确认</span></div></Reveal></div>
+          <div className={cn("mx-[2%] mb-[2%] flex shrink-0 items-center justify-between rounded-[.9rem] border border-emerald-200 bg-white px-[3%] py-[1.6%] transition-all duration-300", revealStep >= 5 ? "opacity-100 shadow-sm" : "opacity-30 grayscale")}><div className="flex min-w-0 items-center gap-[3%]"><RefreshCw className={cn("size-[clamp(21px,1.6vw,31px)] shrink-0 text-emerald-500 transition-transform duration-700", revealStep >= 5 && "rotate-180")} /><div className="min-w-0"><Kicker>05 · AGENT CONTROL</Kicker><strong className="mt-[1%] block whitespace-nowrap text-[clamp(11px,.88vw,17px)] text-emerald-950">观察结果 → 继续 / 重试 / 停止</strong></div></div><Reveal order={5}><div className="flex shrink-0 gap-[clamp(6px,.55vw,11px)] text-[clamp(10px,.78vw,15px)]"><span className="rounded-full bg-slate-100 px-[clamp(9px,.75vw,14px)] py-[clamp(4px,.3vw,6px)] text-slate-600">step 4 / 5</span><span className="rounded-full bg-amber-100 px-[clamp(9px,.75vw,14px)] py-[clamp(4px,.3vw,6px)] text-amber-700">3 项待确认</span></div></Reveal></div>
         </section>
 
         <ArrowRight className="my-auto size-[clamp(20px,1.6vw,31px)] text-slate-300" />
 
-        <article className={cn("flex min-h-0 flex-col rounded-[1.3rem] border border-amber-200 bg-amber-50 p-[5%] transition-all duration-300", revealStep >= 6 ? "opacity-100 shadow-md" : "opacity-30 grayscale")}><div className="flex items-center justify-between"><span className="flex size-[clamp(36px,2.7vw,52px)] items-center justify-center rounded-[.9rem] bg-amber-500 text-white"><UserRoundCheck className="size-[46%]" /></span><span className="font-mono text-[clamp(10px,.78vw,15px)] text-amber-400">06</span></div><Kicker>HUMAN ACCEPTANCE</Kicker><h3 className="mt-[1%] text-[clamp(17px,1.35vw,26px)] font-semibold tracking-[-.035em] text-amber-950">验收单</h3><p className="mt-[2%] text-[clamp(11px,.84vw,16px)] leading-relaxed text-amber-900/60">依据原始材料和过程记录判断能否交付。</p><Reveal className="mt-auto" order={6}><div className="space-y-[3%] border-t border-amber-200 pt-[4%]">{["数字与源文件一致", "结论能够回到原文", "待确认事项已标记"].map(item => <div className="flex items-start gap-[4%] text-[clamp(11px,.86vw,16px)] font-medium text-amber-950" key={item}><ClipboardCheck className="mt-[.15em] size-[1em] shrink-0 text-amber-500" />{item}</div>)}<div className="rounded-full bg-emerald-500 px-[5%] py-[2%] text-center text-[clamp(11px,.86vw,16px)] font-semibold text-white">允许交付</div></div></Reveal></article>
+        <article className={cn("flex min-h-0 flex-col rounded-[1.3rem] border border-amber-200 bg-amber-50 p-[5%] transition-all duration-300", revealStep >= 6 ? "opacity-100 shadow-md" : "opacity-30 grayscale")}><div className="flex items-center justify-between"><span className="flex size-[clamp(36px,2.7vw,52px)] items-center justify-center rounded-[.9rem] bg-amber-500 text-white"><UserRoundCheck className="size-[46%]" /></span><span className="font-mono text-[clamp(10px,.78vw,15px)] text-amber-400">06</span></div><Kicker>HUMAN ACCEPTANCE</Kicker><h3 className="mt-[1%] text-[clamp(17px,1.35vw,26px)] font-semibold tracking-[-.035em] text-amber-950">验收单</h3><p className="mt-[2%] text-[clamp(11px,.84vw,16px)] leading-relaxed text-amber-900/60">核对原件与过程记录后决定交付。</p><Reveal className="mt-auto" order={6}><div className="space-y-[3%] border-t border-amber-200 pt-[4%]">{["数字与源文件一致", "结论能够回到原文", "待确认事项已标记"].map(item => <div className="flex items-start gap-[4%] text-[clamp(11px,.86vw,16px)] font-medium text-amber-950" key={item}><ClipboardCheck className="mt-[.15em] size-[1em] shrink-0 text-amber-500" />{item}</div>)}<div className="rounded-full bg-emerald-500 px-[5%] py-[2%] text-center text-[clamp(11px,.86vw,16px)] font-semibold text-white">允许交付</div></div></Reveal></article>
       </div>
     </section>
   </div>;
 }
 
 export function FailureBranches() {
-  const failures = [
-    { order: 1, title: "材料不完整", code: "125 / 128", action: "标记待确认", color: "border-cyan-300", icon: FileInput },
-    { order: 2, title: "结论无依据", code: "unsupported", action: "删除或说明未覆盖", color: "border-blue-300", icon: BrainCircuit },
-    { order: 3, title: "权限被拒绝", code: "permission_denied", action: "等待授权", color: "border-violet-300", icon: LockKeyhole },
-    { order: 4, title: "工具执行异常", code: "field_not_found", action: "改参数或接管", color: "border-amber-300", icon: Wrench },
-    { order: 5, title: "验收未通过", code: "evidence_missing", action: "补充依据后再交付", color: "border-rose-300", icon: ClipboardCheck },
+  const strategies = [
+    { order: 1, title: "补充信息", status: "等待输入", trigger: "3 条记录缺少部门", response: "标记待确认，询问材料负责人", tone: "border-cyan-200 bg-cyan-50", accent: "bg-cyan-500", text: "text-cyan-950", icon: FileInput },
+    { order: 2, title: "有限重试", status: "最多 2 次", trigger: "表格字段名称不一致", response: "调整字段映射；仍失败则接管", tone: "border-amber-200 bg-amber-50", accent: "bg-amber-500", text: "text-amber-950", icon: RefreshCw },
+    { order: 3, title: "等待授权", status: "暂停执行", trigger: "访谈文件无读取权限", response: "申请授权，不绕过权限继续", tone: "border-violet-200 bg-violet-50", accent: "bg-violet-500", text: "text-violet-950", icon: LockKeyhole },
+    { order: 4, title: "停止并接管", status: "阻止交付", trigger: "结论无依据或数字不一致", response: "返回修改，由人决定是否交付", tone: "border-rose-200 bg-rose-50", accent: "bg-rose-500", text: "text-rose-950", icon: Hand },
   ];
-  return <div className="grid h-full grid-cols-[.26fr_.74fr] gap-[5%]"><div className="flex flex-col items-center justify-center"><div className="flex aspect-square w-[62%] flex-col items-center justify-center rounded-full border border-emerald-200 bg-emerald-100 text-center text-emerald-950"><Play className="size-[24%] text-emerald-600" /><strong className="mt-[5%] text-[clamp(14px,1.18vw,23px)]">正常推进</strong></div><ArrowDown className="my-[8%] text-slate-300" /><div className="flex w-[75%] items-center justify-center rounded-full bg-amber-100 px-[6%] py-[4%] text-center text-[clamp(12px,1vw,19px)] font-semibold text-amber-900"><CircleStop className="mr-2 size-[1.2em]" />停止或接管</div></div><div className="relative flex flex-col justify-between py-[2%]"><div className="absolute bottom-[8%] left-0 top-[8%] w-px bg-slate-200" />{failures.map(({ order, title, code, action, color, icon: Icon }) => <Reveal key={title} order={order}><div className={cn("relative ml-[6%] grid grid-cols-[2.2rem_1fr_1.1fr] items-center gap-[4%] rounded-xl border-l-[5px] bg-white px-[4%] py-[2.4%] shadow-sm", color)}><span className="absolute -left-[7.1%] size-2.5 rounded-full bg-slate-400" /><Icon className="size-[55%] text-slate-500" /><div><strong className="block text-[clamp(13px,1.05vw,20px)]">{title}</strong><code className="text-[clamp(10px,.75vw,14px)] text-slate-400">{code}</code></div><span className="text-[clamp(12px,.95vw,18px)] text-slate-500">→ {action}</span></div></Reveal>)}</div></div>;
+  return <div className="h-full pb-[4.5%]">
+    <div className="grid h-[24%] grid-cols-[1fr_.13fr_1fr_.13fr_1.15fr] items-center gap-[1.5%]">
+      <div className="flex h-full items-center gap-[5%] rounded-[1.3rem] border border-emerald-200 bg-emerald-50 px-[7%] text-emerald-950 shadow-sm"><span className="flex size-[clamp(42px,3.5vw,66px)] shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"><Play className="size-[42%]" /></span><div><Kicker>TASK RUNNING</Kicker><strong className="mt-[2%] block text-[clamp(16px,1.3vw,25px)]">按当前状态推进</strong></div></div>
+      <ArrowRight className="mx-auto size-[48%] text-slate-300" />
+      <div className="flex h-full items-center gap-[5%] rounded-[1.3rem] border border-rose-200 bg-rose-50 px-[7%] text-rose-950 shadow-sm"><span className="flex size-[clamp(42px,3.5vw,66px)] shrink-0 items-center justify-center rounded-full bg-rose-500 text-white"><CircleAlert className="size-[42%]" /></span><div><Kicker>OBSERVATION</Kicker><strong className="mt-[2%] block text-[clamp(16px,1.3vw,25px)]">发现结果与预期不同</strong></div></div>
+      <ArrowRight className="mx-auto size-[48%] text-slate-300" />
+      <div className="flex h-full items-center gap-[5%] rounded-[1.3rem] border border-slate-300 bg-white px-[7%] text-slate-950 shadow-sm"><span className="flex size-[clamp(42px,3.5vw,66px)] shrink-0 items-center justify-center rounded-full bg-slate-800 text-white"><CircleStop className="size-[42%]" /></span><div><Kicker>CONTROL POINT</Kicker><strong className="mt-[2%] block text-[clamp(16px,1.3vw,25px)]">先判断，不盲目继续</strong></div></div>
+    </div>
+
+    <div className="relative mt-[3%] grid h-[68%] grid-cols-4 gap-[2%]">
+      <span className="absolute left-[6%] right-[6%] top-0 h-px bg-[linear-gradient(90deg,#67e8f9,#fcd34d,#c4b5fd,#fda4af)]" />
+      {strategies.map(({ order, title, status, trigger, response, tone, accent, text, icon: Icon }) => <Reveal className="min-h-0 pt-[4%]" key={title} order={order}><article className={cn("relative flex h-full min-h-0 flex-col overflow-hidden rounded-[1.35rem] border p-[5.5%] shadow-[0_14px_40px_rgba(15,23,42,.06)]", tone, text)}><span className={cn("absolute inset-x-0 top-0 h-1", accent)} /><div className="flex items-center justify-between gap-[5%]"><span className={cn("flex size-[clamp(36px,2.7vw,52px)] items-center justify-center rounded-[.8rem] text-white", accent)}><Icon className="size-[46%]" /></span><span className="rounded-full border border-current/15 bg-white/70 px-[4%] py-[1.5%] text-[clamp(10px,.76vw,15px)] font-medium">{status}</span></div><Kicker>0{order} · RESPONSE</Kicker><h3 className="mt-[1%] text-[clamp(18px,1.4vw,27px)] font-semibold tracking-[-.035em]">{title}</h3><div className="mt-auto space-y-[3%] border-t border-current/10 pt-[4%]"><div><span className="text-[clamp(10px,.76vw,15px)] opacity-50">系统发现</span><p className="mt-[1%] text-[clamp(12px,.95vw,18px)] font-medium leading-snug">{trigger}</p></div><div><span className="text-[clamp(10px,.76vw,15px)] opacity-50">下一步</span><p className="mt-[1%] text-[clamp(12px,.95vw,18px)] leading-snug opacity-75">{response}</p></div></div></article></Reveal>)}
+    </div>
+  </div>;
 }
 
 function BriefSheet({ good }: { good?: boolean }) {
