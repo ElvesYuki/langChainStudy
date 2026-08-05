@@ -1,0 +1,42 @@
+.presentation-shell {
+  --deck-width: min(calc(100vw - 2rem), calc((100vh - 2rem) * 16 / 9));
+  background:
+    radial-gradient(circle at 15% 15%, rgb(37 99 235 / 16%), transparent 28rem),
+    radial-gradient(circle at 85% 80%, rgb(14 165 233 / 10%), transparent 25rem),
+    #07101f;
+}
+
+.deck-canvas {
+  width: var(--deck-width);
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 36px 100px rgb(0 0 0 / 45%);
+}
+
+.deck-reveal {
+  transition: opacity 260ms ease, transform 260ms ease, filter 260ms ease;
+}
+
+.deck-reveal[data-visible="false"] {
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(18px);
+}
+
+.deck-reveal[data-visible="true"] {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+@media (max-width: 760px) {
+  .presentation-shell {
+    --deck-width: calc(100vw - 0.75rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-reveal {
+    transition: none;
+  }
+}

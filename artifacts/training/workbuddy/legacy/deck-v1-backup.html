@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>大模型与智能体初识｜WorkBuddy 30 分钟培训</title>
+  <style>
+    :root{--navy:#07111f;--navy2:#111936;--ink:#0c1426;--muted:#6c7890;--paper:#f3f6fb;--white:#fff;--cyan:#30c6f4;--blue:#4c78ff;--violet:#8657f4;--coral:#ff8366;--green:#29c9a1;--line:#dce3ef}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030813}body{font-family:"PingFang SC","Microsoft YaHei",Arial,sans-serif;color:var(--ink)}button{font:inherit}
+    .deck{--deck-scale:1;position:absolute;left:50%;top:50%;width:1600px;height:900px;transform:translate(-50%,-50%) scale(var(--deck-scale));transform-origin:center;background:var(--paper);overflow:hidden}.slide{position:absolute;inset:0;display:none;padding:48px 88px 84px;overflow:hidden}.slide.active{display:block}.slide.dark{color:#fff;background:radial-gradient(circle at 82% 22%,#202657 0,#111835 37%,#07111f 76%)}.slide::after{content:"";position:absolute;width:640px;height:640px;border-radius:50%;right:-304px;top:-352px;background:radial-gradient(circle,rgba(76,120,255,.13),transparent 68%);pointer-events:none}.slide.dark::after{background:radial-gradient(circle,rgba(134,87,244,.22),transparent 68%)}
+    .brand,.num{position:absolute;top:28px;z-index:3;color:#71809a;font:800 11px/1 Arial;letter-spacing:.15em}.brand{left:88px}.num{right:88px}.dark .brand,.dark .num{color:#94a7ce}.heading{position:relative;z-index:2;margin-top:48px}.heading span{color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.15em}.dark .heading span{color:var(--cyan)}.heading h2{margin:12px 0 0;max-width:1180px;font-size:65px;line-height:1.07;letter-spacing:-.045em}
+    [data-step]{opacity:0;transform:translateY(16px);filter:blur(3px);transition:opacity .42s ease,transform .42s ease,filter .42s ease}[data-step].shown{opacity:1;transform:none;filter:none}
+
+    /* 封面 */
+    .cover{height:100%;display:grid;grid-template-columns:1.08fr .92fr;align-items:center;gap:64px}.cover-copy{position:relative;z-index:4}.kicker{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:.18em}.cover h1{margin:25px 0;font-size:105px;line-height:.98;letter-spacing:-.06em}.cover h1 em{font-style:normal;color:transparent;background:linear-gradient(90deg,var(--cyan),#8ba9ff,#bd83ff);background-clip:text;-webkit-background-clip:text}.cover-copy>p{margin:34px 0;color:#bdc9e1;font-size:27px}.cover-meta{display:flex;align-items:center;gap:13px;color:#8ea2c8;font-size:12px;font-weight:700}.cover-meta i{width:4px;height:4px;border-radius:50%;background:var(--cyan)}.hint{position:absolute;left:0;bottom:-80px;color:#778bae;font-size:11px;letter-spacing:.09em}.hint kbd{margin-left:8px;padding:5px 8px;border:1px solid #3b4b72;border-radius:6px;color:#acbddd}
+    .orbit-wrap{width:560px;aspect-ratio:1;position:relative;margin-left:auto}.core{position:absolute;inset:31%;border-radius:34%;display:grid;place-content:center;text-align:center;background:linear-gradient(145deg,#25366b,#10182f);border:1px solid #4a67aa;box-shadow:0 0 80px rgba(48,198,244,.22),inset 0 0 30px rgba(255,255,255,.05);transform:rotate(-8deg)}.core b{font-size:88px;line-height:1;color:var(--cyan)}.core small{margin-top:7px;color:#9db1d6;letter-spacing:.3em}.orbit{position:absolute;inset:8%;border:1px solid rgba(132,159,214,.28);border-radius:50%;animation:spin 28s linear infinite}.orbit.inner{inset:19%;border-style:dashed;animation-direction:reverse;animation-duration:18s}.orbit span{position:absolute;padding:10px 13px;border:1px solid #314570;border-radius:11px;background:#111a35;color:#c5d2eb;font:700 11px/1 Arial;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:counter 28s linear infinite}.orbit.inner span{animation-duration:18s;animation-direction:reverse}.orbit span:nth-child(1){left:45%;top:-17px}.orbit span:nth-child(2){right:-17px;top:55%}.orbit span:nth-child(3){left:8%;bottom:4%}.orbit.inner span:nth-child(1){left:3%;top:5%}.orbit.inner span:nth-child(2){right:-27px;top:50%}.orbit.inner span:nth-child(3){left:45%;bottom:-17px}@keyframes spin{to{transform:rotate(360deg)}}@keyframes counter{to{transform:rotate(-360deg)}}
+
+    /* 变化 */
+    .evolution{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:80px;position:relative;z-index:2}.evo-card{min-height:245px;padding:30px;border-radius:27px;background:#fff;border:1px solid #dfe6f2;border-top:5px solid var(--cyan);box-shadow:0 24px 65px rgba(31,45,80,.08);position:relative}.evo-card:nth-child(2){border-top-color:var(--blue)}.evo-card:nth-child(3){border-top-color:var(--violet)}.evo-card>span{color:#99a5b8;font:800 12px/1 Arial;letter-spacing:.12em}.evo-card h3{font-size:50px;margin:38px 0 14px}.evo-card p{margin:0;color:var(--muted);font-size:18px}.arrow{position:absolute;right:-46px;top:42%;z-index:3;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:#fff;font-size:27px}.takeaway{width:max-content;max-width:90%;margin:42px auto 0;padding:16px 30px;border-radius:999px;background:#e8eef9;color:#263757;font-size:17px;font-weight:800}
+
+    /* 贯穿案例 */
+    .case-board{display:grid;grid-template-columns:1fr 110px 1.08fr;align-items:center;gap:24px;margin-top:48px}.case-inputs,.case-output{min-height:410px;padding:26px;border:1px solid #dce4f0;border-radius:25px;background:#fff;box-shadow:0 22px 60px rgba(31,45,80,.07)}.case-inputs>span,.case-output>span{color:#8390a7;font-size:11px;font-weight:800;letter-spacing:.13em}.material{display:flex;align-items:center;gap:15px;margin-top:18px;padding:16px;border:1px solid #e0e6f0;border-radius:16px;background:#f8f9fc}.material i{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#dff7ff;color:#168eb3;font-style:normal;font-weight:800}.material:nth-child(3) i{background:#eee7ff;color:#7145d7}.material b{font-size:16px}.material small{display:block;margin-top:5px;color:#8a96a9}.case-agent{display:grid;place-items:center;text-align:center}.case-agent div{width:96px;height:96px;border:1px solid #c9d9f0;border-radius:50%;display:grid;place-content:center;background:radial-gradient(circle at 35% 28%,#fff 0,#f2f7ff 42%,#e1ebfa 100%);color:var(--navy);box-shadow:0 15px 38px rgba(48,91,160,.13),0 0 0 9px rgba(76,120,255,.045)}.case-agent b{font-size:28px;color:var(--blue)}.case-agent small{display:block;margin-top:4px;color:#7183a1}.case-agent>span{margin-top:18px;color:var(--blue);font-size:28px}.output-title{margin:24px 0 10px;font-size:30px}.output-list{display:grid;gap:10px}.output-list div{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:13px;background:#f1f5fb;color:#45526a}.output-list i{width:23px;height:23px;border-radius:50%;display:grid;place-items:center;background:var(--green);color:#fff;font-style:normal;font-size:11px}.case-question{margin-top:22px;padding:16px 22px;border-radius:16px;background:linear-gradient(90deg,#dff8ff,#eee9ff);text-align:center;color:#253552;font-size:16px;font-weight:800}
+
+    /* 概念 */
+    .concepts{margin-top:42px}.concept{display:grid;grid-template-columns:68px 190px 150px 1fr;align-items:center;gap:18px;min-height:126px;border-bottom:1px solid var(--line);position:relative}.concept::before{content:"";position:absolute;left:0;top:25%;bottom:25%;width:5px;border-radius:6px;background:var(--cyan)}.concept:nth-child(2)::before{background:var(--blue)}.concept:nth-child(3)::before{background:var(--violet)}.concept>strong{padding-left:20px;color:var(--blue);font:800 14px/1 Arial}.concept h3{font-size:40px}.concept span{color:var(--muted);font-weight:800}.concept p{color:#3c4860;font-size:23px;line-height:1.52}
+
+    /* 在软件里定位概念 */
+    .concept-map{display:grid;grid-template-columns:520px 1fr;gap:34px;margin-top:30px}.software-map{position:relative;height:520px;border:1px solid #c8d7ee;border-radius:25px;background:linear-gradient(145deg,#fff 0%,#f4f7fd 52%,#eaf1fb 100%);color:var(--navy);overflow:hidden;box-shadow:0 22px 65px rgba(40,76,140,.11)}.software-map::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet))}.software-bar{display:flex;align-items:center;justify-content:space-between;padding:17px 20px;border-bottom:1px solid #d6e1f1;color:#6e81a0;font-size:11px}.software-bar b{color:#17243d;letter-spacing:.1em}.software-task{margin:18px;padding:16px;border:1px solid #dce6f3;border-radius:14px;background:rgba(255,255,255,.84);box-shadow:0 8px 22px rgba(39,72,130,.05)}.software-task span{color:#3570dc;font-size:10px;font-weight:800}.software-task p{margin:8px 0 0;color:#455571;font-size:14px;line-height:1.45}.software-body{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 18px}.software-zone{min-height:132px;padding:15px;border:1px solid #dce6f3;border-radius:15px;background:rgba(255,255,255,.76)}.software-zone span{font-size:10px;font-weight:800;letter-spacing:.1em;color:#5873a2}.software-zone b{display:block;margin-top:12px;color:#1d2b45;font-size:18px}.software-zone p{margin:7px 0 0;color:#71809a;font-size:11px;line-height:1.45}.software-result{margin:12px 18px;padding:15px;border:1px solid #cfe1f1;border-radius:14px;background:linear-gradient(90deg,#dff8ff,#eeeaff);color:#18253e}.software-result span{color:#187a9a;font-size:10px;font-weight:800}.software-result b{display:block;margin-top:7px}.concept-explore{height:520px;display:grid;grid-template-columns:minmax(0,1fr) 0fr;gap:0;transition:grid-template-columns .5s ease,gap .5s ease}.concept-explore.open{grid-template-columns:176px minmax(0,1fr);gap:16px}.concept-tabs{min-width:0;display:grid;gap:7px}.concept-tab{min-width:0;min-height:92px;padding:13px 17px;border:1px solid #dce3ef;border-left:5px solid var(--cyan);border-radius:16px;background:#fff;display:grid;grid-template-columns:105px 1fr 54px;align-items:center;text-align:left;color:var(--ink);cursor:pointer;transition:background .3s ease,border-color .3s ease,box-shadow .3s ease,transform .3s ease}.concept-tab:nth-child(2){border-left-color:var(--blue)}.concept-tab:nth-child(3){border-left-color:var(--violet)}.concept-tab:nth-child(4){border-left-color:var(--coral)}.concept-tab:nth-child(5){border-left-color:var(--green)}.concept-tab:hover{transform:translateX(-4px);border-color:#b8c8e1;box-shadow:0 10px 28px rgba(39,72,130,.08)}.concept-tab:focus-visible{outline:3px solid rgba(76,120,255,.25);outline-offset:2px}.concept-tab.active{background:#edf4ff;border-color:#9eb7e2;box-shadow:0 10px 30px rgba(44,79,142,.1)}.concept-tab h3{margin:0;font-size:21px}.concept-tab p{margin:0;color:#68758b;font-size:14px;line-height:1.45}.concept-tab em{justify-self:end;color:#6f83a6;font-size:11px;font-style:normal;font-weight:800}.concept-explore.open .concept-tab{grid-template-columns:1fr;padding:13px 14px}.concept-explore.open .concept-tab p,.concept-explore.open .concept-tab em{display:none}.concept-explore.open .concept-tab h3{font-size:18px}.concept-detail{min-width:0;position:relative;overflow:hidden;padding:0;border:1px solid transparent;border-radius:20px;background:rgba(255,255,255,.9);opacity:0;transform:translateX(24px);transition:opacity .35s ease,transform .45s ease,padding .45s ease,border-color .45s ease,box-shadow .45s ease}.concept-explore.open .concept-detail{padding:25px;border-color:#cfdaeb;box-shadow:0 20px 55px rgba(40,72,128,.1);opacity:1;transform:none}.concept-detail::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet))}.concept-kicker{color:var(--blue);font:800 11px/1 Arial;letter-spacing:.13em}.concept-detail h3{margin:13px 0 8px;font-size:36px;letter-spacing:-.03em}.concept-lead{margin:0;color:#43516a;font-size:17px;font-weight:700;line-height:1.5}.concept-detail section{margin-top:15px;padding:15px 17px;border:1px solid #e0e6f0;border-radius:14px;background:#f7f9fc}.concept-detail section span{color:#8793a7;font-size:10px;font-weight:800;letter-spacing:.1em}.concept-detail section p{margin:7px 0 0;color:#48566e;font-size:14px;line-height:1.5}.concept-memory{margin:15px 0 0;padding:14px 17px;border-radius:14px;background:linear-gradient(90deg,#dff8ff,#eeeaff);color:#243553;font-size:14px;font-weight:800;line-height:1.5}
+
+    .concept-tab:not(.shown){pointer-events:none}
+    .tool-primitives{display:none;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:15px}.tool-primitives.show{display:grid}.tool-primitives div{min-height:64px;padding:10px;border:1px solid #dce5f1;border-radius:13px;background:#f6f8fc;text-align:center}.tool-primitives div:nth-child(1){border-top:4px solid var(--cyan)}.tool-primitives div:nth-child(2){border-top:4px solid var(--blue)}.tool-primitives div:nth-child(3){border-top:4px solid var(--violet)}.tool-primitives div:nth-child(4){border-top:4px solid var(--coral)}.tool-primitives b{display:block;color:#21314d;font-size:17px}.tool-primitives span{display:block;margin-top:5px;color:#75829a;font-size:10px}.tool-primitives.show~section{margin-top:11px;padding:12px 15px}
+
+    /* 上下文实验 */
+    .context-lab{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:45px}.context-card{min-height:390px;padding:26px;border:1px solid #dce3ee;border-radius:25px;background:#fff}.context-card.rich{border-color:#bddaf0;background:linear-gradient(145deg,#fff,#edf9ff)}.context-card>header{display:flex;justify-content:space-between;align-items:center}.context-card>header span{font-size:11px;font-weight:800;letter-spacing:.12em;color:#8995a8}.context-card>header b{padding:7px 10px;border-radius:999px;background:#f0f2f6;color:#758197;font-size:11px}.context-card.rich>header b{background:#dcf8f0;color:#087d61}.context-prompt{margin-top:23px;padding:17px;border-radius:15px;background:#f4f6fa;color:#27354e;font-size:18px;font-weight:700}.context-files{display:flex;gap:9px;margin-top:13px}.context-files span{padding:8px 11px;border-radius:10px;background:#e8edff;color:#3e5ebe;font-size:11px;font-weight:800}.context-answer{margin-top:22px;padding-top:20px;border-top:1px solid #e2e7ef}.context-answer span{color:#8b96a8;font-size:10px;letter-spacing:.1em}.context-answer p{margin:9px 0;color:#66738a;font-size:15px;line-height:1.55}.context-card.rich .context-answer p{color:#263751}.context-conclusion{width:max-content;margin:24px auto 0;padding:15px 25px;border-radius:999px;background:#e9eef9;color:#253553;font-size:16px;font-weight:800}
+
+    /* 角色分工 */
+    .division-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:46px}.division{min-height:400px;padding:22px;border:1px solid #dce3ef;border-radius:22px;background:#fff;display:flex;flex-direction:column}.division>span{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:#dff8ff;color:#168daf;font:800 11px/1 Arial}.division:nth-child(2)>span{background:#eee7ff;color:#6b3fd1}.division:nth-child(3)>span{background:#e7edff;color:#315dd7}.division:nth-child(4)>span{background:#ffebe6;color:#d35c44}.division h3{margin:20px 0 7px;font-size:27px}.division>p{margin:0;color:#6b778d;font-size:15px;line-height:1.5}.division dl{margin:22px 0 0}.division dt{color:#909bad;font-size:10px;font-weight:800;letter-spacing:.1em}.division dd{margin:7px 0 16px;color:#27364e;font-size:14px;line-height:1.4}.division strong{margin-top:auto;padding-top:15px;border-top:1px solid #e4e8ef;color:#1d2d48;font-size:14px}.division strong b{color:var(--blue)}
+
+    /* 工具边界 */
+    .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin-top:52px}.boundary{min-height:360px;padding:29px;border-radius:25px;background:#fff;border:1px solid #dfe6f2;display:flex;flex-direction:column;box-shadow:0 24px 65px rgba(31,45,80,.07)}.code{width:70px;height:70px;border-radius:23px;display:grid;place-items:center;background:#dff8ff;color:#168eb3;font:800 12px/1 Arial}.boundary:nth-child(2) .code{background:#eee7ff;color:#6b3fd1}.boundary:nth-child(3) .code{background:#ffebe6;color:#d85f44}.boundary h3{font-size:35px;margin:24px 0 11px}.boundary p{color:var(--muted);font-size:18px;line-height:1.55}.boundary>strong{margin-top:auto;padding-top:19px;border-top:1px solid #e5eaf2;color:#253656;font-size:17px}
+
+    /* 循环 */
+    .loop{width:900px;height:485px;margin:27px auto 0;position:relative}.ring{position:absolute;inset:15%;border:2px dashed #40517b;border-radius:50%;animation:spin 38s linear infinite}.node{position:absolute;width:126px;height:126px;border:8px solid #111a35;border-radius:50%;display:grid;place-content:center;text-align:center;gap:4px;background:var(--cyan);color:var(--navy);box-shadow:0 16px 40px rgba(0,0,0,.25)}.node span{opacity:.6;font:800 12px/1 Arial}.node b{font-size:23px}.n1{left:0;top:39%}.n2{left:21%;top:0;background:var(--blue)}.n3{left:46%;top:0;background:var(--violet)}.n4{right:4%;top:35%;background:var(--coral)}.n5{left:47%;bottom:0;background:var(--green)}.loop-center{position:absolute;left:29%;top:38%;width:38%;height:24%;border:1px solid #3a4d7b;border-radius:23px;display:grid;place-content:center;text-align:center;background:#1d294c;color:#dce6fa}.loop-center b{font-size:19px}.loop-center small{margin-top:7px;color:#93a7cd}.loop-note{text-align:center;color:#9eb0d2;font-size:16px}
+
+    /* 演示 */
+    .demo{display:grid;grid-template-columns:264px 1fr;height:500px;margin-top:27px;border:1px solid #dbe2ef;border-radius:25px;background:#fff;overflow:hidden;box-shadow:0 26px 80px rgba(30,45,80,.11)}.demo-side{padding:24px 19px;border-right:1px solid #d7e1ef;background:linear-gradient(180deg,#f5f8fd,#e8eff9);color:var(--navy)}.demo-logo{display:flex;align-items:center;gap:9px;margin-bottom:38px;color:#536b91;font:800 12px/1 Arial;letter-spacing:.12em}.demo-logo i{width:12px;height:12px;border-radius:4px;background:linear-gradient(135deg,var(--cyan),var(--violet))}.demo-side>small{color:#7d8ca5}.file{display:flex;align-items:center;gap:11px;margin:10px 0;padding:11px;border:1px solid #d7e1ef;border-radius:14px;background:rgba(255,255,255,.5);opacity:.4;transition:.4s}.file.on{opacity:1;background:#fff;border-color:#9cb8e5;box-shadow:0 9px 24px rgba(48,79,135,.09);transform:translateX(4px)}.file>b{flex:0 0 37px;height:37px;border-radius:11px;display:grid;place-items:center;background:#dff8ff;color:#168eb3}.file:last-child>b{background:#eee7ff;color:#7145d7}.file p{margin:0;font-size:12px;font-weight:800}.file span{display:block;margin-top:4px;color:#7b89a1;font-size:9px;font-weight:500}.demo-main{padding:21px 29px;position:relative}.demo-top{display:flex;justify-content:space-between;color:#7b879d;font-size:11px}.status{padding:6px 10px;border-radius:999px;background:#edf1f8;color:#52617b}.status.ready{background:#dcf8f0;color:#087d61}.prompt{margin-top:18px;padding:14px 17px;border-radius:15px;background:#f3f6fb}.prompt small{color:var(--blue);font-weight:800}.prompt p{margin:6px 0 0;color:#354158;font-size:13px;line-height:1.46}.activity{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:15px}.activity>div{min-height:132px;padding:13px;border:1px solid #e3e8f1;border-radius:15px;opacity:.32;transition:.4s}.activity>div.done{opacity:1;border-color:#b8d9f2;box-shadow:0 9px 26px rgba(49,198,244,.08)}.activity i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#e7edf8;color:#687792;font-style:normal;font-size:10px}.activity .done i{background:var(--cyan);color:#082033}.activity b{display:block;margin-top:10px;font-size:13px}.activity span{display:block;margin-top:6px;color:#7d899e;font-size:10px;line-height:1.4}.demo-next{position:absolute;right:29px;bottom:18px;border:0;border-radius:11px;padding:10px 15px;background:var(--navy);color:#fff;font-size:12px;font-weight:800;cursor:pointer}.demo-next em{margin-left:18px;color:var(--cyan);font-style:normal}.demo-next:disabled{opacity:.4;cursor:default}.observe{width:max-content;max-width:95%;margin:17px auto 0;color:#6d7890;font-size:12px}.observe b{color:var(--ink)}
+
+    /* 岗位 */
+    .role-table{margin-top:40px}.role-head,.role-row{display:grid;grid-template-columns:1.2fr 1fr .9fr 1fr;align-items:center;gap:26px}.role-head{padding:0 17px 13px;color:#8994a8;font-size:10px;letter-spacing:.1em}.role-row{min-height:115px;padding:0 17px;border-top:1px solid var(--line)}.role-title{display:flex;align-items:center;gap:17px}.role-title i{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;background:var(--cyan);color:#fff;font-style:normal;font-size:22px;font-weight:800}.role-row:nth-child(3) i{background:var(--blue)}.role-row:nth-child(4) i{background:var(--violet)}.role-title b{font-size:23px}.role-row p{color:#435069;font-size:17px}.role-row>strong{color:var(--blue);font-size:15px}
+
+    /* 对话与执行 */
+    .compare-wrap{display:grid;grid-template-columns:1fr 76px 1fr;align-items:center;gap:18px;margin-top:48px}.compare-panel{min-height:430px;padding:30px;border:1px solid #dce4f0;border-radius:27px;background:#fff;box-shadow:0 24px 65px rgba(31,45,80,.07)}.compare-panel.agent{position:relative;overflow:hidden;color:var(--navy);border-color:#c8d7ee;background:linear-gradient(145deg,#fff 0%,#f4f7fd 48%,#eaf1fb 100%);box-shadow:0 24px 65px rgba(40,76,140,.11)}.compare-panel.agent::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet))}.compare-label{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid #e3e8f1}.agent .compare-label{border-color:#d6e1f1}.compare-label span{font-size:13px;font-weight:800;letter-spacing:.13em;color:#8190aa}.agent .compare-label span{color:#5270a6}.compare-label b{font-size:28px}.compare-list{display:grid;gap:14px;margin-top:20px}.compare-list div{display:grid;grid-template-columns:34px 1fr;align-items:center;min-height:58px;padding:10px 13px;border-radius:14px;background:#f4f6fa;color:#566178;font-size:16px}.agent .compare-list div{border:1px solid #dce6f4;background:rgba(255,255,255,.82);color:#3d4d68;box-shadow:0 8px 22px rgba(39,72,130,.055)}.compare-list i{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:#e4e9f2;color:#7b879b;font-style:normal;font-size:11px}.agent .compare-list i{background:linear-gradient(145deg,var(--cyan),#6aa8ff);color:#07111f;box-shadow:0 5px 12px rgba(48,198,244,.18)}.compare-arrow{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--navy);color:var(--cyan);font-size:28px;box-shadow:0 12px 32px rgba(10,22,50,.18)}.compare-foot{margin-top:22px;text-align:center;color:#77849a;font-size:14px}.compare-foot b{color:var(--blue)}
+
+    /* 部门任务 */
+    .dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}.dept-card{min-height:190px;padding:20px;border:1px solid #dde4f0;border-radius:21px;background:#fff;box-shadow:0 16px 40px rgba(31,45,80,.055)}.dept-card header{display:flex;align-items:center;justify-content:space-between}.dept-card header b{font-size:20px}.dept-card header i{padding:6px 9px;border-radius:999px;background:#def7ff;color:#1689ad;font-style:normal;font-size:10px;font-weight:800}.dept-card:nth-child(2) header i,.dept-card:nth-child(5) header i{background:#e7edff;color:#315dd7}.dept-card:nth-child(3) header i,.dept-card:nth-child(6) header i{background:#eee7ff;color:#6b3fd1}.dept-flow{margin-top:20px}.dept-flow span{display:block;color:#8a95a8;font-size:10px;letter-spacing:.08em}.dept-flow p{margin:6px 0 14px;color:#3d4960;font-size:15px;line-height:1.4}.dept-flow strong{display:block;padding-top:12px;border-top:1px solid #e6eaf2;color:#17243d;font-size:15px}.dept-flow strong::before{content:"产物";margin-right:9px;color:var(--blue);font-size:10px;letter-spacing:.08em}
+
+    /* 任务写法对比 */
+    .prompt-compare{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:45px}.prompt-example{min-height:405px;padding:27px;border:1px solid #dce4ef;border-radius:25px;background:#fff;position:relative}.prompt-example.good{border-color:#bcd8ee;background:linear-gradient(145deg,#fff,#edf9ff)}.prompt-example>span{display:inline-flex;align-items:center;gap:8px;color:#8b96a9;font-size:11px;font-weight:800;letter-spacing:.12em}.prompt-example>span::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--coral)}.prompt-example.good>span{color:#177c9c}.prompt-example.good>span::before{background:var(--green)}.prompt-quote{margin:26px 0;padding:22px;border-radius:17px;background:#f4f6fa;color:#29364e;font-size:22px;font-weight:700;line-height:1.5}.good .prompt-quote{background:#fff;box-shadow:0 12px 35px rgba(39,110,150,.08)}.why-list{display:grid;gap:10px}.why-list div{display:flex;align-items:center;gap:11px;color:#68758b;font-size:14px}.why-list i{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:#ffebe6;color:#d25a42;font-style:normal;font-size:11px}.good .why-list i{background:#dcf8f0;color:#087c60}.prompt-verdict{position:absolute;left:27px;right:27px;bottom:24px;padding-top:14px;border-top:1px solid #e1e6ef;color:#7d899d;font-size:13px}.good .prompt-verdict{color:#18718e}.prompt-verdict b{color:#18263e}
+
+    /* 委派 */
+    .delegate{margin-top:30px}.delegate>div{display:grid;grid-template-columns:62px 250px 1fr;align-items:center;min-height:83px;border-bottom:1px solid var(--line)}.delegate i{width:45px;height:45px;border-radius:50%;display:grid;place-items:center;background:var(--cyan);color:#fff;font:800 11px/1 Arial;font-style:normal}.delegate>div:nth-child(2) i{background:var(--blue)}.delegate>div:nth-child(3) i{background:var(--violet)}.delegate>div:nth-child(4) i{background:var(--coral)}.delegate b{font-size:22px}.delegate p{color:var(--muted);font-size:17px}.formula{margin-top:22px;padding:15px;border-radius:17px;text-align:center;background:linear-gradient(90deg,#def7ff,#ede8ff);font-size:16px;font-weight:800}
+
+    /* 判断 */
+    .judgements{margin-top:36px}.judge{display:grid;grid-template-columns:76px 1fr 58px;align-items:center;min-height:137px;border-bottom:1px solid #273656}.judge>i{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--cyan);color:var(--navy);font-style:normal;font-size:24px}.judge:nth-child(2)>i{background:var(--violet)}.judge:nth-child(3)>i{background:var(--coral)}.judge h3{margin:0 0 9px;font-size:24px}.judge p{margin:0;color:#a8b7d2;font-size:15px}.judge p b{color:#dce6f7}.judge>strong{font-size:40px;color:var(--cyan)}.judge:nth-child(2)>strong{color:var(--violet)}.judge:nth-child(3)>strong{color:var(--coral)}
+
+    /* 总结 */
+    .summary{height:100%;display:grid;grid-template-columns:.9fr 1.1fr;align-items:center;gap:112px}.summary-copy>span{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:.16em}.summary h2{margin:27px 0;font-size:86px;line-height:1.04;letter-spacing:-.06em}.summary-copy p{max-width:360px;color:#93a5c7;font-size:16px;line-height:1.6}.five{display:grid;grid-template-columns:1fr 1fr;gap:16px}.five div{min-height:125px;padding:22px;border:1px solid #293a60;border-radius:21px;background:rgba(19,29,59,.72)}.five div:last-child{grid-column:1/-1;min-height:96px}.five span{color:var(--cyan);font:800 11px/1 Arial}.five div:nth-child(2) span{color:var(--blue)}.five div:nth-child(3) span{color:var(--violet)}.five div:nth-child(4) span{color:var(--coral)}.five div:nth-child(5) span{color:var(--green)}.five b{display:block;margin-top:27px;color:#dce6f8;font-size:18px}
+
+    /* 快速跳转 */
+    .page-jump-zone{position:fixed;z-index:29;left:0;right:0;bottom:0;height:30px}.page-jump{position:absolute;left:50%;bottom:15px;display:flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid rgba(201,213,232,.95);border-radius:15px;background:rgba(255,255,255,.94);box-shadow:0 18px 55px rgba(18,34,67,.2);backdrop-filter:blur(15px);opacity:0;visibility:hidden;pointer-events:none;transform:translate(-50%,18px);transition:opacity .25s ease,transform .3s ease,visibility .25s}.page-jump-zone:hover .page-jump,.page-jump-zone:focus-within .page-jump{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}.page-jump>span{padding:0 8px;color:#7b879c;font-size:9px;font-weight:800;letter-spacing:.1em;white-space:nowrap}.page-jump button{width:38px;height:34px;border:1px solid transparent;border-radius:9px;background:#f0f3f8;color:#68758b;font-size:11px;font-weight:800;cursor:pointer;transition:.2s}.page-jump button:hover{border-color:#b9c9e2;background:#fff;color:#2f55b4;transform:translateY(-2px)}.page-jump button:focus-visible{outline:3px solid rgba(76,120,255,.25);outline-offset:2px}.page-jump button.active{border-color:#4c78ff;background:linear-gradient(145deg,#638aff,#4c6de0);color:#fff;box-shadow:0 7px 18px rgba(76,120,255,.25)}.progress{pointer-events:none}
+
+    /* 控制 */
+    .controls{position:fixed;z-index:30;right:22px;bottom:20px;display:flex;gap:7px;padding:7px;border-radius:14px;background:rgba(9,16,31,.9);backdrop-filter:blur(12px);box-shadow:0 12px 35px rgba(0,0,0,.2)}.controls button{width:38px;height:34px;border:0;border-radius:8px;background:#202d4a;color:#dce6f7;cursor:pointer}.controls button:hover{background:#31456e}.controls button:disabled{opacity:.25;cursor:default}.controls .notes-btn{color:var(--cyan);font-weight:900}.progress{position:fixed;z-index:30;left:0;right:0;bottom:0;height:4px;background:rgba(116,132,164,.18)}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet),var(--coral));transition:width .3s ease}.shortcuts{position:fixed;z-index:20;left:22px;bottom:19px;display:flex;gap:17px;color:#7b879d;font-size:9px;letter-spacing:.08em}.notes{position:fixed;z-index:40;left:22px;bottom:56px;width:520px;padding:21px;border-radius:17px;background:rgba(7,17,31,.97);color:#fff;box-shadow:0 22px 70px rgba(0,0,0,.36);display:none}.notes.open{display:block}.notes button{position:absolute;right:12px;top:9px;border:0;background:transparent;color:#91a3c5;font-size:23px;cursor:pointer}.notes span{color:var(--cyan);font-size:10px;font-weight:800;letter-spacing:.11em}.notes p{margin:13px 0 0;color:#c4d0e4;font-size:13px;line-height:1.7}
+
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+<main class="deck" id="deck">
+  <section class="slide dark active" data-max="2">
+    <div class="cover">
+      <div class="cover-copy">
+        <div class="kicker">30 MIN · 全员认知培训</div>
+        <h1>大模型与智能体<br><em>工作软件初识</em></h1>
+        <p data-step="1">从理解概念开始，学会把任务交给 AI 软件。</p>
+        <div class="cover-meta" data-step="2"><span>概念统一</span><i></i><span>软件结构拆解</span><i></i><span>典型工作场景</span></div>
+        <div class="hint">按空格键开始 <kbd>SPACE</kbd></div>
+      </div>
+      <div class="orbit-wrap" aria-hidden="true">
+        <div class="orbit"><span>DOC</span><span>XLS</span><span>PPT</span></div>
+        <div class="orbit inner"><span>计划</span><span>执行</span><span>验收</span></div>
+        <div class="core"><b>AI</b><small>AGENT</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-max="3">
+    <div class="brand">AI WORK SOFTWARE · 01</div><div class="num">02</div>
+    <header class="heading"><span>01 · 先看任务</span><h2>如果把两份材料交给 AI 软件，它到底做了什么？</h2></header>
+    <div class="case-board">
+      <div class="case-inputs" data-step="1"><span>你提供的上下文</span>
+        <div class="material"><i>表</i><div><b>培训报名统计.xlsx</b><small>人数、部门、关注问题</small></div></div>
+        <div class="material"><i>文</i><div><b>需求访谈记录.docx</b><small>产品、运营、研发、行政</small></div></div>
+      </div>
+      <div class="case-agent" data-step="2"><div><b>AI</b><small>软件</small></div><span>→</span></div>
+      <div class="case-output" data-step="3"><span>你想验收的结果</span><h3 class="output-title">培训需求分析</h3>
+        <div class="output-list"><div><i>✓</i>各部门报名情况</div><div><i>✓</i>最关注的三个问题</div><div><i>✓</i>有依据的培训建议</div><div><i>✓</i>5 页以内汇报材料</div></div>
+      </div>
+    </div>
+    <div class="case-question" data-step="3">接下来不背名词：沿着这次任务，看清大模型、智能体、工具和人的分工。</div>
+  </section>
+
+  <section class="slide" data-max="2">
+    <div class="brand">AI WORK SOFTWARE · 01</div><div class="num">03</div>
+    <header class="heading"><span>02 · 软件差异</span><h2>智能体软件不是“更大的聊天框”</h2></header>
+    <div class="compare-wrap">
+      <article class="compare-panel" data-step="1"><div class="compare-label"><span>TRADITIONAL CHAT</span><b>传统 AI 对话</b></div>
+        <div class="compare-list"><div><i>1</i>你提一个问题</div><div><i>2</i>模型生成一段回答</div><div><i>3</i>你自己复制、整理和操作文件</div><div><i>4</i>下一步仍由你决定</div></div>
+      </article>
+      <div class="compare-arrow" data-step="2">→</div>
+      <article class="compare-panel agent" data-step="2"><div class="compare-label"><span>AGENT SOFTWARE</span><b>智能体软件</b></div>
+        <div class="compare-list"><div><i>1</i>你给目标、材料和边界</div><div><i>2</i>软件规划多个步骤</div><div><i>3</i>调用工具读取或生成文件</div><div><i>4</i>根据执行结果继续调整</div></div>
+      </article>
+    </div>
+    <div class="compare-foot" data-step="2"><b>区别不只是回答方式，</b>而是软件有没有把“理解—行动—检查”连接起来。</div>
+  </section>
+
+  <section class="slide" data-max="5">
+    <div class="brand">AI WORK SOFTWARE · 01</div><div class="num">04</div>
+    <header class="heading"><span>03 · 概念定位</span><h2>一次任务里，这些概念分别出现在哪里？</h2></header>
+    <div class="concept-map">
+      <div class="software-map">
+        <div class="software-bar"><b>AI 工作软件</b><span>任务进行中</span></div>
+        <div class="software-task"><span>上下文 CONTEXT</span><p>目标要求 + 报名表 + 访谈记录 + 公司规则</p></div>
+        <div class="software-body">
+          <div class="software-zone"><span>大模型 MODEL</span><b>理解与生成</b><p>读懂要求、概括材料、提出下一步</p></div>
+          <div class="software-zone"><span>工具 TOOLS</span><b>读取与执行</b><p>打开表格、计算数据、创建文档</p></div>
+        </div>
+        <div class="software-result"><span>智能体 AGENT</span><b>把“判断—行动—观察”组织成循环</b></div>
+      </div>
+      <div class="concept-explore" id="concept-explore">
+        <div class="concept-tabs" role="tablist" aria-label="选择要讲解的概念">
+          <button class="concept-tab" type="button" role="tab" aria-selected="false" aria-controls="concept-detail" data-concept="application" data-step="1"><h3>AI 应用</h3><p>完整的软件产品</p><em>查看 →</em></button>
+          <button class="concept-tab" type="button" role="tab" aria-selected="false" aria-controls="concept-detail" data-concept="context" data-step="2"><h3>上下文</h3><p>本次提供的信息</p><em>查看 →</em></button>
+          <button class="concept-tab" type="button" role="tab" aria-selected="false" aria-controls="concept-detail" data-concept="model" data-step="3"><h3>大模型</h3><p>根据输入生成输出</p><em>查看 →</em></button>
+          <button class="concept-tab" type="button" role="tab" aria-selected="false" aria-controls="concept-detail" data-concept="tools" data-step="4"><h3>工具</h3><p>读取、计算与文件操作</p><em>查看 →</em></button>
+          <button class="concept-tab" type="button" role="tab" aria-selected="false" aria-controls="concept-detail" data-concept="agent" data-step="5"><h3>智能体</h3><p>围绕目标组织任务</p><em>查看 →</em></button>
+        </div>
+        <article class="concept-detail" id="concept-detail" role="tabpanel" aria-live="polite" aria-hidden="true">
+          <span class="concept-kicker" id="concept-kicker"></span>
+          <h3 id="concept-title"></h3>
+          <p class="concept-lead" id="concept-lead"></p>
+          <div class="tool-primitives" id="tool-primitives" aria-hidden="true">
+            <div><b>读</b><span>获取内容</span></div><div><b>写</b><span>创建产物</span></div><div><b>改</b><span>调整内容</span></div><div><b>执行</b><span>计算与检查</span></div>
+          </div>
+          <section><span>在这次培训案例中</span><p id="concept-example"></p></section>
+          <section><span>关键边界</span><p id="concept-boundary"></p></section>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-max="2">
+    <div class="brand">AI WORK SOFTWARE · 01</div><div class="num">05</div>
+    <header class="heading"><span>04 · 上下文</span><h2>大模型很通用，但它不会自动知道你公司的事实</h2></header>
+    <div class="context-lab">
+      <article class="context-card" data-step="1"><header><span>只有一句要求</span><b>上下文不足</b></header><div class="context-prompt">“分析培训需求并给出建议。”</div>
+        <div class="context-answer"><span>可能得到的结果</span><p>给出一套看似合理的通用培训建议，但不知道报名人数、部门差异和真实关注点。</p><p>内容可以流畅，事实却无法核对。</p></div>
+      </article>
+      <article class="context-card rich" data-step="2"><header><span>要求 + 真实材料</span><b>上下文充分</b></header><div class="context-prompt">“基于报名表和访谈记录分析，不要补充材料中没有的事实。”</div>
+        <div class="context-files"><span>报名统计.xlsx</span><span>访谈记录.docx</span><span>验收标准</span></div>
+        <div class="context-answer"><span>可能得到的结果</span><p>结论能对应到部门数据和访谈内容；缺失信息可以明确标记为“待确认”。</p><p>结果更具体，也更容易人工验收。</p></div>
+      </article>
+    </div>
+    <div class="context-conclusion" data-step="2">模型能力决定“会不会做”，上下文决定“这次根据什么做”。</div>
+  </section>
+
+  <section class="slide" data-max="4">
+    <div class="brand">AI WORK SOFTWARE · 01</div><div class="num">06</div>
+    <header class="heading"><span>05 · 分工与边界</span><h2>大模型、智能体、工具和人，分别负责什么？</h2></header>
+    <div class="division-grid">
+      <article class="division" data-step="1"><span>MODEL</span><h3>大模型</h3><p>负责理解和生成，是通用能力引擎。</p><dl><dt>在案例中</dt><dd>读懂要求、归纳访谈、撰写结论。</dd><dt>主要边界</dt><dd>不会自动获得公司事实，也不能保证生成内容正确。</dd></dl><strong><b>会思考和表达</b>，不等于会执行。</strong></article>
+      <article class="division" data-step="2"><span>TOOLS</span><h3>工具</h3><p>负责真正读取、计算和修改外部对象。</p><dl><dt>在案例中</dt><dd>读取表格、计算人数、创建 PPT 文件。</dd><dt>主要边界</dt><dd>只能使用软件已经提供并授权的能力。</dd></dl><strong><b>能执行动作</b>，不等于结果正确。</strong></article>
+      <article class="division" data-step="3"><span>AGENT</span><h3>智能体</h3><p>负责围绕目标组织多步任务。</p><dl><dt>在案例中</dt><dd>决定先统计、再归纳、然后生成汇报。</dd><dt>主要边界</dt><dd>会受模型误判、步骤累积错误和任务复杂度影响。</dd></dl><strong><b>会推进任务</b>，不等于拥有权限。</strong></article>
+      <article class="division" data-step="4"><span>HUMAN</span><h3>人</h3><p>负责目标、授权、判断和最终责任。</p><dl><dt>在案例中</dt><dd>提供材料、确认计划、核对数字和结论。</dd><dt>主要边界</dt><dd>不能把责任完全交给系统。</dd></dl><strong><b>决定是否完成</b>，并承担结果责任。</strong></article>
+    </div>
+  </section>
+
+  <section class="slide dark" data-max="5">
+    <div class="brand">AI WORK SOFTWARE · 01</div><div class="num">07</div>
+    <header class="heading"><span>06 · 智能体循环</span><h2>智能体不是“一次想完”，而是边做边观察</h2></header>
+    <div class="loop">
+      <div class="ring"></div>
+      <div class="node n1" data-step="1"><span>01</span><b>输入</b></div>
+      <div class="node n2" data-step="2"><span>02</span><b>判断</b></div>
+      <div class="node n3" data-step="3"><span>03</span><b>行动</b></div>
+      <div class="node n4" data-step="4"><span>04</span><b>观察</b></div>
+      <div class="node n5" data-step="5"><span>05</span><b>验证</b></div>
+      <div class="loop-center" data-step="5"><b>未通过？</b><small>回到输入或等待人工补充</small></div>
+    </div>
+    <div class="loop-note" data-step="5">智能体不是“一次想完”，而是在结果与目标之间持续校正。</div>
+  </section>
+
+  <section class="slide" data-max="4" id="demo-slide">
+    <div class="brand">AI WORK SOFTWARE · 01</div><div class="num">08</div>
+    <header class="heading"><span>07 · 软件如何工作</span><h2>在软件界面中，看见一次任务怎样流动</h2></header>
+    <div class="demo">
+      <aside class="demo-side"><div class="demo-logo"><i></i>WORKBUDDY</div><small>任务材料</small>
+        <div class="file" data-demo-file><b>表</b><p>培训报名统计.xlsx<span>部门 · 经验 · 关注问题</span></p></div>
+        <div class="file" data-demo-file><b>文</b><p>需求访谈记录.docx<span>产品 · 运营 · 研发 · 行政</span></p></div>
+      </aside>
+      <div class="demo-main">
+        <div class="demo-top"><span>任务 / 培训需求分析</span><em class="status" id="demo-status">等待材料</em></div>
+        <div class="prompt"><small>你交给它的任务</small><p>统计各部门报名情况，总结最关注的问题，提出培训建议，并生成 5 页以内的汇报 PPT。无法确认的信息标记为“待确认”。</p></div>
+        <div class="activity">
+          <div data-activity="2"><i>1</i><b>制定处理计划</b><span>统计 → 归纳 → 建议 → 生成 → 检查</span></div>
+          <div data-activity="3"><i>2</i><b>调用工具执行</b><span>读取表格和文档，形成结构化结论</span></div>
+          <div data-activity="4"><i>3</i><b>生成并等待验收</b><span>培训需求分析.pptx · 5 页</span></div>
+        </div>
+        <button class="demo-next" id="demo-next">观察下一阶段 <em>→</em></button>
+      </div>
+    </div>
+    <div class="observe">WorkBuddy 只是一个具体例子：重点观察 <b>上下文</b> ｜ 模型判断 ｜ 工具执行 ｜ 人工验收</div>
+  </section>
+
+  <section class="slide" data-max="3">
+    <div class="brand">AI WORK SOFTWARE · 01</div><div class="num">09</div>
+    <header class="heading"><span>08 · 典型场景</span><h2>不同部门材料不同，但软件工作的结构相同</h2></header>
+    <div class="dept-grid">
+      <article class="dept-card" data-step="1"><header><b>行政 / 人事</b><i>文档 + 表格</i></header><div class="dept-flow"><span>输入</span><p>报名表、制度、通知模板</p><strong>名单汇总、通知草稿、待确认项</strong></div></article>
+      <article class="dept-card" data-step="1"><header><b>市场 / 运营</b><i>数据 + 访谈</i></header><div class="dept-flow"><span>输入</span><p>活动数据、用户反馈、复盘模板</p><strong>问题归纳、复盘报告、后续建议</strong></div></article>
+      <article class="dept-card" data-step="2"><header><b>产品</b><i>需求材料</i></header><div class="dept-flow"><span>输入</span><p>访谈记录、需求池、历史版本</p><strong>需求分类、冲突点、优先级建议</strong></div></article>
+      <article class="dept-card" data-step="2"><header><b>财务</b><i>规则 + 明细</i></header><div class="dept-flow"><span>输入</span><p>费用明细、口径说明、预算规则</p><strong>异常项清单、核查说明；结果必须复核</strong></div></article>
+      <article class="dept-card" data-step="3"><header><b>研发 / 技术</b><i>代码 + 日志</i></header><div class="dept-flow"><span>输入</span><p>代码、错误日志、接口说明</p><strong>问题定位建议、修改方案、测试清单</strong></div></article>
+      <article class="dept-card" data-step="3"><header><b>管理者</b><i>多来源材料</i></header><div class="dept-flow"><span>输入</span><p>周报、会议纪要、项目计划</p><strong>进度摘要、风险清单、需要决策的问题</strong></div></article>
+    </div>
+  </section>
+
+  <section class="slide" data-max="3">
+    <div class="brand">AI WORK SOFTWARE · 01</div><div class="num">10</div>
+    <header class="heading"><span>09 · 软件需要什么输入</span><h2>同一个目标，为什么结果可能完全不同？</h2></header>
+    <div class="prompt-compare">
+      <article class="prompt-example" data-step="1"><span>信息不足</span><div class="prompt-quote">“帮我做一份培训需求分析。”</div>
+        <div class="why-list"><div><i>×</i>没有真实材料</div><div><i>×</i>没有说明产物</div><div><i>×</i>没有约束和验收标准</div></div><div class="prompt-verdict"><b>模型只能补全一种“看起来合理”的答案，</b>但未必符合公司实际。</div>
+      </article>
+      <article class="prompt-example good" data-step="2"><span>任务定义清楚</span><div class="prompt-quote">“基于报名表和访谈记录，统计、归纳并生成 5 页汇报；材料外事实标记待确认。”</div>
+        <div class="why-list"><div><i>✓</i>目标：分析培训需求</div><div><i>✓</i>上下文：表格和访谈</div><div><i>✓</i>产物、约束和验收可检查</div></div><div class="prompt-verdict"><b>不是神奇提示词，</b>而是给软件一份更完整的任务说明。</div>
+      </article>
+    </div>
+    <div class="formula" data-step="3">目标 · 上下文 · 工具权限 · 产物 · 验收 —— 共同决定任务结果</div>
+  </section>
+
+  <section class="slide dark" data-max="3">
+    <div class="brand">AI WORK SOFTWARE · 01</div><div class="num">11</div>
+    <header class="heading"><span>10 · 快速判断</span><h2>三个说法，检验我们是否真正理解边界</h2></header>
+    <div class="judgements">
+      <article class="judge" data-step="1"><i>A</i><div><h3>WorkBuddy 就是一个大模型</h3><p><b>错误：</b>它是使用模型、数据和工具构建的 AI 应用。</p></div><strong>×</strong></article>
+      <article class="judge" data-step="2"><i>B</i><div><h3>模型提出调用工具，就代表拥有权限</h3><p><b>错误：</b>调用意图不等于系统授权。</p></div><strong>×</strong></article>
+      <article class="judge" data-step="3"><i>C</i><div><h3>生成了 PPT，就代表任务正确完成</h3><p><b>错误：</b>产物仍需依据和人工验收。</p></div><strong>×</strong></article>
+    </div>
+  </section>
+
+  <section class="slide dark" data-max="1">
+    <div class="summary">
+      <div class="summary-copy"><span>带走这五句话</span><h2>理解智能体，<br>从理解边界开始</h2><p>先理解分工与边界，再判断哪些工作适合交给 AI 软件。</p></div>
+      <div class="five" data-step="1">
+        <div><span>01</span><b>大模型是能力引擎</b></div><div><span>02</span><b>上下文决定它能看到什么</b></div>
+        <div><span>03</span><b>工具让回答走向行动</b></div><div><span>04</span><b>循环让任务持续推进</b></div>
+        <div><span>05</span><b>人负责目标、权限和验收</b></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-jump-zone" id="page-jump-zone"><nav class="page-jump" id="page-jump" aria-label="快速跳转页面"><span>快速跳转</span></nav></div>
+  <nav class="controls" aria-label="演讲控制"><button id="first" aria-label="回到第一页" title="回到第一页">⇤</button><button id="prev" aria-label="上一步" title="上一步">←</button><button id="notes-btn" class="notes-btn" aria-label="演讲者备注" title="演讲者备注">N</button><button id="full" aria-label="全屏" title="全屏">F</button><button id="next" aria-label="下一步" title="下一步">→</button><button id="last" aria-label="跳到最后一页" title="跳到最后一页">⇥</button></nav>
+  <div class="progress"><span id="progress"></span></div>
+  <div class="shortcuts"><span>← → 翻页</span><span>F 全屏</span><span>N 备注</span><span>底部悬停 快速跳转</span></div>
+  <aside class="notes" id="notes"><button id="close-notes">×</button><span id="notes-title">演讲者备注</span><p id="notes-copy"></p></aside>
+</main>
+
+<script>
+  (()=>{
+    const deck=document.getElementById('deck');
+    const slides=[...document.querySelectorAll('.slide')];
+    const notes=[
+      '约 1 分钟｜开场先说明：今天不是软件操作课，而是借助软件界面和工作任务，理解大模型、智能体以及它们的边界。',
+      '约 2 分钟｜先给出贯穿全场的任务，不解释术语。让同事观察：输入是材料，输出是可验收产物，中间的软件到底做了哪些事情？',
+      '约 2 分钟｜传统对话通常停在回答；智能体软件把理解、行动和检查连接起来。WorkBuddy 官方也用“实际执行任务、多步骤复杂任务、交付可验收结果”区分传统对话。',
+      '约 4 分钟｜五个概念按“AI 应用—上下文—大模型—工具—智能体”逐个出现。讲到工具时，先保留真实案例：读取 Excel、统计人数、打开文档和创建 PPT；再用“读、写、改、执行”帮助大家理解工具的基础动作。这些动作经过组合和封装，形成各种具体工具能力。',
+      '约 3 分钟｜用上下文实验解释为什么模型可能说得流畅却不符合公司实际。没有提供的内部材料，模型不会自动知道；结论必须能回到材料核对。',
+      '约 4 分钟｜按“大模型—工具—智能体—人”逐个讲职责与边界。用一句话总结：模型会生成，工具会执行，智能体会推进，人负责授权和验收。',
+      '约 3 分钟｜按输入、判断、行动、观察、验证讲循环。未通过时可能重新尝试，也可能停下来等待人工补充，循环并不保证成功。',
+      '约 4 分钟｜WorkBuddy 只作为软件例子。每按一次空格观察材料怎样进入上下文、模型怎样提出计划、工具怎样执行、产物怎样等待人工验收。',
+      '约 3 分钟｜六个部门案例只讲任务结构，不讲具体操作。让大家识别每个案例的材料、动作、产物和需要人工核对的部分。',
+      '约 2.5 分钟｜这不是提示词技巧课。通过两种任务说明对比，让大家理解软件的输入不只有一句话，还包括材料、权限、产物与验收标准。',
+      '约 1.5 分钟｜快速判断题。三个说法都不对：应用不等于模型；调用意图不等于系统授权；生成文件不等于任务正确完成。',
+      '约 1 分钟｜用五句话收束：模型、上下文、工具、循环和人的责任。最后提醒大家，生成结果必须回到材料和验收标准。'
+    ];
+    let page=0,step=0,touchX=null;
+    function fitDeck(){deck.style.setProperty('--deck-scale',String(Math.min(innerWidth/1600,innerHeight/900)))}
+    const first=document.getElementById('first'),prev=document.getElementById('prev'),next=document.getElementById('next'),last=document.getElementById('last'),bar=document.getElementById('progress');
+    const notesBox=document.getElementById('notes'),notesTitle=document.getElementById('notes-title'),notesCopy=document.getElementById('notes-copy');
+    const pageJump=document.getElementById('page-jump');
+    slides.forEach((slide,index)=>{const title=(slide.querySelector('.heading h2,.cover h1,.summary h2')?.textContent||`第 ${index+1} 页`).replace(/\s+/g,' ').trim();const button=document.createElement('button');button.type='button';button.dataset.page=String(index);button.textContent=String(index+1).padStart(2,'0');button.title=`第 ${index+1} 页 · ${title}`;button.setAttribute('aria-label',`跳转到第 ${index+1} 页：${title}`);pageJump.appendChild(button)});
+    const jumpButtons=[...pageJump.querySelectorAll('button')];
+    jumpButtons.forEach((button,index)=>{button.onclick=()=>{page=index;step=0;notesBox.classList.remove('open');render()};button.addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key))event.stopPropagation();if(['ArrowLeft','ArrowRight'].includes(event.key)){event.preventDefault();event.stopPropagation();const direction=event.key==='ArrowRight'?1:-1;jumpButtons[(index+direction+jumpButtons.length)%jumpButtons.length].focus()}})});
+    const conceptData={
+      application:{kicker:'01 · AI APPLICATION',title:'AI 应用',lead:'把模型、界面、数据、规则和工具组合成可使用的软件产品。',example:'WorkBuddy 提供任务界面、文件管理、模型、工具、权限和任务记录。',boundary:'应用只能使用已经接入并获得授权的能力；AI 应用不等于大模型，也不等于智能体。'},
+      context:{kicker:'02 · CONTEXT',title:'上下文',lead:'软件在本次任务中真正交给模型的信息。',example:'包括培训目标、报名表、访谈记录、历史对话、公司规则和验收要求。',boundary:'没有进入上下文的公司事实，模型默认看不到；信息矛盾也会影响生成结果。'},
+      model:{kicker:'03 · MODEL',title:'大模型',lead:'接收上下文，生成文字、结构化内容或工具调用意图。',example:'根据任务和材料生成培训分析、建议，或提出“读取表格”等下一步意图。',boundary:'生成内容不保证正确；提出工具调用意图，也不等于操作已经执行。'},
+      tools:{kicker:'04 · TOOLS',title:'工具',lead:'真正读取、计算和修改外部对象的执行能力。',example:'读取 Excel、统计人数、打开文档和创建 PPT 文件，都由具体工具完成。',boundary:'工具只能执行已经提供并获得授权的动作；执行成功也不代表业务结果正确。'},
+      agent:{kicker:'05 · AGENT',title:'智能体',lead:'在 AI 应用中围绕目标选择步骤并持续推进任务的机制。',example:'决定先统计、再归纳、生成汇报并检查结果；必要时调整步骤或等待补充。',boundary:'智能体依赖模型和工具，也受应用权限限制；它会推进任务，但不保证一定成功。'}
+    };
+    const conceptExplore=document.getElementById('concept-explore'),conceptDetail=document.getElementById('concept-detail'),conceptTabs=[...document.querySelectorAll('.concept-tab')],toolPrimitives=document.getElementById('tool-primitives');
+    const conceptKicker=document.getElementById('concept-kicker'),conceptTitle=document.getElementById('concept-title'),conceptLead=document.getElementById('concept-lead'),conceptExample=document.getElementById('concept-example'),conceptBoundary=document.getElementById('concept-boundary');
+    function selectConcept(key){
+      const data=conceptData[key];if(!data)return;const isTools=key==='tools';conceptExplore.classList.add('open');conceptDetail.setAttribute('aria-hidden','false');toolPrimitives.classList.toggle('show',isTools);toolPrimitives.setAttribute('aria-hidden',String(!isTools));
+      conceptTabs.forEach(tab=>{const active=tab.dataset.concept===key;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active))});
+      conceptKicker.textContent=data.kicker;conceptTitle.textContent=data.title;conceptLead.textContent=data.lead;conceptExample.textContent=data.example;conceptBoundary.textContent=data.boundary;
+    }
+    function closeConcept(){conceptExplore.classList.remove('open');conceptDetail.setAttribute('aria-hidden','true');toolPrimitives.classList.remove('show');toolPrimitives.setAttribute('aria-hidden','true');conceptTabs.forEach(tab=>{tab.classList.remove('active');tab.setAttribute('aria-selected','false')})}
+    conceptTabs.forEach((tab,index)=>{tab.id=`concept-tab-${index+1}`;tab.onclick=()=>selectConcept(tab.dataset.concept);tab.addEventListener('keydown',event=>{if(['Enter',' '].includes(event.key))event.stopPropagation();if(['ArrowDown','ArrowRight','ArrowUp','ArrowLeft'].includes(event.key)){event.preventDefault();event.stopPropagation();const visible=conceptTabs.filter(item=>item.classList.contains('shown'));const current=visible.indexOf(tab);const direction=['ArrowDown','ArrowRight'].includes(event.key)?1:-1;visible[(current+direction+visible.length)%visible.length]?.focus()}})});
+    const max=()=>Number(slides[page].dataset.max||0);
+    function render(){
+      slides.forEach((slide,i)=>slide.classList.toggle('active',i===page));
+      slides[page].querySelectorAll('[data-step]').forEach(el=>el.classList.toggle('shown',Number(el.dataset.step)<=step));
+      conceptTabs.forEach(tab=>tab.tabIndex=page===3&&Number(tab.dataset.step)<=step?0:-1);if(page!==3)closeConcept();
+      jumpButtons.forEach((button,index)=>{const active=index===page;button.classList.toggle('active',active);if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current')});
+      first.disabled=page===0&&step===0;prev.disabled=page===0&&step===0;next.disabled=page===slides.length-1&&step>=max();last.disabled=page===slides.length-1&&step>=max();
+      const local=max()?Math.min(step/max(),.95):0;bar.style.width=((page+local)/(slides.length-1)*100)+'%';
+      notesTitle.textContent=`演讲者备注 · ${page+1}/${slides.length}`;notesCopy.textContent=notes[page];updateDemo();
+    }
+    function forward(){if(step<max())step++;else if(page<slides.length-1){page++;step=0}render()}
+    function back(){if(step>0)step--;else if(page>0){page--;step=Number(slides[page].dataset.max||0)}render()}
+    function updateDemo(){
+      if(page!==7)return;const labels=['等待材料','已读取 2 份材料','计划已生成，等待确认','正在分析并生成','产物已就绪，等待验收'];
+      const status=document.getElementById('demo-status');status.textContent=labels[step];status.classList.toggle('ready',step===4);
+      document.querySelectorAll('[data-demo-file]').forEach(el=>el.classList.toggle('on',step>=1));
+      document.querySelectorAll('[data-activity]').forEach(el=>el.classList.toggle('done',step>=Number(el.dataset.activity)));
+      const btn=document.getElementById('demo-next');btn.disabled=step>=4;btn.innerHTML=step>=4?'等待人工验收':'观察下一阶段 <em>→</em>';
+    }
+    first.onclick=()=>{page=0;step=0;render()};prev.onclick=back;next.onclick=forward;last.onclick=()=>{page=slides.length-1;step=max();render()};document.getElementById('demo-next').onclick=forward;
+    document.getElementById('full').onclick=()=>document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
+    document.getElementById('notes-btn').onclick=()=>notesBox.classList.toggle('open');document.getElementById('close-notes').onclick=()=>notesBox.classList.remove('open');
+    addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();forward()}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();back()}if(e.key.toLowerCase()==='f')document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();if(e.key.toLowerCase()==='n')notesBox.classList.toggle('open');if(e.key==='Home'){page=0;step=0;render()}if(e.key==='End'){page=slides.length-1;step=max();render()}});
+    addEventListener('touchstart',e=>touchX=e.touches[0].clientX,{passive:true});addEventListener('touchend',e=>{if(touchX===null)return;const d=e.changedTouches[0].clientX-touchX;if(d<-60)forward();if(d>60)back();touchX=null},{passive:true});
+    addEventListener('resize',fitDeck);fitDeck();render();
+  })();
+</script>
+</body>
+</html>

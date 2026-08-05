@@ -1,0 +1,52 @@
+.presentation-shell {
+  --deck-width: min(calc(100vw - 2rem), calc((100vh - 2rem) * 16 / 9));
+  background:
+    radial-gradient(circle at 14% 12%, rgb(59 130 246 / 13%), transparent 30rem),
+    radial-gradient(circle at 86% 82%, rgb(34 211 238 / 10%), transparent 28rem),
+    #eaf0f8;
+}
+
+.deck-canvas {
+  width: var(--deck-width);
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 30px 90px rgb(51 65 85 / 22%);
+}
+
+.presentation-progress-track {
+  background: rgb(100 116 139 / 18%);
+}
+
+.presentation-progress-fill {
+  background: linear-gradient(90deg, #30c6f4, #4c78ff, #8657f4, #ff8366);
+  box-shadow: 0 0 14px rgb(76 120 255 / 45%);
+  transition: width 300ms ease;
+}
+
+.deck-reveal {
+  transition: opacity 260ms ease, transform 260ms ease, filter 260ms ease;
+}
+
+.deck-reveal[data-visible="false"] {
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(18px);
+}
+
+.deck-reveal[data-visible="true"] {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+@media (max-width: 760px) {
+  .presentation-shell {
+    --deck-width: calc(100vw - 0.75rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-reveal {
+    transition: none;
+  }
+}

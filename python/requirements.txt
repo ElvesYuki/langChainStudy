@@ -1,0 +1,14 @@
+python-dotenv
+langchain
+langchain-core
+langchain-classic
+langchain-openai
+langchain-ollama
+langchain-text-splitters
+langchain-qdrant
+langgraph
+flask
+pandas
+pypdf
+docx2txt
+psycopg[binary]
