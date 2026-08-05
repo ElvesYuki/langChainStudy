@@ -25,6 +25,7 @@ status: active
 - [培训网站 V3.1 内容增强说明](MIGRATION-WEB-V3.1-CONTENT-20260805.md)
 - [培训网站 V3.2 演讲视觉改版说明](MIGRATION-WEB-V3.2-VISUAL-20260805.md)
 - [培训网站 V3.3 浅色演讲主题说明](MIGRATION-WEB-V3.3-LIGHT-THEME-20260805.md)
+- [培训网站 V3.4 材料中间表示实践说明](MIGRATION-WEB-V3.4-MATERIAL-WORKFLOW-20260805.md)
 - [公司培训内容维护入口](training/README.md)
 - [AGL-01-01 D1 历史讲解笔记](topics/AGL-01-01-模型生命周期-D1讲解.md)
 

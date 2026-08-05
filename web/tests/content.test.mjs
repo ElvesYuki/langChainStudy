@@ -4,7 +4,7 @@ import test from "node:test";
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), "utf8");
 
-test("the first chapter separates detailed MDX from the 22-slide presentation", async () => {
+test("the first chapter separates detailed MDX from the 23-slide presentation", async () => {
   const article = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/article.mdx");
   const deck = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/slides.tsx");
   const visuals = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/chapter-visuals.tsx");
@@ -15,10 +15,12 @@ test("the first chapter separates detailed MDX from the 22-slide presentation", 
   assert.match(article, /tool: analyze_spreadsheet/);
   assert.match(article, /智能体循环怎样推进/);
   assert.match(article, /怎样给智能软件一份完整任务说明/);
+  assert.match(article, /先转换成适合分析的中间表示/);
+  assert.match(article, /关键不是全部转成 Markdown/);
   assert.doesNotMatch(article, /export const slides/);
 
   const slideIds = deck.match(/^    id: "/gm) ?? [];
-  assert.equal(slideIds.length, 22);
+  assert.equal(slideIds.length, 23);
   assert.match(visuals, /function ConceptExplorer/);
   assert.match(visuals, /function ToolCallConsole/);
   assert.match(visuals, /function ResponsibilitySwimlanes/);
@@ -26,9 +28,11 @@ test("the first chapter separates detailed MDX from the 22-slide presentation", 
   assert.match(visuals, /function ContextFunnel/);
   assert.match(visuals, /function AgentStateBoard/);
   assert.match(visuals, /function FailureBranches/);
+  assert.match(visuals, /function MaterialWorkflow/);
   assert.doesNotMatch(deck, /SlideCard/);
   assert.match(deck, /id: "task-definition"/);
   assert.match(deck, /id: "agent-loop"/);
+  assert.match(deck, /id: "material-workflow"/);
   assert.match(deck, /PresentationDeck/);
 });
 
@@ -54,8 +58,14 @@ test("speaker notes and learning notes are separate per-slide panels", async () 
   assert.match(presenter, /LEARNING NOTES/);
   assert.match(deck, /id: "cover",[\s\S]*?learningNotes:/);
   assert.match(deck, /id: "case",[\s\S]*?learningNotes:/);
+  assert.match(deck, /id: "chat-vs-agent",[\s\S]*?learningNotes:/);
+  assert.match(deck, /id: "application",[\s\S]*?learningNotes:/);
+  assert.match(deck, /id: "concept-map",[\s\S]*?learningNotes:/);
   assert.match(deck, /准确性：汇报中的人数和统计结果必须与源文件一致/);
   assert.match(deck, /诚实边界：材料没有提供的信息不能自行补全/);
+  assert.match(deck, /调用一次搜索或文件读取工具不等于智能体/);
+  assert.match(deck, /这四层是培训中的职责模型/);
+  assert.match(deck, /AI 应用不一定包含智能体/);
 });
 
 test("page changes reset reveal state atomically without reusing visible nodes", async () => {
@@ -76,6 +86,7 @@ test("reveal steps follow semantic groups and match each slide declaration", asy
   assert.equal(stepsFor("case"), 2);
   assert.equal(stepsFor("concept-map"), 4);
   assert.equal(stepsFor("scenarios"), 3);
+  assert.equal(stepsFor("material-workflow"), 3);
   assert.equal(stepsFor("summary"), 6);
   assert.match(visuals, /order=\{Math\.floor\(index \/ 2\) \+ 1\}/);
   assert.match(visuals, /export function SummaryChain[\s\S]*order=\{6\}/);
@@ -121,7 +132,7 @@ test("presentation pages do not contain keyboard, mouse, or switching instructio
   for (const instruction of ["按空格", "方向键翻页", "点击左侧", "鼠标移入", "按 Enter", "快捷键提示"]) {
     assert.doesNotMatch(visiblePresentationSources, new RegExp(instruction));
   }
-  assert.match(slides, /lead="它们处在智能软件的不同层次，承担不同职责。"/);
+  assert.match(slides, /lead="先分清产品、输入、生成、行动和推进，后面就不容易混用。"/);
 });
 
 test("the case workbench reserves space above the takeaway", async () => {

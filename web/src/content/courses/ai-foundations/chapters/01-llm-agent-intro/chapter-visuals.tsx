@@ -135,29 +135,29 @@ export function CaseWorkbench() {
 }
 
 function TimelineRow({ label, items, active }: { label: string; items: string[]; active?: boolean }) {
-  return <div className={cn("grid grid-cols-[9rem_1fr] items-center gap-[4%] rounded-[1.4rem] border px-[4%] py-[3%]", active ? "border-blue-200 bg-blue-50" : "border-slate-200 bg-white")}><strong className={cn("text-[clamp(14px,1.2vw,23px)]", active ? "text-blue-950" : "text-slate-700")}>{label}</strong><div className="relative flex items-center justify-between"><div className={cn("absolute left-0 right-0 top-1/2 h-px", active ? "bg-blue-300" : "bg-slate-200")} />{items.map((item, index) => <div className="relative z-10 flex w-[22%] flex-col items-center text-center" key={item}><span className={cn("flex size-[clamp(20px,2vw,38px)] items-center justify-center rounded-full font-mono text-[clamp(10px,.85vw,16px)]", active ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-500")}>{index + 1}</span><span className="mt-[7%] text-[clamp(11px,.92vw,18px)] leading-tight text-slate-600">{item}</span></div>)}</div></div>;
+  return <div className={cn("grid grid-cols-[11rem_1fr] items-center gap-[4%] rounded-[1.4rem] border px-[4%] py-[3%]", active ? "border-blue-200 bg-blue-50" : "border-slate-200 bg-white")}><strong className={cn("text-[clamp(14px,1.2vw,23px)]", active ? "text-blue-950" : "text-slate-700")}>{label}</strong><div className="relative flex items-center justify-between"><div className={cn("absolute left-0 right-0 top-1/2 h-px", active ? "bg-blue-300" : "bg-slate-200")} />{items.map((item, index) => <div className="relative z-10 flex w-[22%] flex-col items-center text-center" key={item}><span className={cn("flex size-[clamp(20px,2vw,38px)] items-center justify-center rounded-full font-mono text-[clamp(10px,.85vw,16px)]", active ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-500")}>{index + 1}</span><span className="mt-[7%] text-[clamp(11px,.92vw,18px)] leading-tight text-slate-600">{item}</span></div>)}</div></div>;
 }
 
 export function ChatAgentTimeline() {
-  return <div className="flex h-full flex-col justify-center gap-[7%]"><Reveal order={1}><TimelineRow label="传统 AI 对话" items={["提出问题", "生成回答", "人工复制", "人工决定下一步"]} /></Reveal><Reveal order={2}><TimelineRow active label="智能体软件" items={["给出任务", "保存状态", "调用工具", "根据结果继续"]} /></Reveal></div>;
+  return <div className="flex h-full flex-col justify-center gap-[7%]"><Reveal order={1}><TimelineRow label="一次性对话" items={["提出问题", "生成回答", "人工复制或操作", "人工决定下一步"]} /></Reveal><Reveal order={2}><TimelineRow active label="任务型智能体" items={["给出目标和边界", "软件维护状态", "工具真实执行", "观察结果并继续"]} /></Reveal></div>;
 }
 
 export function ApplicationLayers() {
   const layers = [
-    { label: "使用层", title: "界面、文件、过程与结果", icon: AppWindow, className: "w-[84%] bg-cyan-50 border-cyan-200" },
-    { label: "能力层", title: "模型与当前上下文", icon: BrainCircuit, className: "w-[72%] bg-blue-50 border-blue-200" },
-    { label: "行动层", title: "工具、参数与实际权限", icon: Wrench, className: "w-[60%] bg-violet-50 border-violet-200" },
-    { label: "运行层", title: "任务状态、错误与执行记录", icon: Database, className: "w-[48%] bg-slate-100 border-slate-300 text-slate-950" },
+    { label: "使用层", question: "你在操作什么？", text: "界面接收目标和材料，展示处理过程、结果与待确认项。", icon: AppWindow, className: "w-[94%] bg-cyan-50 border-cyan-200" },
+    { label: "能力层", question: "模型本次依据什么生成？", text: "软件整理当前上下文，再调用模型生成内容或下一步意图。", icon: BrainCircuit, className: "w-[88%] bg-blue-50 border-blue-200" },
+    { label: "行动层", question: "软件实际上能做什么？", text: "工具在真实权限范围内读取、计算、写入和执行。", icon: Wrench, className: "w-[82%] bg-violet-50 border-violet-200" },
+    { label: "运行层", question: "任务怎样持续和追踪？", text: "状态与记录保存进度、结果、错误和待确认问题。", icon: Database, className: "w-[76%] bg-slate-100 border-slate-300 text-slate-950" },
   ];
-  return <div className="grid h-full grid-rows-[repeat(4,minmax(0,1fr))] gap-[2%] pb-[4%]">{layers.map(({ label, title, icon: Icon, className }, index) => <Reveal className="min-h-0" key={label} order={index + 1}><div className={cn("mx-auto flex h-full items-center justify-between rounded-[1.3rem] border px-[4%] shadow-lg shadow-slate-950/5", className)}><div><Kicker>{label}</Kicker><strong className="mt-[1%] block text-[clamp(15px,1.35vw,26px)]">{title}</strong></div><Icon className="size-[8%] opacity-45" /></div></Reveal>)}</div>;
+  return <div className="grid h-full grid-rows-[repeat(4,minmax(0,1fr))] gap-[2%] pb-[4%]">{layers.map(({ label, question, text, icon: Icon, className }, index) => <Reveal className="min-h-0" key={label} order={index + 1}><div className={cn("mx-auto grid h-full grid-cols-[.82fr_1.18fr_auto] items-center gap-[4%] rounded-[1.3rem] border px-[4%] shadow-lg shadow-slate-950/5", className)}><div><Kicker>{label}</Kicker><strong className="mt-[1%] block text-[clamp(15px,1.3vw,25px)]">{question}</strong></div><p className="text-[clamp(13px,1vw,19px)] leading-relaxed text-slate-600">{text}</p><Icon className="size-[clamp(30px,3.2vw,60px)] opacity-40" /></div></Reveal>)}</div>;
 }
 
 const concepts = [
-  { label: "AI 应用", en: "APPLICATION", color: "cyan", icon: AppWindow, definition: "用户实际操作的软件产品。", location: "组合界面、模型、文件、工具、权限和任务记录。", caseText: "WorkBuddy 接收材料、展示过程并保存产物。", boundary: "连接模型不代表所有功能都由模型完成。" },
-  { label: "上下文", en: "CONTEXT", color: "blue", icon: MessageSquareText, definition: "本次真正交给模型的信息。", location: "目标、历史消息、工具结果、原文片段和规则。", caseText: "人数、访谈和 5 页限制进入当前输入。", boundary: "文件存在，不等于内容已经进入上下文。" },
-  { label: "大模型", en: "MODEL", color: "violet", icon: BrainCircuit, definition: "根据当前输入逐步生成输出。", location: "生成文字、结构、分类、判断和调用意图。", caseText: "归纳问题、形成汇报结构和待确认项。", boundary: "输出可能错误；提出行动不等于已执行。" },
-  { label: "工具", en: "TOOLS", color: "amber", icon: Wrench, definition: "真正接触文件和系统的能力。", location: "读、写、改、执行及其专业组合。", caseText: "读取报名表、统计、生成 PPT、检查页数。", boundary: "受权限和参数限制，成功也可能业务上不正确。" },
-  { label: "智能体", en: "AGENT", color: "green", icon: Bot, definition: "围绕目标维护状态并持续推进。", location: "判断、行动、观察、更新、继续或停止。", caseText: "先统计，再读访谈，再生成和检查。", boundary: "不承担最终责任，缺信息时应停下来询问。" },
+  { label: "AI 应用", en: "APPLICATION", color: "cyan", icon: AppWindow, definition: "用户实际操作的完整软件产品。", detail: "组合界面、模型、文件、工具、权限和任务记录。", caseText: "WorkBuddy 接收材料、展示过程并保存产物。", boundary: "连接模型不代表所有功能都由模型完成。" },
+  { label: "上下文", en: "CONTEXT", color: "blue", icon: MessageSquareText, definition: "这一次真正交给模型的信息。", detail: "目标、历史消息、工具结果、原文片段和规则。", caseText: "人数统计、相关访谈片段和 5 页限制进入当前输入。", boundary: "文件存在，不等于内容已经进入上下文。" },
+  { label: "大模型", en: "MODEL", color: "violet", icon: BrainCircuit, definition: "根据当前输入逐步生成输出的能力。", detail: "可以生成文字、结构、分类结果和工具调用意图。", caseText: "归纳问题、形成汇报结构和待确认项。", boundary: "输出可能错误；提出行动不等于已经执行。" },
+  { label: "工具", en: "TOOLS", color: "amber", icon: Wrench, definition: "真正读取、计算、写入和操作外部对象的能力。", detail: "读、写、改、执行及其与业务规则的专业组合。", caseText: "读取报名表、统计、生成 PPT、检查页数。", boundary: "受权限和参数限制，执行成功也不等于业务正确。" },
+  { label: "智能体", en: "AGENT", color: "green", icon: Bot, definition: "围绕目标维护状态，并根据结果持续推进的运行方式。", detail: "判断、行动、观察、更新，以及继续、询问或停止。", caseText: "先统计，再读访谈，再生成和检查。", boundary: "不承担最终责任，缺少信息时应停下来询问。" },
 ] as const;
 
 export function ConceptExplorer() {
@@ -233,8 +233,8 @@ export function ConceptExplorer() {
 
         <dl className="relative mt-auto grid h-[43%] grid-cols-3 gap-[2.2%]">
           <div className="rounded-[1.25rem] border border-slate-200/80 bg-white/80 p-[7%] shadow-sm">
-            <dt className="text-[clamp(10px,.78vw,15px)] font-semibold text-slate-900">软件内部</dt>
-            <dd className="mt-[8%] text-[clamp(12px,1vw,19px)] leading-[1.55] text-slate-600">{concept.location}</dd>
+            <dt className="text-[clamp(10px,.78vw,15px)] font-semibold text-slate-900">具体包括</dt>
+            <dd className="mt-[8%] text-[clamp(12px,1vw,19px)] leading-[1.55] text-slate-600">{concept.detail}</dd>
           </div>
           <div className="rounded-[1.25rem] border border-blue-200/80 bg-blue-50/75 p-[7%] shadow-sm">
             <dt className="text-[clamp(10px,.78vw,15px)] font-semibold text-blue-900">案例对应</dt>
@@ -251,44 +251,234 @@ export function ConceptExplorer() {
 }
 
 function PipelineNode({ icon: Icon, label, title, items, color }: { icon: LucideIcon; label: string; title: string; items: string[]; color: keyof typeof tone }) {
-  return <div className={cn("relative flex h-full flex-col rounded-[1.6rem] border p-[7%]", tone[color])}><div className="flex items-center justify-between"><Kicker>{label}</Kicker><Icon className="size-[14%] opacity-45" /></div><strong className="mt-[8%] text-[clamp(17px,1.55vw,30px)]">{title}</strong><div className="mt-auto space-y-[5%]">{items.map((item) => <div className="border-t border-current/10 pt-[4%] text-[clamp(12px,1vw,19px)] opacity-70" key={item}>{item}</div>)}</div></div>;
+  return <div className={cn("relative flex h-full flex-col rounded-[1.6rem] border p-[7%] shadow-sm shadow-slate-950/4", tone[color])}><div className="flex items-center justify-between"><Kicker>{label}</Kicker><Icon className="size-[14%] opacity-45" /></div><strong className="mt-[8%] text-[clamp(18px,1.65vw,32px)] leading-tight tracking-[-.025em]">{title}</strong><div className="mt-auto space-y-[5%]">{items.map((item) => <div className="border-t border-current/10 pt-[4%] text-[clamp(13px,1.04vw,20px)] leading-snug opacity-75" key={item}>{item}</div>)}</div></div>;
 }
 
 export function ContextPipeline() {
-  return <div className="grid h-full grid-cols-[1fr_.16fr_1fr_.16fr_1fr] gap-[1%]"><Reveal order={1}><PipelineNode icon={FileInput} label="FILES" title="文件仍在磁盘" color="slate" items={["Excel：128 条记录", "Word：6 段访谈", "模型还没看到内容"]} /></Reveal><div className="flex items-center justify-center"><ArrowRight className="text-slate-300" /></div><Reveal order={2}><PipelineNode icon={FileSearch} label="TOOLS" title="读取与解析" color="violet" items={["定位工作表和字段", "提取段落及来源", "返回结构化结果"]} /></Reveal><div className="flex items-center justify-center"><ArrowRight className="text-slate-300" /></div><Reveal order={3}><PipelineNode icon={MessageSquareText} label="CONTEXT" title="组织为本次输入" color="blue" items={["用户目标", "工具返回和原文", "规则、状态、验收条件"]} /></Reveal></div>;
+  return <div className="grid h-full grid-cols-[1fr_.16fr_1fr_.16fr_1fr] gap-[1%]">
+    <PipelineNode
+      icon={FileInput}
+      label="FILES · 文件"
+      title="文件存在"
+      color="slate"
+      items={["报名统计.xlsx", "需求访谈记录.docx", "模型还看不到文件内容"]}
+    />
+    <Reveal className="flex items-center justify-center" order={1}><ArrowRight className="text-violet-300" /></Reveal>
+    <Reveal order={1}>
+      <PipelineNode
+        icon={FileSearch}
+        label="TOOL RESULT · 工具结果"
+        title="读取、解析并返回"
+        color="violet"
+        items={["四个部门共 128 人", "提取 6 段访谈及来源", "筛选与任务相关的信息"]}
+      />
+    </Reveal>
+    <Reveal className="flex items-center justify-center" order={2}><ArrowRight className="text-blue-300" /></Reveal>
+    <Reveal order={2}>
+      <PipelineNode
+        icon={MessageSquareText}
+        label="CONTEXT · 当前上下文"
+        title="组织为本次输入"
+        color="blue"
+        items={["目标：形成 5 页汇报", "相关数据与原文片段", "规则、状态与验收条件"]}
+      />
+    </Reveal>
+  </div>;
 }
 
 export function ContextFunnel() {
-  const stages = [
-    { order: 1, label: "全部可访问资料", note: "报名表、访谈、制度、历史文件……", width: "w-[92%]", color: "bg-slate-200 text-slate-600" },
-    { order: 2, label: "与任务相关", note: "只留下培训需求所需材料", width: "w-[72%]", color: "bg-blue-100 text-blue-700" },
-    { order: 3, label: "经过授权和筛选", note: "去除无关与不应暴露的信息", width: "w-[52%]", color: "bg-violet-100 text-violet-700" },
+  const revealStep = Math.min(useRevealStep(), 3);
+  const standards = [
+    { step: 1, icon: Eye, label: "相关", text: "直接支持当前任务" },
+    { step: 1, icon: Settings2, label: "充分", text: "足以判断，但不是全部资料" },
+    { step: 2, icon: ShieldCheck, label: "已授权", text: "只使用允许且必要的信息" },
+    { step: 3, icon: ScanSearch, label: "可追溯", text: "数字和结论能回到来源" },
   ];
-  return <div className="grid h-full grid-cols-[.68fr_.32fr] gap-[6%]"><div className="flex flex-col items-center justify-center gap-[4%]">{stages.map((stage) => <Reveal className={stage.width} key={stage.label} order={stage.order}><div className={cn("rounded-[1.3rem] px-[6%] py-[4%] text-center", stage.color)}><strong className="block text-[clamp(15px,1.3vw,25px)]">{stage.label}</strong><span className="text-[clamp(12px,.95vw,18px)] opacity-65">{stage.note}</span></div></Reveal>)}<ArrowDown className="size-[7%] text-slate-300" /><div className="w-[38%] rounded-full border border-blue-200 bg-blue-100 px-[5%] py-[3%] text-center text-[clamp(13px,1.05vw,20px)] font-semibold text-blue-950">本次上下文</div></div><div className="flex flex-col justify-center gap-[5%] border-l border-slate-200 pl-[10%]">{[[Eye,"相关","只放当前任务需要的信息"],[Settings2,"充分","足以支持判断和生成"],[ShieldCheck,"安全","经过授权并最小化暴露"],[ScanSearch,"可追溯","能回到工具结果或原文"]].map(([Icon,label,text]) => { const C=Icon as LucideIcon; return <div className="flex gap-[5%]" key={String(label)}><C className="size-[11%] text-blue-600" /><div><strong className="block text-[clamp(13px,1.05vw,20px)]">{String(label)}</strong><span className="text-[clamp(12px,.95vw,18px)] text-slate-500">{String(text)}</span></div></div>; })}</div></div>;
+
+  return <div className="grid h-full grid-cols-[.7fr_.3fr] gap-[5%] pb-[clamp(46px,3vw,58px)]">
+    <div className="flex min-h-0 flex-col items-center justify-center gap-[clamp(4px,.35vw,7px)]">
+      <div className="w-[96%] shrink-0 rounded-[1.35rem] border border-slate-200 bg-white px-[5%] py-[clamp(11px,.78vw,15px)] shadow-sm">
+        <div className="flex items-center justify-between gap-[4%]">
+          <div><Kicker>SOURCE POOL · 可访问资料池</Kicker><strong className="mt-[2%] block text-[clamp(15px,1.3vw,25px)]">软件能访问，不代表本次都要使用</strong></div>
+          <span className="shrink-0 font-mono text-[clamp(10px,.78vw,15px)] text-slate-400">5 类资料</span>
+        </div>
+        <div className="mt-[1.3%] flex flex-wrap gap-[2%] text-[clamp(11px,.88vw,17px)] text-slate-600">
+          {["报名表", "培训访谈", "员工联系方式", "薪酬表", "历史制度"].map((item) => <span className="rounded-full bg-slate-100 px-[3%] py-[clamp(4px,.3vw,6px)]" key={item}>{item}</span>)}
+        </div>
+      </div>
+
+      <Reveal className="flex w-[82%] shrink-0 flex-col items-center gap-1" order={1}>
+        <ArrowDown className="size-[clamp(14px,1.1vw,21px)] shrink-0 text-blue-300" />
+        <div className="w-full rounded-[1.25rem] border border-blue-200 bg-blue-50 px-[6%] py-[clamp(9px,.6vw,12px)] text-blue-950">
+          <div className="flex items-center justify-between gap-[4%]"><strong className="text-[clamp(15px,1.25vw,24px)]">按任务筛选</strong><span className="font-mono text-[clamp(10px,.78vw,15px)] text-blue-500">KEEP WHAT MATTERS</span></div>
+          <div className="mt-[1%] flex items-center justify-between gap-[4%] text-[clamp(11px,.9vw,17px)]"><span>保留：部门人数、培训访谈</span><span className="rounded-full bg-rose-50 px-[3%] py-[.7%] text-rose-600">排除：薪酬表、无关制度</span></div>
+        </div>
+      </Reveal>
+
+      <Reveal className="flex w-[68%] shrink-0 flex-col items-center gap-1" order={2}>
+        <ArrowDown className="size-[clamp(14px,1.1vw,21px)] shrink-0 text-violet-300" />
+        <div className="w-full rounded-[1.25rem] border border-violet-200 bg-violet-50 px-[7%] py-[clamp(9px,.6vw,12px)] text-violet-950">
+          <div className="flex items-center justify-between gap-[4%]"><strong className="text-[clamp(15px,1.25vw,24px)]">按权限与最小必要处理</strong><ShieldCheck className="size-[7%] text-violet-500" /></div>
+          <p className="mt-[1%] text-[clamp(11px,.9vw,17px)] text-violet-800/75">去掉姓名、电话等个人信息；保留部门汇总和带来源的片段。</p>
+        </div>
+      </Reveal>
+
+      <Reveal className="flex w-[54%] shrink-0 flex-col items-center gap-1" order={3}>
+        <ArrowDown className="size-[clamp(14px,1.1vw,21px)] shrink-0 text-cyan-300" />
+        <div className="w-full rounded-[1.25rem] border border-cyan-200 bg-cyan-50 px-[8%] py-[clamp(7px,.48vw,10px)] text-center text-cyan-950 shadow-sm">
+          <Kicker>CONTEXT · 本次上下文</Kicker>
+          <p className="mt-[2%] text-[clamp(11px,.9vw,17px)] leading-relaxed">128 人 · 6 段访谈 · 5 页限制 · 来源与验收规则</p>
+        </div>
+      </Reveal>
+    </div>
+
+    <div className="flex flex-col justify-center gap-[clamp(9px,.75vw,15px)] border-l border-slate-200 pl-[10%]">
+      <div><Kicker>QUALITY CHECK · 四项标准</Kicker><p className="mt-[2%] text-[clamp(11px,.88vw,17px)] text-slate-400">不是越多，而是范围刚好</p></div>
+      {standards.map(({ step, icon: Icon, label, text }) => {
+        const active = revealStep >= step;
+        return <div className={cn("flex items-center gap-[5%] rounded-[1.1rem] border px-[5%] py-[4%] transition-all duration-300", active ? "border-blue-200 bg-white text-slate-950 shadow-sm" : "border-transparent text-slate-400")} key={label}>
+          <span className={cn("flex size-[clamp(34px,3vw,56px)] shrink-0 items-center justify-center rounded-full", active ? "bg-blue-50 text-blue-600" : "bg-slate-100 text-slate-300")}><Icon className="size-[46%]" /></span>
+          <div><strong className="block text-[clamp(14px,1.1vw,21px)]">{label}</strong><span className="mt-[1%] block text-[clamp(11px,.88vw,17px)] leading-snug opacity-65">{text}</span></div>
+        </div>;
+      })}
+    </div>
+  </div>;
 }
 
 export function ModelStage() {
-  return <div className="grid h-full grid-cols-[1fr_.9fr_1fr] items-center gap-[4%]"><Reveal order={1}><div className="h-[83%] rounded-[1.8rem] border border-cyan-200 bg-cyan-50 p-[8%]"><Kicker>INPUT · 当前输入</Kicker><div className="mt-[8%] space-y-[5%]">{["目标：形成 5 页汇报","工具结果：四部门共 128 人","访谈：安全、场景、准确性","规则：材料外事实待确认"].map((item) => <div className="rounded-lg bg-white/70 px-[5%] py-[3%] text-[clamp(12px,1vw,19px)] text-cyan-950" key={item}>{item}</div>)}</div></div></Reveal><Reveal order={2}><div className="relative mx-auto flex aspect-square w-[92%] flex-col items-center justify-center rounded-full border border-violet-200 bg-violet-100 text-center text-violet-950 shadow-[0_0_0_1.2rem_rgba(139,92,246,.06),0_20px_55px_rgba(76,29,149,.12)]"><BrainCircuit className="size-[22%] text-violet-600" /><strong className="mt-[5%] text-[clamp(15px,1.45vw,28px)]">逐步计算与生成</strong><span className="mt-[3%] max-w-[68%] text-[clamp(12px,.95vw,18px)] leading-relaxed text-violet-700/70">不断计算接下来更合适生成什么，而不是取出整段固定答案</span></div></Reveal><Reveal order={3}><div className="h-[83%] rounded-[1.8rem] border border-emerald-200 bg-emerald-50 p-[8%]"><Kicker>OUTPUT · 多种输出</Kicker><div className="mt-[8%] grid grid-cols-2 gap-[5%]">{["自然语言","JSON / 表格","分类判断","工具调用","待确认项"].map((item) => <div className="flex aspect-[1.7] items-center justify-center rounded-xl border border-emerald-200 bg-white text-center text-[clamp(12px,1vw,19px)] font-medium text-emerald-950" key={item}>{item}</div>)}</div></div></Reveal></div>;
+  const outputTypes = ["自然语言", "JSON / 表格结构", "分类结果", "工具调用意图", "待确认问题"];
+
+  return <div className="flex h-full flex-col gap-[clamp(10px,.8vw,16px)] pb-[clamp(16px,1.2vw,24px)]">
+    <div className="grid shrink-0 grid-cols-2 overflow-hidden rounded-[1.2rem] border border-slate-200 bg-white shadow-sm">
+      <div className="border-r border-slate-200 px-[4%] py-[clamp(9px,.65vw,13px)]">
+        <Kicker>TRAINING · 使用前</Kicker>
+        <p className="mt-[1%] text-[clamp(12px,.95vw,18px)] text-slate-600"><strong className="text-slate-950">训练阶段：</strong>从大量示例中形成语言、结构和模式处理能力。</p>
+      </div>
+      <div className="px-[4%] py-[clamp(9px,.65vw,13px)]">
+        <Kicker>USE · 当前任务</Kicker>
+        <p className="mt-[1%] text-[clamp(12px,.95vw,18px)] text-slate-600"><strong className="text-slate-950">使用阶段：</strong>当前上下文进入模型，生成这一次的具体输出。</p>
+      </div>
+    </div>
+
+    <div className="grid min-h-0 flex-1 grid-cols-[.86fr_.08fr_1.26fr_.08fr_.86fr] gap-[1%]">
+      <div className="h-full min-h-0 overflow-hidden rounded-[1.6rem] border border-cyan-200 bg-cyan-50 p-[6%] text-cyan-950 shadow-sm">
+        <Kicker>INPUT · 当前输入</Kicker>
+        <div className="mt-[5%] space-y-[3%]">
+          {["目标：形成 5 页汇报", "工具结果：四部门共 128 人", "访谈片段：安全、场景、准确性", "规则：材料外事实待确认"].map((item) => <div className="rounded-xl border border-cyan-100 bg-white/80 px-[5%] py-[clamp(9px,.7vw,14px)] text-[clamp(12px,1vw,19px)] leading-snug" key={item}>{item}</div>)}
+        </div>
+      </div>
+
+      <Reveal className="flex items-center justify-center" order={1}><ArrowRight className="text-violet-300" /></Reveal>
+      <Reveal className="min-h-0" order={1}>
+        <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-[1.6rem] border border-violet-200 bg-violet-50 px-[4%] py-[3%] text-violet-950 shadow-sm">
+          <div className="flex items-center justify-between"><Kicker>GENERATE · 逐步生成</Kicker><RefreshCw className="size-[9%] text-violet-500" /></div>
+          <p className="mt-[2%] text-[clamp(12px,.95vw,18px)] leading-relaxed text-violet-800/75">模型每次只推进一小步，再把新结果带入下一轮。</p>
+          <div className="my-auto rounded-[1.15rem] border border-violet-200 bg-white/80 p-[3%]">
+            <div className="flex items-center justify-between"><span className="font-mono text-[clamp(10px,.78vw,15px)] text-violet-500">一次生成循环</span><span className="text-[clamp(10px,.78vw,15px)] text-slate-400">概率仅作示意</span></div>
+            <div className="mt-[4%] grid grid-cols-[.86fr_auto_1.12fr_auto_1.08fr] items-stretch gap-[2%]">
+              <div className="rounded-xl bg-slate-50 p-[8%]">
+                <span className="font-mono text-[clamp(10px,.78vw,15px)] text-slate-400">01 · 已有内容</span>
+                <strong className="mt-[12%] block text-[clamp(13px,1.05vw,20px)] leading-snug text-slate-900">培训需求</strong>
+              </div>
+              <div className="flex items-center justify-center"><ArrowRight className="size-[clamp(14px,1.1vw,21px)] text-violet-300" /></div>
+              <div className="rounded-xl bg-violet-50 p-[7%]">
+                <span className="font-mono text-[clamp(10px,.78vw,15px)] text-violet-400">02 · 候选片段</span>
+                <div className="mt-[7%] space-y-[5%] text-[clamp(10px,.82vw,16px)]">
+                  <div className="flex justify-between rounded-md bg-violet-600 px-[7%] py-[4%] font-medium text-white"><span>主要集中在</span><span>46%</span></div>
+                  <div className="flex justify-between px-[7%] text-violet-700/65"><span>包括</span><span>21%</span></div>
+                  <div className="flex justify-between px-[7%] text-violet-700/65"><span>涉及</span><span>8%</span></div>
+                </div>
+              </div>
+              <div className="flex items-center justify-center"><ArrowRight className="size-[clamp(14px,1.1vw,21px)] text-violet-300" /></div>
+              <div className="rounded-xl border border-violet-200 bg-white p-[8%]">
+                <span className="font-mono text-[clamp(10px,.78vw,15px)] text-violet-400">03 · 追加结果</span>
+                <strong className="mt-[10%] block text-[clamp(13px,1.05vw,20px)] leading-snug text-violet-950"><span className="block">培训需求</span><span className="block text-violet-600">主要集中在<span className="ml-1 animate-pulse text-violet-400">▍</span></span></strong>
+              </div>
+            </div>
+            <div className="mt-[4%] flex items-center justify-center gap-[3%] rounded-full bg-violet-50 px-[5%] py-[2.5%] text-[clamp(11px,.86vw,16px)] text-violet-700"><RefreshCw className="size-[1.1em]" />新结果成为“已有内容”，继续下一轮</div>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal className="flex items-center justify-center" order={2}><ArrowRight className="text-emerald-300" /></Reveal>
+      <Reveal className="min-h-0" order={2}>
+        <div className="h-full min-h-0 overflow-hidden rounded-[1.6rem] border border-emerald-200 bg-emerald-50 p-[6%] text-emerald-950 shadow-sm">
+          <Kicker>OUTPUT · 多种输出</Kicker>
+          <div className="mt-[5%] grid grid-cols-2 gap-[4%]">
+            {outputTypes.map((item, index) => <div className={cn("flex min-h-[clamp(54px,4.5vw,86px)] items-center justify-center rounded-xl border border-emerald-200 bg-white px-[5%] text-center text-[clamp(12px,1vw,19px)] font-medium leading-snug", index === outputTypes.length - 1 && "col-span-2")} key={item}>{item}</div>)}
+          </div>
+          <p className="mt-[5%] border-t border-emerald-200 pt-[4%] text-[clamp(11px,.86vw,16px)] leading-relaxed text-emerald-800/70">结构可以很规整，但仍然属于模型生成的内容。</p>
+        </div>
+      </Reveal>
+    </div>
+  </div>;
 }
 
 export function ModelBoundaryQuadrants() {
   const items = [
-    { order: 1, label: "模型擅长", title: "语言与结构", text: "改写、归纳、分类、提取、大纲和结构化草稿", color: "border-emerald-300 bg-emerald-50", icon: BrainCircuit },
-    { order: 2, label: "需要上下文", title: "公司内部事实", text: "没有进入输入的报名数据、制度和状态，模型并不知道", color: "border-cyan-300 bg-cyan-50", icon: MessageSquareText },
-    { order: 3, label: "需要工具", title: "精确计算与动作", text: "真正统计、读取、写入和执行由工具完成", color: "border-violet-300 bg-violet-50", icon: Wrench },
-    { order: 4, label: "需要人", title: "业务判断与责任", text: "建议是否合规、可行和值得执行由责任人判断", color: "border-amber-300 bg-amber-50", icon: UserRoundCheck },
+    { order: 0, label: "MODEL · 模型生成", title: "语言与结构", example: "把 6 段访谈归纳为 3 个培训主题", boundary: "适合生成草稿，结果仍需核对", color: "border-emerald-200 bg-emerald-50 text-emerald-950", iconTone: "bg-emerald-100 text-emerald-600", icon: BrainCircuit },
+    { order: 1, label: "CONTEXT · 事实需要上下文", title: "当前内部事实", example: "四部门共 128 人、制度原文和当前任务状态", boundary: "没有进入输入的信息，模型不能可靠依据", color: "border-cyan-200 bg-cyan-50 text-cyan-950", iconTone: "bg-cyan-100 text-cyan-600", icon: MessageSquareText },
+    { order: 2, label: "TOOLS · 行动交给工具", title: "可验证计算与真实动作", example: "按部门统计、生成 PPT、检查页数", boundary: "工具仍受参数、权限和运行环境限制", color: "border-violet-200 bg-violet-50 text-violet-950", iconTone: "bg-violet-100 text-violet-600", icon: Wrench },
+    { order: 3, label: "HUMAN · 最终由人决定", title: "业务取舍与责任", example: "建议是否合规、可行，以及是否正式采用", boundary: "最终决定、验收和责任不会转移给模型", color: "border-amber-200 bg-amber-50 text-amber-950", iconTone: "bg-amber-100 text-amber-600", icon: UserRoundCheck },
   ];
-  return <div className="relative grid h-full grid-cols-2 grid-rows-2 gap-[2%]"><div className="pointer-events-none absolute left-1/2 top-0 h-full w-px bg-slate-200" /><div className="pointer-events-none absolute left-0 top-1/2 h-px w-full bg-slate-200" />{items.map(({ order, label, title, text, color, icon: Icon }) => <Reveal key={label} order={order}><div className={cn("flex h-full items-center gap-[6%] rounded-[1.6rem] border-l-[6px] p-[6%]", color)}><Icon className="size-[14%] opacity-55" /><div><Kicker>{label}</Kicker><strong className="mt-[2%] block text-[clamp(15px,1.45vw,28px)]">{title}</strong><p className="mt-[2%] text-[clamp(11px,.92vw,18px)] leading-relaxed text-slate-600">{text}</p></div></div></Reveal>)}</div>;
+  return <div className="grid h-full grid-cols-2 grid-rows-2 gap-[2%] pb-[clamp(34px,2.4vw,46px)]">
+    {items.map(({ order, label, title, example, boundary, color, iconTone, icon: Icon }, index) => <Reveal className="min-h-0" key={label} order={order}>
+      <article className={cn("relative flex h-full min-h-0 flex-col overflow-hidden rounded-[1.5rem] border px-[4%] py-[clamp(14px,1vw,20px)] shadow-sm", color)}>
+        <span className="absolute right-[4%] top-[2%] font-mono text-[clamp(42px,4vw,76px)] font-semibold opacity-[.035]">0{index + 1}</span>
+        <div className="relative flex items-center gap-[3%]"><span className={cn("flex size-[clamp(38px,3.4vw,64px)] shrink-0 items-center justify-center rounded-[1rem]", iconTone)}><Icon className="size-[48%]" /></span><div><Kicker>{label}</Kicker><h2 className="mt-[2%] text-[clamp(18px,1.45vw,28px)] font-semibold leading-tight tracking-[-.025em]">{title}</h2></div></div>
+        <div className="relative mt-[clamp(8px,.6vw,12px)] rounded-[1rem] border border-white/80 bg-white/75 px-[4%] py-[clamp(8px,.55vw,11px)]">
+          <span className="font-mono text-[clamp(10px,.78vw,15px)] opacity-45">案例任务</span>
+          <p className="mt-[1%] text-[clamp(13px,1.02vw,20px)] font-medium leading-snug">{example}</p>
+        </div>
+        <p className="relative mt-auto flex items-center gap-[2%] border-t border-current/10 pt-[clamp(7px,.5vw,10px)] text-[clamp(11px,.88vw,17px)] leading-snug opacity-70"><CircleAlert className="size-[1.1em] shrink-0" />{boundary}</p>
+      </article>
+    </Reveal>)}
+  </div>;
 }
 
 export function ToolActions() {
   const actions = [
-    { order: 1, icon: Eye, title: "读", text: "文件、数据库、网页和系统状态", pos: "left-[4%] top-[7%]", color: "bg-cyan-500" },
-    { order: 2, icon: FileOutput, title: "写", text: "文档、表格、草稿、图片和代码", pos: "right-[4%] top-[7%]", color: "bg-blue-600" },
-    { order: 3, icon: FilePenLine, title: "改", text: "调整已有内容和明确范围的变更", pos: "bottom-[7%] left-[4%]", color: "bg-violet-600" },
-    { order: 4, icon: Play, title: "执行", text: "计算、脚本、检查和授权后的操作", pos: "bottom-[7%] right-[4%]", color: "bg-emerald-600" },
+    { order: 0, label: "READ", icon: Eye, title: "读", text: "取得已有内容或当前状态", object: "报名统计.xlsx", result: "返回 128 条记录", boundary: "通常不改变原对象", color: "border-cyan-200 bg-cyan-50 text-cyan-950", iconTone: "bg-cyan-500" },
+    { order: 1, label: "WRITE", icon: FileOutput, title: "写", text: "创建新的文件、记录或内容", object: "培训需求汇报.pptx", result: "新建交付文件", boundary: "产生一个新对象", color: "border-blue-200 bg-blue-50 text-blue-950", iconTone: "bg-blue-600" },
+    { order: 2, label: "EDIT", icon: FilePenLine, title: "改", text: "在明确范围内调整已有对象", object: "汇报第 3 页", result: "补充访谈来源", boundary: "改变已有对象", color: "border-violet-200 bg-violet-50 text-violet-950", iconTone: "bg-violet-600" },
+    { order: 3, label: "EXECUTE", icon: Play, title: "执行", text: "运行计算、检查或授权操作", object: "部门人数与 PPT", result: "返回统计和检查结果", boundary: "可能成功，也可能报错", color: "border-emerald-200 bg-emerald-50 text-emerald-950", iconTone: "bg-emerald-600" },
   ];
-  return <div className="relative mx-auto h-full w-[88%]"><div className="absolute left-1/2 top-1/2 flex size-[30%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-[10px] border-slate-100 bg-white shadow-xl"><FileText className="size-[25%] text-slate-400" /><strong className="mt-[4%] text-[clamp(15px,1.3vw,25px)]">外部对象</strong><span className="text-[clamp(10px,.78vw,15px)] text-slate-400">文件 · 数据 · 系统</span></div>{actions.map(({ order, icon: Icon, title, text, pos, color }) => <Reveal className={cn("absolute h-[34%] w-[32%]", pos)} key={title} order={order}><div className="flex h-full items-center gap-[7%] rounded-[1.5rem] border border-slate-200 bg-white p-[7%] shadow-lg shadow-slate-950/5"><span className={cn("flex size-[31%] items-center justify-center rounded-full text-white", color)}><Icon className="size-[42%]" /></span><div><strong className="text-[clamp(16px,1.7vw,33px)]">{title}</strong><p className="mt-[3%] text-[clamp(11px,.92vw,18px)] leading-relaxed text-slate-500">{text}</p></div></div></Reveal>)}</div>;
+  const files = [
+    { name: "报名统计.xlsx", meta: "原始数据", icon: FileSpreadsheet, tone: "bg-emerald-100 text-emerald-600" },
+    { name: "需求访谈记录.docx", meta: "原始材料", icon: FileText, tone: "bg-blue-100 text-blue-600" },
+    { name: "培训需求汇报.pptx", meta: "交付产物", icon: FileOutput, tone: "bg-violet-100 text-violet-600" },
+  ];
+
+  return <div className="grid h-full grid-rows-[minmax(0,1fr)_auto] gap-[clamp(10px,.8vw,16px)] pb-[clamp(50px,3.4vw,66px)]">
+    <div className="grid min-h-0 grid-cols-[.32fr_.68fr] gap-[2%]">
+      <section className="relative flex min-h-0 flex-col overflow-hidden rounded-[1.7rem] border border-slate-200 bg-white px-[7%] py-[clamp(16px,1.25vw,24px)] shadow-[0_20px_55px_rgba(15,23,42,.07)]">
+        <div className="absolute -right-[12%] -top-[18%] size-[55%] rounded-full bg-blue-100/55 blur-2xl" />
+        <div className="relative"><Kicker>CASE WORKSPACE · 外部对象</Kicker><h2 className="mt-[2%] text-[clamp(19px,1.65vw,32px)] font-semibold tracking-[-.035em]">工具实际接触的对象</h2></div>
+        <div className="relative mt-[clamp(12px,1vw,20px)] space-y-[clamp(7px,.55vw,11px)]">
+          {files.map(({ name, meta, icon: Icon, tone }) => <div className="flex items-center gap-[4%] rounded-[1rem] border border-slate-200/80 bg-slate-50/80 px-[4%] py-[clamp(7px,.52vw,10px)]" key={name}><span className={cn("flex size-[clamp(34px,2.8vw,54px)] shrink-0 items-center justify-center rounded-xl", tone)}><Icon className="size-[46%]" /></span><div className="min-w-0"><strong className="block truncate text-[clamp(12px,1vw,19px)]">{name}</strong><span className="text-[clamp(10px,.78vw,15px)] text-slate-400">{meta}</span></div></div>)}
+        </div>
+        <p className="relative mt-auto border-t border-slate-200 pt-[clamp(8px,.6vw,12px)] text-[clamp(11px,.86vw,16px)] leading-snug text-slate-500">工具接收明确对象与参数，再留下结果或错误。</p>
+      </section>
+
+      <div className="grid min-h-0 grid-cols-2 grid-rows-2 gap-[2.5%]">
+        {actions.map(({ order, label, icon: Icon, title, text, object, result, boundary, color, iconTone }) => <Reveal className="min-h-0" key={title} order={order}>
+          <article className={cn("flex h-full min-h-0 flex-col rounded-[1.45rem] border px-[5%] py-[clamp(12px,.9vw,18px)] shadow-sm", color)}>
+            <div className="flex items-center gap-[4%]"><span className={cn("flex size-[clamp(36px,3vw,58px)] shrink-0 items-center justify-center rounded-[1rem] text-white shadow-sm", iconTone)}><Icon className="size-[46%]" /></span><div><Kicker>{label}</Kicker><strong className="mt-[1%] block text-[clamp(19px,1.65vw,32px)] leading-none">{title}</strong></div><span className="ml-auto text-[clamp(11px,.86vw,16px)] opacity-55">{text}</span></div>
+            <div className="mt-[clamp(8px,.6vw,12px)] grid grid-cols-[1fr_auto_1fr] items-center gap-[3%] rounded-[.9rem] border border-white/80 bg-white/75 px-[4%] py-[clamp(7px,.5vw,10px)] text-[clamp(11px,.88vw,17px)] font-medium"><span>{object}</span><ArrowRight className="size-[1.1em] opacity-35" /><span>{result}</span></div>
+            <span className="mt-auto border-t border-current/10 pt-[clamp(6px,.42vw,8px)] text-[clamp(10px,.78vw,15px)] opacity-60">{boundary}</span>
+          </article>
+        </Reveal>)}
+      </div>
+    </div>
+
+    <Reveal order={4}>
+      <div className="grid grid-cols-[.42fr_1fr_1fr] items-center gap-[2%] rounded-[1.15rem] border border-slate-200 bg-white px-[2.5%] py-[clamp(8px,.55vw,11px)] shadow-sm">
+        <div><Kicker>PROFESSIONAL TOOLS</Kicker><strong className="mt-[1%] block text-[clamp(12px,.95vw,18px)]">专业工具的组合</strong></div>
+        <div className="rounded-full bg-emerald-50 px-[4%] py-[2.5%] text-center text-[clamp(11px,.86vw,16px)] font-medium text-emerald-900">表格分析 = 读 + 执行统计</div>
+        <div className="rounded-full bg-violet-50 px-[4%] py-[2.5%] text-center text-[clamp(11px,.86vw,16px)] font-medium text-violet-900">PPT 生成 = 写 + 改 + 执行检查</div>
+      </div>
+    </Reveal>
+  </div>;
 }
 
 export function ToolCallConsole() {
@@ -316,7 +506,7 @@ export function ToolCallConsole() {
       icon: KeyRound,
       tone: "text-blue-600",
       line: "bg-blue-600",
-      visual: <div className="grid h-full grid-rows-3 divide-y divide-slate-200 border-y border-slate-200">{[["工具存在","analyze_spreadsheet","AVAILABLE"],["文件允许访问","报名统计.xlsx","ALLOWED"],["参数与字段有效","group_by: 部门","VALID"]].map(([title,detail,status]) => <div className="grid grid-cols-[auto_1fr_auto] items-center gap-[5%] px-[5%]" key={title}><span className="flex size-[clamp(34px,3vw,58px)] items-center justify-center rounded-full bg-blue-50 text-blue-600"><CheckCircle2 className="size-[48%]" /></span><div><strong className="block text-[clamp(15px,1.25vw,24px)] text-slate-900">{title}</strong><span className="mt-[1%] block font-mono text-[clamp(11px,.85vw,16px)] text-slate-400">{detail}</span></div><span className="font-mono text-[clamp(11px,.82vw,16px)] text-blue-600">{status}</span></div>)}</div>,
+      visual: <div className="grid h-full grid-rows-3 divide-y divide-slate-200 border-y border-slate-200">{[["工具存在","analyze_spreadsheet","AVAILABLE"],["文件路径允许访问","报名统计.xlsx","ALLOWED"],["参数格式有效","group_by: 部门","VALID"]].map(([title,detail,status]) => <div className="grid grid-cols-[auto_1fr_auto] items-center gap-[5%] px-[5%]" key={title}><span className="flex size-[clamp(34px,3vw,58px)] items-center justify-center rounded-full bg-blue-50 text-blue-600"><CheckCircle2 className="size-[48%]" /></span><div><strong className="block text-[clamp(15px,1.25vw,24px)] text-slate-900">{title}</strong><span className="mt-[1%] block font-mono text-[clamp(11px,.85vw,16px)] text-slate-400">{detail}</span></div><span className="font-mono text-[clamp(11px,.82vw,16px)] text-blue-600">{status}</span></div>)}</div>,
     },
     {
       order: 3,
@@ -324,7 +514,7 @@ export function ToolCallConsole() {
       label: "EXECUTION",
       title: "工具执行",
       headline: "真正打开文件并完成统计",
-      summary: "工具定位“部门”列，读取记录、检查空值并计算分组结果。",
+      summary: "工具打开文件后确认“部门”列存在，再读取记录、检查空值并计算分组结果。",
       icon: SquareFunction,
       tone: "text-violet-600",
       line: "bg-violet-600",
@@ -335,12 +525,12 @@ export function ToolCallConsole() {
       code: "RETURNED",
       label: "TOOL RESULT",
       title: "结果返回",
-      headline: "工具返回事实，模型才能继续",
-      summary: "执行结果进入当前任务状态，但业务正确性仍然需要检查。",
+      headline: "工具返回结果，模型才能继续",
+      summary: "执行结果进入当前任务状态；来源、口径和业务正确性仍需核对。",
       icon: CheckCircle2,
       tone: "text-emerald-600",
       line: "bg-emerald-500",
-      visual: <div className="grid h-full grid-cols-[.42fr_.58fr] border-y border-emerald-200 bg-emerald-50/45"><div className="flex flex-col items-center justify-center border-r border-emerald-200"><span className="font-mono text-[clamp(11px,.82vw,16px)] tracking-[.16em] text-emerald-700">TOTAL</span><strong className="bg-gradient-to-br from-emerald-500 to-blue-600 bg-clip-text text-[clamp(76px,7.4vw,142px)] leading-none tracking-[-.08em] text-transparent">128</strong><span className="mt-[3%] text-[clamp(13px,1vw,19px)] text-slate-500">条有效报名记录</span></div><div className="grid grid-cols-2 grid-rows-2">{[["销售","46"],["产品","31"],["研发","27"],["职能","24"]].map(([name,value],index) => <div className={cn("flex flex-col items-center justify-center", index % 2 === 0 && "border-r border-emerald-200", index < 2 && "border-b border-emerald-200")} key={name}><strong className="text-[clamp(26px,2.4vw,46px)] text-slate-950">{value}</strong><span className="mt-[2%] text-[clamp(12px,.92vw,18px)] text-slate-500">{name}</span></div>)}</div></div>,
+      visual: <div className="grid h-full grid-cols-[.42fr_.58fr] border-y border-emerald-200 bg-emerald-50/45"><div className="flex flex-col items-center justify-center border-r border-emerald-200"><span className="font-mono text-[clamp(11px,.82vw,16px)] tracking-[.16em] text-emerald-700">TOTAL</span><strong className="bg-gradient-to-br from-emerald-500 to-blue-600 bg-clip-text text-[clamp(76px,7.4vw,142px)] leading-none tracking-[-.08em] text-transparent">128</strong><span className="mt-[3%] text-[clamp(13px,1vw,19px)] text-slate-500">条参与统计的记录</span></div><div className="grid grid-cols-2 grid-rows-2">{[["销售","46"],["产品","31"],["研发","27"],["职能","24"]].map(([name,value],index) => <div className={cn("flex flex-col items-center justify-center", index % 2 === 0 && "border-r border-emerald-200", index < 2 && "border-b border-emerald-200")} key={name}><strong className="text-[clamp(26px,2.4vw,46px)] text-slate-950">{value}</strong><span className="mt-[2%] text-[clamp(12px,.92vw,18px)] text-slate-500">{name}</span></div>)}</div></div>,
     },
   ];
   const runtimeStates = [
@@ -348,7 +538,7 @@ export function ToolCallConsole() {
     { code: "REQUESTED", fact: "收到分析报名表的调用意图", boundary: "意图不代表已获授权" },
     { code: "VALIDATED", fact: "工具、权限和参数检查完成", boundary: "运行环境允许执行" },
     { code: "RUNNING", fact: "正在读取“报名统计.xlsx”", boundary: "等待工具真实返回" },
-    { code: "RETURNED", fact: "工具返回四部门共 128 人", boundary: "仍需检查业务正确性" },
+    { code: "RETURNED", fact: "已收到工具返回：四部门共 128 人", boundary: "仍需核对来源、口径和业务正确性" },
   ];
   const activeStage = revealStep > 0 ? stages[revealStep - 1] : null;
   const runtimeState = runtimeStates[revealStep];
@@ -360,6 +550,7 @@ export function ToolCallConsole() {
         <span className="size-2 rounded-full bg-amber-400" />
         <span className="size-2 rounded-full bg-emerald-400" />
         <span className="ml-3 text-[clamp(10px,.76vw,15px)] text-slate-400">task-run / tool-call-01</span>
+        <span className="ml-auto text-[clamp(10px,.76vw,15px)] tracking-[.12em] text-slate-300">TYPICAL SUCCESS PATH</span>
       </div>
 
       <div className="relative grid h-[14%] grid-cols-4 border-b border-slate-200">
@@ -406,7 +597,7 @@ export function ToolCallConsole() {
           <strong className="mt-[3%] block text-[clamp(14px,1.05vw,20px)] text-slate-950">{runtimeState.code}</strong>
         </div>
         <div className="border-l border-slate-200 px-[7%]">
-          <span className="text-[clamp(10px,.76vw,15px)] text-slate-400">当前事实</span>
+          <span className="text-[clamp(10px,.76vw,15px)] text-slate-400">运行事实</span>
           <strong className="mt-[1.5%] block font-sans text-[clamp(15px,1.22vw,23px)] tracking-[-.02em] text-slate-900">{runtimeState.fact}</strong>
         </div>
         <div className="border-l border-slate-200 pl-[8%]">
@@ -419,23 +610,116 @@ export function ToolCallConsole() {
 }
 
 export function AgentTriangle() {
-  const nodes = [
-    { order: 1, label: "GOAL", title: "围绕目标", text: "持续判断距离交付还差什么", pos: "left-1/2 top-[2%] -translate-x-1/2", color: "bg-cyan-500" },
-    { order: 2, label: "STATE", title: "维护状态", text: "记录完成、当前、结果和待确认", pos: "bottom-[4%] left-[8%]", color: "bg-blue-600" },
-    { order: 3, label: "LOOP", title: "形成循环", text: "判断、行动、观察、继续或停止", pos: "bottom-[4%] right-[8%]", color: "bg-emerald-600" },
+  const stateItems = [
+    { label: "DONE", title: "人数统计完成", detail: "四部门共 128 人", tone: "bg-emerald-100 text-emerald-700" },
+    { label: "NOW", title: "正在读取访谈", detail: "建立结论与来源关系", tone: "bg-blue-100 text-blue-700" },
+    { label: "WAIT", title: "一段来源待确认", detail: "必要时停止并询问", tone: "bg-amber-100 text-amber-700" },
   ];
-  return <div className="relative mx-auto h-full w-[76%]"><div className="absolute left-1/2 top-[22%] h-[46%] w-[54%] -translate-x-1/2 [clip-path:polygon(50%_0,100%_100%,0_100%)] bg-slate-100" /><div className="absolute left-1/2 top-1/2 flex size-[21%] -translate-x-1/2 -translate-y-[30%] items-center justify-center rounded-full border border-emerald-200 bg-emerald-100 text-emerald-800"><Bot className="size-[35%]" /></div>{nodes.map(({ order, label, title, text, pos, color }) => <Reveal className={cn("absolute w-[31%]", pos)} key={label} order={order}><div className="rounded-[1.5rem] border border-slate-200 bg-white p-[8%] shadow-xl"><span className={cn("mb-[6%] block h-1.5 w-[28%] rounded-full", color)} /><Kicker>{label}</Kicker><strong className="mt-[2%] block text-[clamp(15px,1.45vw,28px)]">{title}</strong><p className="mt-[3%] text-[clamp(11px,.92vw,18px)] text-slate-500">{text}</p></div></Reveal>)}</div>;
+
+  return <div className="grid h-full grid-rows-[auto_minmax(0,1fr)_auto] gap-[clamp(10px,.8vw,16px)] pb-[clamp(50px,3.4vw,66px)]">
+    <section className="grid grid-cols-[.18fr_1fr_auto] items-center gap-[3%] rounded-[1.3rem] border border-cyan-200 bg-cyan-50 px-[3%] py-[clamp(10px,.72vw,14px)] text-cyan-950 shadow-sm">
+      <div><Kicker>GOAL · 目标</Kicker><strong className="mt-[1%] block text-[clamp(14px,1.1vw,21px)]">可验收的交付</strong></div>
+      <p className="text-[clamp(15px,1.2vw,23px)] font-semibold tracking-[-.02em]">形成一份有依据、数字可追溯的 5 页培训需求汇报</p>
+      <span className="rounded-full border border-cyan-200 bg-white/75 px-[clamp(14px,1.2vw,23px)] py-[clamp(6px,.42vw,8px)] text-[clamp(11px,.86vw,16px)] font-medium text-cyan-800">完成条件明确</span>
+    </section>
+
+    <div className="grid min-h-0 grid-cols-[.31fr_.38fr_.31fr] gap-[2%]">
+      <Reveal className="min-h-0" order={1}>
+        <section className="flex h-full min-h-0 flex-col rounded-[1.55rem] border border-slate-200 bg-white px-[6%] py-[clamp(14px,1vw,20px)] shadow-[0_18px_45px_rgba(15,23,42,.06)]">
+          <div><Kicker>STATE · 当前任务状态</Kicker><h2 className="mt-[2%] text-[clamp(18px,1.45vw,28px)] font-semibold tracking-[-.03em]">现在做到哪里？</h2></div>
+          <div className="mt-[clamp(10px,.7vw,14px)] space-y-[clamp(7px,.5vw,10px)]">
+            {stateItems.map(({ label, title, detail, tone }) => <div className="grid grid-cols-[auto_1fr] items-center gap-[4%] border-t border-slate-100 pt-[clamp(7px,.5vw,10px)]" key={label}><span className={cn("rounded-full px-[10px] py-[4px] font-mono text-[clamp(10px,.78vw,15px)]", tone)}>{label}</span><div><strong className="block text-[clamp(12px,1vw,19px)]">{title}</strong><span className="text-[clamp(11px,.82vw,16px)] text-slate-400">{detail}</span></div></div>)}
+          </div>
+        </section>
+      </Reveal>
+
+      <section className="relative flex min-h-0 flex-col items-center justify-center overflow-hidden rounded-[1.65rem] border border-blue-200 bg-gradient-to-b from-blue-50 to-white px-[8%] text-center shadow-[0_24px_60px_rgba(37,99,235,.09)]">
+        <div className="absolute inset-x-[14%] top-[14%] h-[32%] rounded-full bg-blue-200/35 blur-3xl" />
+        <span className="relative flex size-[clamp(54px,5vw,96px)] items-center justify-center rounded-[1.45rem] bg-blue-600 text-white shadow-[0_18px_35px_rgba(37,99,235,.24)]"><RefreshCw className="size-[44%]" /></span>
+        <Kicker>AGENT RUNTIME · 智能体运行机制</Kicker>
+        <h2 className="mt-[2%] text-[clamp(22px,2vw,38px)] font-semibold tracking-[-.045em] text-slate-950">任务推进器</h2>
+        <p className="mt-[3%] max-w-[92%] text-[clamp(12px,.98vw,19px)] leading-relaxed text-slate-500">读取目标和当前状态，组织能力完成下一步，再依据真实结果更新任务。</p>
+        <div className="mt-[6%] grid w-full grid-cols-3 items-center text-[clamp(11px,.86vw,16px)] font-medium text-blue-900"><span>围绕目标</span><span className="border-x border-blue-100">维护状态</span><span>持续推进</span></div>
+      </section>
+
+      <Reveal className="min-h-0" order={2}>
+        <section className="flex h-full min-h-0 flex-col rounded-[1.55rem] border border-slate-200 bg-white px-[6%] py-[clamp(14px,1vw,20px)] shadow-[0_18px_45px_rgba(15,23,42,.06)]">
+          <div><Kicker>CAPABILITIES · 能力来源</Kicker><h2 className="mt-[2%] text-[clamp(18px,1.45vw,28px)] font-semibold tracking-[-.03em]">智能体调用什么？</h2></div>
+          <div className="mt-[clamp(12px,.9vw,17px)] grid flex-1 grid-rows-2 gap-[5%]">
+            <div className="flex items-center gap-[5%] rounded-[1rem] border border-violet-200 bg-violet-50 px-[5%]"><span className="flex size-[clamp(38px,3.1vw,60px)] shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600"><BrainCircuit className="size-[48%]" /></span><div><Kicker>MODEL</Kicker><strong className="mt-[1%] block text-[clamp(13px,1.05vw,20px)] text-violet-950">判断与生成</strong><span className="text-[clamp(11px,.82vw,16px)] text-violet-800/60">决定下一步，形成内容</span></div></div>
+            <div className="flex items-center gap-[5%] rounded-[1rem] border border-emerald-200 bg-emerald-50 px-[5%]"><span className="flex size-[clamp(38px,3.1vw,60px)] shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600"><Wrench className="size-[48%]" /></span><div><Kicker>TOOLS</Kicker><strong className="mt-[1%] block text-[clamp(13px,1.05vw,20px)] text-emerald-950">读取与执行</strong><span className="text-[clamp(11px,.82vw,16px)] text-emerald-800/60">接触文件，返回结果</span></div></div>
+          </div>
+        </section>
+      </Reveal>
+    </div>
+
+    <Reveal order={3}>
+      <section className="grid grid-cols-[.8fr_2fr_1fr] items-center gap-[2%] rounded-[1.2rem] border border-slate-200 bg-white px-[2.5%] py-[clamp(8px,.55vw,11px)] shadow-sm">
+        <div><Kicker>LOOP · 循环</Kicker><strong className="mt-[1%] block text-[clamp(12px,.95vw,18px)]">根据结果决定下一步</strong></div>
+        <div className="flex items-center justify-center gap-[2%] text-[clamp(11px,.86vw,16px)] font-medium text-slate-700"><span>读取状态</span><ArrowRight className="size-[1em] text-slate-300" /><span>决定下一步</span><ArrowRight className="size-[1em] text-slate-300" /><span>调用能力</span><ArrowRight className="size-[1em] text-slate-300" /><span>更新状态</span></div>
+        <div className="flex justify-end gap-[3%] text-[clamp(11px,.82vw,16px)] font-medium"><span className="rounded-full bg-blue-50 px-[8%] py-[4%] text-blue-700">继续</span><span className="rounded-full bg-amber-50 px-[8%] py-[4%] text-amber-700">询问</span><span className="rounded-full bg-slate-100 px-[8%] py-[4%] text-slate-600">停止</span></div>
+      </section>
+    </Reveal>
+  </div>;
 }
 
 export function AgentStateBoard() {
-  const columns = [
-    { order: 1, label: "目标", title: "要完成什么", text: "有依据、可验收的 5 页培训需求汇报", color: "border-cyan-300" },
-    { order: 2, label: "已完成", title: "工具返回什么", text: "报名表读取完成，四部门合计 128", color: "border-emerald-300" },
-    { order: 3, label: "当前", title: "正在做什么", text: "读取 6 段访谈，建立结论—依据关系", color: "border-blue-300" },
-    { order: 4, label: "待完成", title: "后面做什么", text: "形成建议、生成 PPT、检查数字与页数", color: "border-violet-300" },
-    { order: 5, label: "待确认", title: "何时停下", text: "一段访谈缺少来源部门，等待人工确认", color: "border-amber-300" },
+  const revealStep = Math.min(useRevealStep(), 3);
+  const status = [
+    { code: "READY", tone: "border-slate-200 bg-slate-100 text-slate-600" },
+    { code: "RUNNING", tone: "border-blue-200 bg-blue-100 text-blue-700" },
+    { code: "WAITING_INPUT", tone: "border-amber-200 bg-amber-100 text-amber-800" },
+    { code: "WAITING_INPUT", tone: "border-amber-200 bg-amber-100 text-amber-800" },
+  ][revealStep];
+  const progressRows = [
+    { label: "已完成", code: "DONE", title: "已收到报名表统计结果", detail: "工具返回：四部门共 128 人", tone: "bg-emerald-100 text-emerald-700", icon: CheckCircle2 },
+    { label: "当前", code: "NOW", title: "正在处理 6 段访谈", detail: "建立结论与原文来源关系", tone: "bg-blue-100 text-blue-700", icon: RefreshCw },
+    { label: "待完成", code: "TODO", title: "形成建议并生成 PPT", detail: "还要检查数字、来源和页数", tone: "bg-violet-100 text-violet-700", icon: ListChecks },
   ];
-  return <div className="h-full rounded-[1.6rem] border border-slate-200 bg-slate-50 p-[3%]"><div className="mb-[3%] flex items-center justify-between"><Kicker>TASK STATE · 培训需求汇报</Kicker><span className="rounded-full border border-amber-200 bg-amber-100 px-[2%] py-[.7%] text-[clamp(10px,.85vw,16px)] text-amber-800">等待 1 项确认</span></div><div className="grid h-[82%] grid-cols-5 gap-[1.2%]">{columns.map(({ order, label, title, text, color }) => <Reveal key={label} order={order}><div className={cn("h-full rounded-[1.1rem] border border-slate-200 border-t-[5px] bg-white p-[8%] text-slate-950 shadow-sm", color)}><Kicker>{label}</Kicker><strong className="mt-[12%] block text-[clamp(14px,1.2vw,23px)]">{title}</strong><p className="mt-[8%] text-[clamp(12px,.95vw,18px)] leading-relaxed text-slate-500">{text}</p><div className="mt-[14%] h-px bg-slate-100" /></div></Reveal>)}</div></div>;
+
+  return <div className="grid h-full grid-cols-[.62fr_.38fr] gap-[2%] pb-[clamp(50px,3.4vw,66px)]">
+    <section className="flex min-h-0 flex-col overflow-hidden rounded-[1.65rem] border border-slate-200 bg-white shadow-[0_20px_55px_rgba(15,23,42,.07)]">
+      <header className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-[4%] py-[clamp(8px,.55vw,11px)]">
+        <div><Kicker>TASK STATE · report-001</Kicker><strong className="mt-[1%] block text-[clamp(14px,1.1vw,21px)]">培训需求汇报</strong></div>
+        <span aria-live="polite" className={cn("rounded-full border px-[clamp(12px,1vw,19px)] py-[clamp(5px,.36vw,7px)] font-mono text-[clamp(10px,.78vw,15px)] transition-colors duration-500", status.tone)}>{status.code}</span>
+      </header>
+
+      <div className="grid grid-cols-[.18fr_1fr] items-center gap-[3%] border-b border-cyan-100 bg-cyan-50/65 px-[4%] py-[clamp(7px,.5vw,10px)]">
+        <div><Kicker>GOAL · 目标</Kicker><strong className="mt-[1%] block text-[clamp(12px,.95vw,18px)] text-cyan-950">完成条件</strong></div>
+        <p className="text-[clamp(13px,1.08vw,21px)] font-semibold text-cyan-950">形成一份有依据、数字可追溯的 5 页培训需求汇报</p>
+      </div>
+
+      <Reveal order={1}>
+        <div className="divide-y divide-slate-100 px-[4%]">
+          {progressRows.map(({ label, code, title, detail, tone, icon: Icon }) => <div className="grid grid-cols-[.18fr_auto_1fr] items-center gap-[3%] py-[clamp(6px,.42vw,8px)]" key={label}><div><Kicker>{label}</Kicker><span className={cn("mt-[3%] inline-block rounded-full px-[9px] py-[3px] font-mono text-[clamp(10px,.78vw,15px)]", tone)}>{code}</span></div><span className={cn("flex size-[clamp(34px,2.8vw,54px)] items-center justify-center rounded-xl", tone)}><Icon className="size-[46%]" /></span><div><strong className="block text-[clamp(13px,1.08vw,21px)]">{title}</strong><span className="mt-[1%] block text-[clamp(11px,.86vw,16px)] text-slate-500">{detail}</span></div></div>)}
+        </div>
+      </Reveal>
+
+      <Reveal className="mx-[4%] mb-[clamp(10px,.7vw,14px)] mt-auto" order={2}>
+        <div className="grid grid-cols-[.18fr_auto_1fr] items-center gap-[3%] rounded-[1rem] border border-amber-200 bg-amber-50 px-[3%] py-[clamp(6px,.42vw,8px)] text-amber-950">
+          <div><Kicker>待确认</Kicker><span className="mt-[3%] inline-block rounded-full bg-amber-100 px-[9px] py-[3px] font-mono text-[clamp(10px,.78vw,15px)] text-amber-700">BLOCKED</span></div>
+          <span className="flex size-[clamp(34px,2.8vw,54px)] items-center justify-center rounded-xl bg-amber-100 text-amber-600"><CircleAlert className="size-[46%]" /></span>
+          <div><strong className="block text-[clamp(13px,1.08vw,21px)]">一段访谈缺少来源部门</strong><span className="mt-[1%] block text-[clamp(11px,.86vw,16px)] text-amber-800/65">信息不足，暂停并等待人工确认</span></div>
+        </div>
+      </Reveal>
+
+    </section>
+
+    <div className="flex min-h-0 flex-col gap-[3%]">
+      <section className="flex min-h-0 flex-1 flex-col rounded-[1.65rem] border border-slate-200 bg-slate-50 px-[6%] py-[clamp(15px,1.15vw,22px)]">
+        <div><Kicker>STATE → NEXT ACTION</Kicker><h2 className="mt-[2%] text-[clamp(20px,1.75vw,34px)] font-semibold tracking-[-.04em]">状态怎样决定下一步？</h2></div>
+        <div className="mt-[clamp(14px,1vw,20px)] space-y-[clamp(9px,.66vw,13px)]">
+          <Reveal order={1}><div className="grid grid-cols-[auto_1fr] items-center gap-[4%] rounded-[1rem] border border-emerald-200 bg-white px-[4%] py-[clamp(9px,.66vw,13px)]"><span className="flex size-[clamp(34px,2.8vw,54px)] items-center justify-center rounded-xl bg-emerald-100 text-emerald-600"><ArrowRight className="size-[45%]" /></span><div><Kicker>DONE + NOW</Kicker><strong className="mt-[1%] block text-[clamp(12px,1vw,19px)]">不重复统计，继续读取访谈</strong></div></div></Reveal>
+          <Reveal order={2}><div className="grid grid-cols-[auto_1fr] items-center gap-[4%] rounded-[1rem] border border-amber-200 bg-white px-[4%] py-[clamp(9px,.66vw,13px)]"><span className="flex size-[clamp(34px,2.8vw,54px)] items-center justify-center rounded-xl bg-amber-100 text-amber-600"><CircleStop className="size-[45%]" /></span><div><Kicker>BLOCKED</Kicker><strong className="mt-[1%] block text-[clamp(12px,1vw,19px)]">暂停任务，询问来源部门</strong></div></div></Reveal>
+          <Reveal order={3}><div className="grid grid-cols-[auto_1fr] items-center gap-[4%] rounded-[1rem] border border-blue-200 bg-white px-[4%] py-[clamp(9px,.66vw,13px)]"><span className="flex size-[clamp(34px,2.8vw,54px)] items-center justify-center rounded-xl bg-blue-100 text-blue-600"><Database className="size-[45%]" /></span><div><Kicker>CHECKPOINT</Kicker><strong className="mt-[1%] block text-[clamp(12px,1vw,19px)]">恢复进度，或交给人工接管</strong></div></div></Reveal>
+        </div>
+      </section>
+
+      <Reveal order={3}>
+        <section className="rounded-[1.2rem] border border-violet-200 bg-violet-50 px-[6%] py-[clamp(10px,.72vw,14px)] text-violet-950"><Kicker>STATE ≠ CONTEXT</Kicker><div className="mt-[2%] flex items-center justify-between gap-[4%] text-[clamp(11px,.88vw,17px)] font-medium"><span>完整任务状态</span><ArrowRight className="size-[1.1em] text-violet-400" /><span>筛选相关部分</span><ArrowRight className="size-[1.1em] text-violet-400" /><span>本次模型上下文</span></div></section>
+      </Reveal>
+    </div>
+  </div>;
 }
 
 export function AgentLoop() {
@@ -447,11 +731,11 @@ export function AgentLoop() {
   ];
   const revealStep = Math.min(useRevealStep(), nodes.length);
   const states = [
-    { code: "READY", title: "目标与材料已经就绪", next: "先判断下一步" },
-    { code: "DECIDED", title: "决定先统计报名表", next: "调用读取与统计工具" },
-    { code: "RUNNING", title: "工具正在读取 128 条记录", next: "等待真实执行结果" },
-    { code: "OBSERVED", title: "得到结果：四部门共 128 人", next: "把结果写入任务状态" },
-    { code: "UPDATED", title: "人数统计完成，状态已更新", next: "继续读取访谈材料" },
+    { code: "READY", title: "人数统计完成，访谈材料待处理", next: "判断怎样建立来源关系" },
+    { code: "DECIDED", title: "决定读取 6 段访谈及来源", next: "调用文档读取工具" },
+    { code: "RUNNING", title: "工具正在提取访谈与来源字段", next: "等待真实执行结果" },
+    { code: "OBSERVED", title: "发现 1 段访谈缺少来源部门", next: "把缺失信息写入任务状态" },
+    { code: "WAITING_INPUT", title: "状态已更新：来源信息不完整", next: "暂停并询问来源部门" },
   ];
   const state = states[revealStep];
 
@@ -511,7 +795,57 @@ export function AgentLoop() {
 }
 
 export function RelationshipNest() {
-  return <div className="relative mx-auto h-full w-[88%] rounded-[2rem] border-2 border-dashed border-cyan-300 bg-cyan-50 p-[5%]"><div className="absolute left-[3%] top-[4%] flex items-center gap-2 text-cyan-700"><AppWindow className="size-[1.2em]" /><Kicker>AI APPLICATION · 产品与运行环境</Kicker></div><div className="flex h-full items-center justify-center gap-[4%] pt-[4%]"><Reveal className="h-[62%] w-[27%]" order={1}><div className="flex h-full flex-col justify-between rounded-full border border-violet-200 bg-violet-100 p-[12%] text-center text-violet-950"><BrainCircuit className="mx-auto size-[28%]" /><div><strong className="text-[clamp(15px,1.45vw,28px)]">大模型</strong><p className="mt-[4%] text-[clamp(12px,.95vw,18px)] opacity-65">生成、归纳、判断与调用意图</p></div></div></Reveal><ArrowRight className="text-slate-300" /><Reveal className="h-[74%] w-[31%]" order={2}><div className="flex h-full flex-col justify-between rounded-[2rem] border border-emerald-200 bg-emerald-100 p-[10%] text-center text-emerald-950"><Bot className="mx-auto size-[26%]" /><div><strong className="text-[clamp(15px,1.45vw,28px)]">智能体</strong><p className="mt-[4%] text-[clamp(12px,.95vw,18px)] opacity-65">组织模型、工具和状态持续推进</p></div><div className="flex justify-center gap-[5%]"><Wrench className="size-[13%]" /><Database className="size-[13%]" /><RefreshCw className="size-[13%]" /></div></div></Reveal><ArrowRight className="text-slate-300" /><Reveal className="h-[62%] w-[27%]" order={3}><div className="flex h-full flex-col justify-between rounded-[1rem] border border-blue-200 bg-blue-100 p-[12%] text-center text-blue-950"><FileOutput className="mx-auto size-[28%]" /><div><strong className="text-[clamp(15px,1.45vw,28px)]">可验收产物</strong><p className="mt-[4%] text-[clamp(12px,.95vw,18px)] opacity-65">文件、结论、记录和待确认问题</p></div></div></Reveal></div></div>;
+  const revealStep = Math.min(useRevealStep(), 3);
+  const sharedCapabilities = [
+    { label: "界面", icon: AppWindow },
+    { label: "文件", icon: FileText },
+    { label: "权限", icon: KeyRound },
+    { label: "任务记录", icon: Database },
+  ];
+
+  return <div className="h-full pb-[clamp(50px,3.4vw,66px)]">
+    <section className="flex h-full min-h-0 flex-col overflow-hidden rounded-[1.8rem] border border-cyan-200 bg-slate-50 shadow-[0_22px_60px_rgba(15,23,42,.07)]">
+      <header className="grid grid-cols-[1fr_1.25fr] items-center gap-[4%] border-b border-slate-200 bg-white px-[4%] py-[clamp(9px,.62vw,12px)]">
+        <div className="flex min-w-0 items-center gap-[4%]"><span className="flex size-[clamp(42px,3.2vw,62px)] shrink-0 items-center justify-center rounded-[1rem] bg-cyan-100 text-cyan-600"><AppWindow className="size-[46%]" /></span><div className="min-w-0"><Kicker>AI APPLICATION · AI 应用</Kicker><h2 className="mt-[1%] whitespace-nowrap text-[clamp(18px,1.38vw,27px)] font-semibold tracking-[-.035em]">WorkBuddy · 完整产品与运行环境</h2></div></div>
+        <div className="grid grid-cols-4 gap-[2%]">{sharedCapabilities.map(({ label, icon: Icon }) => <div className="flex items-center justify-center gap-[7%] rounded-full border border-slate-200 bg-slate-50 px-[5%] py-[clamp(7px,.5vw,10px)] text-[clamp(11px,.86vw,16px)] font-medium text-slate-600" key={label}><Icon className="size-[1.1em] text-slate-400" />{label}</div>)}</div>
+      </header>
+
+      <div className="relative grid min-h-0 flex-1 grid-cols-2 grid-rows-1 gap-[2%] p-[2.2%]">
+        <div className={cn("pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center text-center transition-all duration-500", revealStep === 0 ? "translate-y-0 opacity-100" : "-translate-y-3 opacity-0")}><Kicker>TWO WAYS TO ORGANIZE AI CAPABILITIES</Kicker><strong className="mt-[2%] text-[clamp(24px,2.2vw,42px)] tracking-[-.045em] text-slate-950">同一个应用，可以采用不同运行方式。</strong><p className="mt-[2%] text-[clamp(13px,1vw,19px)] text-slate-500">普通功能可以直接调用模型；复杂任务可以选择运行智能体。</p></div>
+
+        <Reveal className="h-full min-h-0" order={1}>
+          <article className="flex h-full min-h-0 flex-col rounded-[1.45rem] border border-violet-200 bg-white px-[5%] py-[clamp(11px,.78vw,15px)] shadow-sm">
+            <div className="flex items-start justify-between"><div><Kicker>PATH A · 普通对话</Kicker><h3 className="mt-[1%] text-[clamp(18px,1.5vw,29px)] font-semibold tracking-[-.03em]">应用直接调用大模型</h3></div><span className="rounded-full bg-slate-100 px-[4%] py-[2%] text-[clamp(10px,.78vw,15px)] font-medium text-slate-500">不需要智能体</span></div>
+            <div className="my-auto grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-[2%] py-[2%] text-center">
+              <div className="rounded-[1rem] border border-blue-200 bg-blue-50 px-[5%] py-[7%] text-blue-950"><MessageSquareText className="mx-auto size-[clamp(30px,2.6vw,50px)] text-blue-500" /><strong className="mt-[4%] block text-[clamp(12px,1vw,19px)]">当前上下文</strong></div><ArrowRight className="text-slate-300" />
+              <div className="rounded-[1rem] border border-violet-200 bg-violet-50 px-[5%] py-[7%] text-violet-950"><BrainCircuit className="mx-auto size-[clamp(30px,2.6vw,50px)] text-violet-500" /><strong className="mt-[4%] block text-[clamp(12px,1vw,19px)]">大模型</strong></div><ArrowRight className="text-slate-300" />
+              <div className="rounded-[1rem] border border-slate-200 bg-slate-50 px-[5%] py-[7%] text-slate-950"><FileOutput className="mx-auto size-[clamp(30px,2.6vw,50px)] text-slate-400" /><strong className="mt-[4%] block text-[clamp(12px,1vw,19px)]">一次回答</strong></div>
+            </div>
+            <p className="border-t border-slate-100 pt-[clamp(8px,.58vw,11px)] text-[clamp(11px,.86vw,16px)] text-slate-500">应用组织一次输入，模型生成一次输出，下一步通常由用户决定。</p>
+          </article>
+        </Reveal>
+
+        <Reveal className="h-full min-h-0" order={2}>
+          <article className="flex h-full min-h-0 flex-col rounded-[1.45rem] border border-emerald-200 bg-white px-[5%] py-[clamp(11px,.78vw,15px)] shadow-sm">
+            <div className="flex items-start justify-between"><div><Kicker>PATH B · 多步任务</Kicker><h3 className="mt-[1%] text-[clamp(18px,1.5vw,29px)] font-semibold tracking-[-.03em]">应用内部运行智能体</h3></div><span className="rounded-full bg-emerald-100 px-[4%] py-[2%] text-[clamp(10px,.78vw,15px)] font-medium text-emerald-700">可选机制</span></div>
+            <div className="my-auto grid grid-cols-[.9fr_1.1fr] gap-[3%]">
+              <div className="flex flex-col items-center justify-center rounded-[1rem] border border-emerald-200 bg-emerald-50 px-[6%] text-center text-emerald-950"><RefreshCw className="size-[clamp(34px,3.3vw,64px)] text-emerald-500" /><strong className="mt-[5%] text-[clamp(14px,1.18vw,23px)]">智能体运行机制</strong><span className="mt-[3%] text-[clamp(11px,.86vw,16px)] text-emerald-800/60">目标 · 状态 · 循环</span></div>
+              <div className="grid grid-rows-2 gap-[5%]"><div className="flex items-center gap-[5%] rounded-[1rem] border border-violet-200 bg-violet-50 px-[6%]"><BrainCircuit className="size-[clamp(32px,2.8vw,54px)] text-violet-500" /><div><Kicker>MODEL</Kicker><strong className="mt-[1%] block text-[clamp(12px,1vw,19px)] text-violet-950">判断与生成</strong></div></div><div className="flex items-center gap-[5%] rounded-[1rem] border border-blue-200 bg-blue-50 px-[6%]"><Wrench className="size-[clamp(32px,2.8vw,54px)] text-blue-500" /><div><Kicker>TOOLS</Kicker><strong className="mt-[1%] block text-[clamp(12px,1vw,19px)] text-blue-950">读取与执行</strong></div></div></div>
+            </div>
+            <p className="border-t border-slate-100 pt-[clamp(8px,.58vw,11px)] text-[clamp(11px,.86vw,16px)] text-slate-500">智能体组织模型、工具和状态持续推进；一个应用可以运行一个或多个智能体。</p>
+          </article>
+        </Reveal>
+      </div>
+
+      <Reveal order={3}>
+        <footer className="grid grid-cols-3 divide-x divide-slate-200 border-t border-slate-200 bg-white px-[4%] py-[clamp(8px,.55vw,11px)]">
+          <div className="pr-[6%]"><Kicker>APPLICATION · 产品</Kicker><strong className="mt-[1%] block text-[clamp(12px,.98vw,19px)]">用户操作的完整软件</strong></div>
+          <div className="px-[6%]"><Kicker>MODEL · 能力</Kicker><strong className="mt-[1%] block text-[clamp(12px,.98vw,19px)]">普通功能和智能体都可以调用</strong></div>
+          <div className="pl-[6%]"><Kicker>AGENT · 机制</Kicker><strong className="mt-[1%] block text-[clamp(12px,.98vw,19px)]">应用内部可选的任务推进方式</strong></div>
+        </footer>
+      </Reveal>
+    </section>
+  </div>;
 }
 
 export function ResponsibilitySwimlanes() {
@@ -554,6 +888,25 @@ function BriefSheet({ good }: { good?: boolean }) {
 
 export function TaskBriefComparison() {
   return <div className="grid h-full grid-cols-[1fr_.16fr_1fr] gap-[2%]"><Reveal order={1}><BriefSheet /></Reveal><div className="flex flex-col items-center justify-center text-slate-300"><ArrowRight className="size-[40%]" /><span className="mt-[15%] font-mono text-[clamp(9px,.68vw,13px)] [writing-mode:vertical-rl]">DEFINE THE TASK</span></div><Reveal order={2}><BriefSheet good /></Reveal></div>;
+}
+
+export function MaterialWorkflow() {
+  const sources = [
+    { label: "Word / PDF", detail: "叙述性材料", icon: FileText },
+    { label: "Excel", detail: "精确表格", icon: FileSpreadsheet },
+  ];
+  const workingCopies = [
+    { label: "Markdown", detail: "标题、原文、规则", icon: FilePenLine, itemTone: "border-blue-200 bg-blue-50 text-blue-950" },
+    { label: "CSV / JSON / Excel", detail: "字段、公式、口径", icon: FileSpreadsheet, itemTone: "border-emerald-200 bg-emerald-50 text-emerald-950" },
+  ];
+
+  return <div className="grid h-full grid-cols-[.86fr_.12fr_1.22fr_.12fr_.9fr] items-center gap-[1.2%]">
+    <Reveal order={1}><div className="h-[72%] rounded-[1.8rem] border border-slate-200 bg-white p-[8%] shadow-lg"><Kicker>ORIGINALS · 权威依据</Kicker><div className="mt-[9%] space-y-[7%]">{sources.map(({ label, detail, icon: Icon }) => <div className="flex items-center gap-[7%]" key={label}><span className="flex size-[clamp(38px,3.6vw,68px)] shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600"><Icon className="size-[46%]" /></span><div><strong className="block text-[clamp(14px,1.15vw,22px)]">{label}</strong><span className="text-[clamp(11px,.86vw,16px)] text-slate-400">{detail}</span></div></div>)}</div><p className="mt-[10%] border-t border-slate-100 pt-[7%] text-[clamp(11px,.86vw,16px)] leading-relaxed text-slate-500">原件不覆盖，用于核对数据、格式和来源。</p></div></Reveal>
+    <ArrowRight className="mx-auto text-slate-300" />
+    <Reveal order={2}><div className="h-[86%] rounded-[2rem] border border-blue-200 bg-white p-[6%] shadow-xl"><div className="flex items-center justify-between"><Kicker>WORKING REPRESENTATION</Kicker><Settings2 className="size-[9%] text-blue-500" /></div><h3 className="mt-[3%] text-[clamp(18px,1.55vw,30px)] font-semibold tracking-[-.035em]">按内容类型选择工作副本</h3><div className="mt-[5%] grid grid-cols-2 gap-[4%]">{workingCopies.map(({ label, detail, icon: Icon, itemTone }) => <div className={cn("rounded-[1.2rem] border p-[8%]", itemTone)} key={label}><Icon className="size-[22%]" /><strong className="mt-[7%] block text-[clamp(13px,1.08vw,21px)]">{label}</strong><span className="mt-[3%] block text-[clamp(10px,.8vw,15px)] opacity-60">{detail}</span></div>)}</div><div className="mt-[5%] flex items-center justify-center gap-[5%] rounded-full bg-violet-50 px-[5%] py-[3%] text-[clamp(11px,.9vw,17px)] font-medium text-violet-800"><BrainCircuit className="size-[1.2em]" />AI 归纳与写作<ArrowRight className="size-[1em]" /><SquareFunction className="size-[1.2em]" />工具精确计算</div></div></Reveal>
+    <ArrowRight className="mx-auto text-slate-300" />
+    <Reveal order={3}><div className="h-[72%] rounded-[1.8rem] border border-emerald-200 bg-emerald-50 p-[8%] text-emerald-950 shadow-lg"><Kicker>DELIVER & VERIFY</Kicker><FileOutput className="mt-[10%] size-[22%] text-emerald-600" /><strong className="mt-[7%] block text-[clamp(17px,1.45vw,28px)]">Word · Excel · PPT</strong><p className="mt-[5%] text-[clamp(11px,.9vw,17px)] leading-relaxed text-emerald-900/65">按业务场景生成最终产物，再回到原件核对数字、原文和版式。</p><div className="mt-[9%] flex items-center gap-[4%] rounded-xl bg-white/75 px-[6%] py-[4%] text-[clamp(11px,.86vw,16px)] font-semibold"><ClipboardCheck className="size-[1.2em]" />转换不是验收</div></div></Reveal>
+  </div>;
 }
 
 export function ScenarioMatrix() {
