@@ -90,9 +90,15 @@ export function SlideCard({
   );
 }
 
-export function SlideTakeaway({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
+export function SlideTakeaway({ children, dark = false, variant = "pill" }: { children: ReactNode; dark?: boolean; variant?: "pill" | "editorial" }) {
   return (
-    <div className={cn("absolute bottom-[3.4%] left-[4.2%] right-[4.2%] rounded-full px-[2%] py-[0.8%] text-center text-[clamp(13px,0.95vw,18px)] font-medium", dark ? "bg-white/8 text-slate-300" : "bg-blue-600/8 text-blue-900")}>
+    <div className={cn(
+      "absolute bottom-[3.4%] left-[4.2%] right-[4.2%] text-[clamp(13px,0.95vw,18px)] font-medium",
+      variant === "editorial"
+        ? "border-t border-slate-300/70 px-0 pt-[1.1%] text-left tracking-[.01em] text-slate-600"
+        : "rounded-full px-[2%] py-[0.8%] text-center",
+      variant !== "editorial" && (dark ? "bg-white/8 text-slate-300" : "bg-blue-600/8 text-blue-900"),
+    )}>
       {children}
     </div>
   );

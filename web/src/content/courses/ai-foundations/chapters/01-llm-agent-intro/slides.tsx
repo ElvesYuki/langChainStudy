@@ -125,7 +125,7 @@ const slides: DeckSlide[] = [
     title: "智能体通过“判断—行动—观察—更新”继续推进",
     steps: 4,
     notes: "约 1 分 30 秒。不是模型一次规划完所有步骤；每次工具返回都可能改变下一步。循环必须有停止条件和重试边界。",
-    content: <SlideFrame eyebrow="13 · 智能体循环" title="智能体通过“判断—行动—观察—更新”继续推进"><AgentLoop /><SlideTakeaway>可靠循环必须有停止条件、重试上限和人工接管点。</SlideTakeaway></SlideFrame>,
+    content: <SlideFrame eyebrow="13 · 智能体循环" title="智能体通过“判断—行动—观察—更新”继续推进" lead="每次工具返回都会改变当前状态，也可能改变原来的计划。"><AgentLoop /><SlideTakeaway variant="editorial">可靠循环必须有停止条件、重试上限和人工接管点。</SlideTakeaway></SlideFrame>,
   },
   {
     id: "relationship",

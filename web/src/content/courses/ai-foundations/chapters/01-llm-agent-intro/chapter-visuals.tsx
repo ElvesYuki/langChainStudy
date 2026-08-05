@@ -266,12 +266,74 @@ export function AgentStateBoard() {
 
 export function AgentLoop() {
   const nodes = [
-    { order: 1, title: "判断下一步", text: "根据目标、状态和已有结果", pos: "left-[2%] top-[6%]", color: "border-cyan-300" },
-    { order: 2, title: "调用工具", text: "读取、统计、生成或检查", pos: "right-[2%] top-[6%]", color: "border-violet-300" },
-    { order: 3, title: "观察结果", text: "成功、失败和权限都会影响后续", pos: "bottom-[3%] right-[2%]", color: "border-blue-300" },
-    { order: 4, title: "更新与停止", text: "继续、重试、询问或完成", pos: "bottom-[3%] left-[2%]", color: "border-emerald-300" },
+    { order: 1, label: "DECIDE", title: "判断", question: "下一步是什么？", text: "读取目标、当前状态和已有结果", accent: "from-cyan-400 to-blue-500", tone: "text-cyan-700" },
+    { order: 2, label: "ACT", title: "行动", question: "调用什么能力？", text: "读取、统计、生成或检查", accent: "from-blue-500 to-indigo-500", tone: "text-blue-700" },
+    { order: 3, label: "OBSERVE", title: "观察", question: "实际发生了什么？", text: "接收结果、错误和权限反馈", accent: "from-indigo-500 to-violet-500", tone: "text-indigo-700" },
+    { order: 4, label: "UPDATE", title: "更新", question: "继续还是停止？", text: "更新状态，重试、询问或完成", accent: "from-violet-500 to-fuchsia-500", tone: "text-violet-700" },
   ];
-  return <div className="relative mx-auto h-full w-[82%]"><div className="absolute left-1/2 top-1/2 size-[42%] -translate-x-1/2 -translate-y-1/2 rounded-full border-[clamp(10px,1.2vw,22px)] border-blue-100" /><div className="absolute left-1/2 top-1/2 flex size-[23%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border border-blue-200 bg-blue-100 text-center text-blue-950"><RefreshCw className="size-[25%] text-blue-600" /><strong className="mt-[4%] text-[clamp(15px,1.3vw,25px)]">任务状态</strong><span className="text-[clamp(11px,.85vw,16px)] text-blue-700/65">每一轮都会更新</span></div>{nodes.map(({ order, title, text, pos, color }) => <Reveal className={cn("absolute w-[31%]", pos)} key={title} order={order}><div className={cn("rounded-[1.3rem] border-l-[5px] bg-white p-[7%] shadow-lg", color)}><span className="font-mono text-[clamp(10px,.78vw,15px)] text-slate-400">0{order}</span><strong className="ml-[5%] text-[clamp(15px,1.3vw,25px)]">{title}</strong><p className="mt-[4%] text-[clamp(12px,.95vw,18px)] text-slate-500">{text}</p></div></Reveal>)}</div>;
+  const revealStep = Math.min(useRevealStep(), nodes.length);
+  const states = [
+    { code: "READY", title: "目标与材料已经就绪", next: "先判断下一步" },
+    { code: "DECIDED", title: "决定先统计报名表", next: "调用读取与统计工具" },
+    { code: "RUNNING", title: "工具正在读取 128 条记录", next: "等待真实执行结果" },
+    { code: "OBSERVED", title: "得到结果：四部门共 128 人", next: "把结果写入任务状态" },
+    { code: "UPDATED", title: "人数统计完成，状态已更新", next: "继续读取访谈材料" },
+  ];
+  const state = states[revealStep];
+
+  return (
+    <div className="relative mx-auto flex h-full w-[94%] flex-col overflow-hidden">
+      <div className="pointer-events-none absolute left-[24%] top-[8%] h-[52%] w-[52%] rounded-full bg-gradient-to-r from-cyan-200/35 via-blue-200/25 to-violet-200/35 blur-[80px]" />
+
+      <div className="relative grid h-[68%] grid-cols-4 border-y border-slate-200">
+        <div className="absolute left-[3%] right-[3%] top-[52%] h-px bg-slate-200" />
+        <div className="absolute left-[3%] top-[52%] h-[2px] bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 transition-[width] duration-700" style={{ width: `${Math.max(0, revealStep - 1) * 31}%` }} />
+        <div className={cn("pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center text-center transition-all duration-500", revealStep === 0 ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0")}>
+          <span className="font-mono text-[clamp(11px,.78vw,15px)] tracking-[.2em] text-blue-600">AGENT LOOP</span>
+          <strong className="mt-[2%] text-[clamp(28px,3vw,58px)] tracking-[-.055em] text-slate-950">真实结果，会改变下一步。</strong>
+        </div>
+
+        {nodes.map(({ order, label, title, question, text, accent, tone }) => {
+        const active = revealStep === order;
+        const completed = revealStep > order;
+        return (
+          <Reveal className="relative h-full border-l border-slate-200 first:border-l-0" key={title} order={order}>
+            <div className={cn(
+              "relative flex h-full flex-col px-[10%] pb-[8%] pt-[7%] transition-all duration-700",
+              active ? "bg-white/55" : completed ? "opacity-65" : "opacity-35",
+            )}>
+              <span className={cn("font-mono text-[clamp(11px,.8vw,16px)] font-semibold tracking-[.18em]", active ? tone : "text-slate-400")}>0{order} · {label}</span>
+              <div className="mt-[4%] flex items-end justify-between">
+                <strong className="text-[clamp(28px,2.7vw,52px)] tracking-[-.06em] text-slate-950">{title}</strong>
+                <span className={cn("mb-[3%] size-2.5 rounded-full transition-all duration-500", active ? "scale-125 bg-blue-600 shadow-[0_0_0_8px_rgba(37,99,235,.1)]" : "bg-slate-300")} />
+              </div>
+              <div className="mt-auto">
+                <span className={cn("mb-[8%] block h-1.5 w-[30%] rounded-full bg-gradient-to-r", accent)} />
+                <strong className="block text-[clamp(14px,1.1vw,21px)] font-medium text-slate-800">{question}</strong>
+                <p className="mt-[4%] text-[clamp(13px,.95vw,18px)] leading-relaxed text-slate-500">{text}</p>
+              </div>
+            </div>
+          </Reveal>
+        );
+      })}
+      </div>
+
+      <div className="relative mt-auto grid h-[25%] grid-cols-[.28fr_1.2fr_.9fr] items-center border-b border-slate-200 px-[2%]">
+        <div>
+          <span className="font-mono text-[clamp(10px,.76vw,15px)] tracking-[.18em] text-blue-600">LIVE TASK</span>
+          <div className="mt-[7%] flex items-center gap-[7%] text-[clamp(12px,.9vw,17px)] text-slate-400"><RefreshCw className={cn("size-[1.1em] transition-transform duration-700", revealStep > 0 && "rotate-180")} />{state.code}</div>
+        </div>
+        <div className="border-l border-slate-200 px-[8%]">
+          <span className="text-[clamp(11px,.78vw,15px)] text-slate-400">当前状态</span>
+          <strong className="mt-[2%] block text-[clamp(18px,1.55vw,30px)] leading-tight tracking-[-.035em] text-slate-950">{state.title}</strong>
+        </div>
+        <div className="border-l border-slate-200 pl-[10%]">
+          <span className="text-[clamp(11px,.78vw,15px)] text-slate-400">接下来</span>
+          <strong className="mt-[3%] block text-[clamp(14px,1.05vw,20px)] font-medium text-slate-700">{state.next}</strong>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function RelationshipNest() {
