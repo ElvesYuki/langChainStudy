@@ -849,25 +849,82 @@ export function RelationshipNest() {
 }
 
 export function ResponsibilitySwimlanes() {
+  const revealStep = Math.min(useRevealStep(), 4);
   const lanes = [
-    { order: 1, label: "MODEL", role: "大模型", verb: "生成", output: "归纳、建议、结构、调用意图", check: "结论有依据吗？", color: "bg-cyan-500" },
-    { order: 2, label: "TOOLS", role: "工具", verb: "执行", output: "参数、返回值、错误和文件", check: "执行真的成功吗？", color: "bg-violet-500" },
-    { order: 3, label: "AGENT", role: "智能体", verb: "推进", output: "步骤、状态、重试和待确认", check: "流程完整且会停止吗？", color: "bg-blue-600" },
-    { order: 4, label: "HUMAN", role: "人", verb: "负责", output: "目标、授权、业务判断和验收", check: "结果可用且可负责吗？", color: "bg-amber-500" },
+    { order: 1, label: "MODEL", role: "大模型", verb: "生成", detail: "给出内容与调用意图", evidence: ["问题归纳", "建议草稿", "调用意图"], check: "结论有依据吗？", icon: BrainCircuit, tone: "border-cyan-200 bg-cyan-50", iconTone: "bg-cyan-500 text-white", accent: "text-cyan-700" },
+    { order: 2, label: "TOOLS", role: "工具", verb: "执行", detail: "真正接触文件和系统", evidence: ["读取 128 行", "report.pptx", "success / error"], check: "动作真的成功吗？", icon: Wrench, tone: "border-violet-200 bg-violet-50", iconTone: "bg-violet-500 text-white", accent: "text-violet-700" },
+    { order: 3, label: "AGENT", role: "智能体", verb: "推进", detail: "组织步骤并维护状态", evidence: ["当前步骤 3 / 5", "已重试 1 次", "待确认 3 项"], check: "流程完整且会停止吗？", icon: Bot, tone: "border-blue-200 bg-blue-50", iconTone: "bg-blue-600 text-white", accent: "text-blue-700" },
+    { order: 4, label: "HUMAN", role: "人", verb: "负责", detail: "定义边界并验收结果", evidence: ["任务目标", "授权范围", "验收结论"], check: "结果可用且可负责吗？", icon: UserRoundCheck, tone: "border-amber-200 bg-amber-50", iconTone: "bg-amber-500 text-white", accent: "text-amber-700" },
   ];
-  return <div className="h-full overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white"><div className="grid grid-cols-[.58fr_.9fr_1.25fr_1.1fr] border-b border-slate-200 bg-slate-100 px-[3%] py-[2%] text-[clamp(12px,.95vw,18px)] font-medium text-slate-500"><span>角色</span><span>核心动作</span><span>留下的证据</span><span>主要检查</span></div><div className="grid h-[83%] grid-rows-4">{lanes.map(({ order, label, role, verb, output, check, color }) => <Reveal key={role} order={order}><div className="grid h-full grid-cols-[.58fr_.9fr_1.25fr_1.1fr] items-center border-b border-slate-100 px-[3%]"><div><Kicker>{label}</Kicker><strong className="mt-[1%] block text-[clamp(14px,1.2vw,23px)]">{role}</strong></div><div className="flex items-center gap-[6%]"><span className={cn("size-2.5 rounded-full", color)} /><strong className="text-[clamp(12px,1.15vw,22px)]">{verb}</strong></div><span className="text-[clamp(11px,.92vw,18px)] text-slate-500">{output}</span><span className="rounded-full bg-slate-100 px-[6%] py-[4%] text-[clamp(12px,.95vw,18px)] text-slate-600">{check}</span></div></Reveal>)}</div></div>;
+  return <div className="h-full pb-[clamp(50px,3.4vw,66px)]">
+    <div className="grid h-full min-h-0 grid-cols-[.32fr_.68fr] overflow-hidden rounded-[1.7rem] border border-slate-200 bg-white shadow-[0_22px_60px_rgba(15,23,42,.07)]">
+      <aside className="relative flex min-h-0 flex-col overflow-hidden border-r border-slate-200 bg-slate-950 px-[7%] py-[5%] text-white">
+        <div className="absolute right-[2%] top-[-10%] size-[46%] rounded-full bg-cyan-400/10 blur-3xl" />
+        <div className="relative"><Kicker>CASE · 培训需求汇报</Kicker><span className="mt-[clamp(12px,1vw,19px)] flex size-[clamp(44px,3.2vw,62px)] items-center justify-center rounded-[1rem] bg-white/10 text-cyan-300 ring-1 ring-white/10"><FileOutput className="size-[46%]" /></span><h2 className="mt-[clamp(12px,.95vw,18px)] text-[clamp(19px,1.58vw,30px)] font-semibold leading-tight tracking-[-.04em]">文件已经生成，<br />分别是谁做了什么？</h2><p className="mt-[clamp(8px,.62vw,12px)] text-[clamp(12px,.92vw,18px)] leading-relaxed text-slate-400">动作、证据和责任不能混在一起。</p></div>
+        <dl className="relative mt-auto grid grid-cols-2 gap-[4%] border-t border-white/10 pt-[4%] text-[clamp(11px,.82vw,16px)]"><div><dt className="font-mono text-[clamp(10px,.76vw,15px)] tracking-[.15em] text-slate-500">TASK</dt><dd className="mt-[2%] leading-snug text-slate-200">汇总报名表与访谈</dd></div><div><dt className="font-mono text-[clamp(10px,.76vw,15px)] tracking-[.15em] text-slate-500">DELIVERABLE</dt><dd className="mt-[2%] leading-snug text-slate-200">5 页内需求汇报</dd></div></dl>
+        <div className="relative mt-[4%] rounded-[.9rem] border border-amber-300/20 bg-amber-300/10 px-[5%] py-[3%] text-[clamp(11px,.86vw,16px)] font-medium leading-relaxed text-amber-100">做出了动作，不等于承担了责任。</div>
+      </aside>
+
+      <section className="grid min-h-0 grid-rows-[auto_1fr] bg-slate-50/70">
+        <header className="flex items-center justify-between border-b border-slate-200 bg-white px-[4%] py-[clamp(8px,.55vw,11px)]"><div className="flex items-baseline gap-[clamp(14px,1.2vw,23px)]"><Kicker>FOUR RESPONSIBILITY RECEIPTS</Kicker><strong className="text-[clamp(15px,1.12vw,22px)]">四类角色，留下四种不同凭证</strong></div><span className="font-mono text-[clamp(10px,.78vw,15px)] text-slate-400">{String(revealStep).padStart(2, "0")} / 04</span></header>
+        <div className="grid min-h-0 grid-rows-4 gap-[1.5%] p-[1.8%]">
+          {lanes.map(({ order, label, role, verb, detail, evidence, check, icon: Icon, tone, iconTone, accent }) => <article className={cn("grid min-h-0 grid-cols-[1fr_1.32fr_.88fr] items-center gap-[2.5%] rounded-[1.05rem] border px-[2.5%] transition-all duration-300", tone, revealStep >= order ? "opacity-100 shadow-sm" : "opacity-30 grayscale")} key={role}>
+            <div className="flex min-w-0 items-center gap-[5%]"><span className={cn("flex size-[clamp(38px,2.75vw,53px)] shrink-0 items-center justify-center rounded-[.9rem] shadow-sm", iconTone)}><Icon className="size-[46%]" /></span><div className="min-w-0"><Kicker>{label} · {role}</Kicker><div className="flex min-w-0 items-baseline gap-[7%]"><strong className={cn("block shrink-0 whitespace-nowrap text-[clamp(18px,1.4vw,27px)] tracking-[-.04em]", accent)}>{verb}</strong><span className="truncate text-[clamp(10px,.76vw,15px)] text-slate-500">{detail}</span></div></div></div>
+            <Reveal className="min-w-0" order={order}><div><span className="font-mono text-[clamp(10px,.76vw,15px)] font-semibold tracking-[.14em] text-slate-400">本次任务留下的证据</span><div className="mt-[2%] flex flex-nowrap gap-[2%]">{evidence.map(item => <span className="whitespace-nowrap rounded-full border border-white bg-white/85 px-[3%] py-[1.5%] text-[clamp(10px,.76vw,15px)] font-medium text-slate-700 shadow-sm" key={item}>{item}</span>)}</div></div></Reveal>
+            <Reveal order={order}><div className="rounded-[.8rem] border border-white bg-white/80 px-[6%] py-[4%]"><Kicker>CHECK</Kicker><strong className="mt-[2%] block text-[clamp(11px,.86vw,16px)] leading-snug text-slate-700">{check}</strong></div></Reveal>
+          </article>)}
+        </div>
+      </section>
+    </div>
+  </div>;
 }
 
 export function EvidenceTimeline() {
-  const events = [
-    { order: 1, title: "应用接收", evidence: "目标 · 两份文件 · 四项验收", icon: AppWindow },
-    { order: 2, title: "工具读取", evidence: "人数结果 · 6 段访谈 · 来源", icon: FileSearch },
-    { order: 3, title: "上下文组织", evidence: "相关片段 · 规则 · 当前状态", icon: MessageSquareText },
-    { order: 4, title: "模型生成", evidence: "问题 · 依据 · 建议 · 待确认", icon: BrainCircuit },
-    { order: 5, title: "智能体检查", evidence: "步骤 · 错误 · 重试 · 停止", icon: Bot },
-    { order: 6, title: "人工验收", evidence: "授权 · 准确 · 可用 · 负责", icon: UserRoundCheck },
+  const revealStep = Math.min(useRevealStep(), 6);
+  const status = [
+    ["READY", "等待任务"],
+    ["RECEIVED", "任务已登记"],
+    ["READ", "事实已读取"],
+    ["CONTEXT", "上下文已组装"],
+    ["DRAFT", "草稿已生成"],
+    ["REVIEWED", "可提交验收"],
+    ["ACCEPTED", "验收完成"],
+  ][revealStep];
+  const runtimeStages = [
+    { order: 2, label: "TOOL", title: "工具读取", subtitle: "读取真实材料", icon: FileSearch, tone: "border-violet-200 bg-violet-50", iconTone: "bg-violet-500", evidence: ["128 行报名数据", "6 段访谈原文", "来源位置"] },
+    { order: 3, label: "CONTEXT", title: "上下文快照", subtitle: "组织本次输入", icon: MessageSquareText, tone: "border-blue-200 bg-blue-50", iconTone: "bg-blue-500", evidence: ["数字事实", "相关原文", "规则与当前状态"] },
+    { order: 4, label: "MODEL", title: "模型草稿", subtitle: "生成结构和内容", icon: BrainCircuit, tone: "border-cyan-200 bg-cyan-50", iconTone: "bg-cyan-500", evidence: ["3 个问题", "对应依据", "3 条建议 · 3 项待确认"] },
   ];
-  return <div className="relative flex h-full items-center"><div className="absolute left-[4%] right-[4%] top-[44%] h-px bg-gradient-to-r from-cyan-400 via-violet-400 to-emerald-400" /><div className="grid w-full grid-cols-6 gap-[1.2%]">{events.map(({ order, title, evidence, icon: Icon }) => <Reveal key={title} order={order}><div className="relative flex h-[70%] min-h-44 flex-col items-center text-center"><span className="flex size-[clamp(36px,4vw,72px)] items-center justify-center rounded-full border-4 border-blue-100 bg-white text-blue-700 shadow-md"><Icon className="size-[38%]" /></span><strong className="mt-[12%] text-[clamp(13px,1.05vw,20px)] text-slate-950">{title}</strong><span className="mt-[5%] text-[clamp(11px,.88vw,17px)] leading-relaxed text-slate-500">{evidence}</span><span className="mt-auto font-mono text-[clamp(9px,.68vw,13px)] text-slate-300">EVIDENCE 0{order}</span></div></Reveal>)}</div></div>;
+
+  return <div className="h-full pb-[clamp(50px,3.4vw,66px)]">
+    <section className="grid h-full min-h-0 grid-rows-[auto_1fr] overflow-hidden rounded-[1.7rem] border border-slate-200 bg-white shadow-[0_22px_60px_rgba(15,23,42,.07)]">
+      <header className="flex items-center justify-between border-b border-slate-200 bg-slate-950 px-[3%] py-[clamp(9px,.62vw,12px)] text-white"><div className="flex items-center gap-[clamp(14px,1.2vw,23px)]"><span className="flex size-[clamp(34px,2.5vw,48px)] items-center justify-center rounded-[.8rem] bg-white/10 text-cyan-300"><AppWindow className="size-[48%]" /></span><div><Kicker>TASK RUN · WB-014</Kicker><strong className="mt-[1%] block text-[clamp(15px,1.18vw,23px)]">培训需求汇报</strong></div></div><div className="flex items-center gap-[clamp(18px,2vw,38px)]"><span className="text-[clamp(11px,.86vw,16px)] text-slate-400">报名表.xlsx · 访谈记录.docx</span><span className="rounded-full border border-white/10 bg-white/10 px-[clamp(12px,1.15vw,22px)] py-[clamp(5px,.36vw,7px)] font-mono text-[clamp(10px,.78vw,15px)] text-cyan-200">{status[0]} · {status[1]}</span></div></header>
+
+      <div className="grid min-h-0 grid-cols-[.88fr_auto_2.5fr_auto_.88fr] items-stretch gap-[1.4%] p-[2%]">
+        <article className={cn("flex min-h-0 flex-col rounded-[1.3rem] border border-blue-200 bg-blue-50 p-[5%] transition-all duration-300", revealStep >= 1 ? "opacity-100 shadow-md" : "opacity-30 grayscale")}>
+          <div className="flex items-center justify-between"><span className="flex size-[clamp(36px,2.7vw,52px)] items-center justify-center rounded-[.9rem] bg-blue-600 text-white"><AppWindow className="size-[46%]" /></span><span className="font-mono text-[clamp(10px,.78vw,15px)] text-blue-400">01</span></div>
+          <Kicker>APPLICATION INPUT</Kicker><h3 className="mt-[1%] text-[clamp(17px,1.35vw,26px)] font-semibold tracking-[-.035em] text-blue-950">任务单</h3><p className="mt-[2%] text-[clamp(11px,.84vw,16px)] leading-relaxed text-blue-900/60">登记目标、材料、权限和验收标准。</p>
+          <Reveal className="mt-auto" order={1}><div className="space-y-[3%] border-t border-blue-200 pt-[4%]">{["生成 5 页内需求汇报", "2 份指定材料", "4 项验收标准"].map(item => <div className="flex items-start gap-[4%] text-[clamp(11px,.86vw,16px)] font-medium text-blue-950" key={item}><CheckCircle2 className="mt-[.15em] size-[1em] shrink-0 text-blue-500" />{item}</div>)}</div></Reveal>
+        </article>
+
+        <ArrowRight className="my-auto size-[clamp(20px,1.6vw,31px)] text-slate-300" />
+
+        <section className="flex min-h-0 flex-col overflow-hidden rounded-[1.4rem] border border-emerald-200 bg-emerald-50/45">
+          <header className="flex items-center justify-between border-b border-emerald-200 bg-white/75 px-[4%] py-[clamp(8px,.55vw,11px)]"><div className="flex items-center gap-[3%]"><span className="flex size-[clamp(30px,2.3vw,44px)] items-center justify-center rounded-[.75rem] bg-emerald-500 text-white"><Bot className="size-[50%]" /></span><div><Kicker>AGENT RUNTIME</Kicker><strong className="mt-[1%] block text-[clamp(14px,1.08vw,21px)] text-emerald-950">智能体组织中间过程</strong></div></div><span className="rounded-full bg-emerald-100 px-[4%] py-[1.5%] text-[clamp(10px,.78vw,15px)] font-medium text-emerald-700">目标 · 状态 · 循环</span></header>
+
+          <div className="grid min-h-0 flex-1 grid-cols-3 gap-[2%] p-[2%]">
+            {runtimeStages.map(({ order, label, title, subtitle, icon: Icon, tone, iconTone, evidence }) => <article className={cn("flex min-h-0 flex-col rounded-[1.05rem] border p-[5%] transition-all duration-300", tone, revealStep >= order ? "opacity-100 shadow-sm" : "opacity-30 grayscale")} key={title}><div className="flex items-center gap-[5%]"><span className={cn("flex size-[clamp(32px,2.25vw,43px)] shrink-0 items-center justify-center rounded-[.75rem] text-white", iconTone)}><Icon className="size-[48%]" /></span><div className="min-w-0"><Kicker>0{order} · {label}</Kicker><h3 className="mt-[1%] text-[clamp(15px,1.12vw,22px)] font-semibold tracking-[-.03em]">{title}</h3></div></div><span className="mt-[2%] text-[clamp(10px,.78vw,15px)] text-slate-500">{subtitle}</span><Reveal className="mt-auto" order={order}><div className="space-y-[2%] border-t border-black/5 pt-[4%]">{evidence.map(item => <div className="flex items-center gap-[4%] text-[clamp(10px,.78vw,15px)] font-medium leading-snug text-slate-700" key={item}><span className={cn("size-1.5 shrink-0 rounded-full", iconTone)} />{item}</div>)}</div></Reveal></article>)}
+          </div>
+
+          <div className={cn("mx-[2%] mb-[2%] flex shrink-0 items-center justify-between rounded-[.9rem] border border-emerald-200 bg-white px-[3%] py-[1.6%] transition-all duration-300", revealStep >= 5 ? "opacity-100 shadow-sm" : "opacity-30 grayscale")}><div className="flex min-w-0 items-center gap-[3%]"><RefreshCw className={cn("size-[clamp(21px,1.6vw,31px)] shrink-0 text-emerald-500 transition-transform duration-700", revealStep >= 5 && "rotate-180")} /><div className="min-w-0"><Kicker>05 · AGENT CONTROL</Kicker><strong className="mt-[1%] block truncate text-[clamp(11px,.88vw,17px)] text-emerald-950">观察结果，决定继续 / 重试 / 停止</strong></div></div><Reveal order={5}><div className="flex shrink-0 gap-[clamp(6px,.55vw,11px)] text-[clamp(10px,.78vw,15px)]"><span className="rounded-full bg-slate-100 px-[clamp(9px,.75vw,14px)] py-[clamp(4px,.3vw,6px)] text-slate-600">step 4 / 5</span><span className="rounded-full bg-amber-100 px-[clamp(9px,.75vw,14px)] py-[clamp(4px,.3vw,6px)] text-amber-700">3 项待确认</span></div></Reveal></div>
+        </section>
+
+        <ArrowRight className="my-auto size-[clamp(20px,1.6vw,31px)] text-slate-300" />
+
+        <article className={cn("flex min-h-0 flex-col rounded-[1.3rem] border border-amber-200 bg-amber-50 p-[5%] transition-all duration-300", revealStep >= 6 ? "opacity-100 shadow-md" : "opacity-30 grayscale")}><div className="flex items-center justify-between"><span className="flex size-[clamp(36px,2.7vw,52px)] items-center justify-center rounded-[.9rem] bg-amber-500 text-white"><UserRoundCheck className="size-[46%]" /></span><span className="font-mono text-[clamp(10px,.78vw,15px)] text-amber-400">06</span></div><Kicker>HUMAN ACCEPTANCE</Kicker><h3 className="mt-[1%] text-[clamp(17px,1.35vw,26px)] font-semibold tracking-[-.035em] text-amber-950">验收单</h3><p className="mt-[2%] text-[clamp(11px,.84vw,16px)] leading-relaxed text-amber-900/60">依据原始材料和过程记录判断能否交付。</p><Reveal className="mt-auto" order={6}><div className="space-y-[3%] border-t border-amber-200 pt-[4%]">{["数字与源文件一致", "结论能够回到原文", "待确认事项已标记"].map(item => <div className="flex items-start gap-[4%] text-[clamp(11px,.86vw,16px)] font-medium text-amber-950" key={item}><ClipboardCheck className="mt-[.15em] size-[1em] shrink-0 text-amber-500" />{item}</div>)}<div className="rounded-full bg-emerald-500 px-[5%] py-[2%] text-center text-[clamp(11px,.86vw,16px)] font-semibold text-white">允许交付</div></div></Reveal></article>
+      </div>
+    </section>
+  </div>;
 }
 
 export function FailureBranches() {
