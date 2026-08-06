@@ -9,13 +9,17 @@ test("the first chapter separates detailed MDX from the 24-slide presentation", 
   const deck = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/slides.tsx");
   const visuals = await read("src/content/courses/ai-foundations/chapters/01-llm-agent-intro/chapter-visuals.tsx");
 
-  assert.match(article, /大模型：接收当前输入，再逐步生成输出/);
-  assert.match(article, /模型负责生成，工具负责执行，智能体负责推进，人负责目标、授权和验收/);
-  assert.match(article, /上下文不是越多越好/);
+  assert.match(article, /先从 WorkBuddy 界面观察智能软件/);
+  assert.match(article, /智能体软件不是一个更大的聊天框/);
+  assert.match(article, /五个概念，各自在软件里做什么/);
+  assert.match(article, /大模型接收当前输入，再逐步生成输出/);
+  assert.match(article, /模型负责生成，工具负责执行，智能体负责推进；人负责目标、授权、业务判断和验收/);
+  assert.match(article, /上下文不是资料仓库，也不是越多越好/);
   assert.match(article, /tool: analyze_spreadsheet/);
-  assert.match(article, /智能体循环怎样推进/);
-  assert.match(article, /怎样给智能软件一份完整任务说明/);
-  assert.match(article, /先转换成适合分析的中间表示/);
+  assert.match(article, /智能体一边推进，一边维护当前任务状态/);
+  assert.match(article, /智能体通过“判断—行动—观察—更新”继续推进/);
+  assert.match(article, /同一个目标，为什么结果可能完全不同/);
+  assert.match(article, /材料复杂时，先建立适合分析的工作副本/);
   assert.match(article, /关键不是全部转成 Markdown/);
   assert.doesNotMatch(article, /export const slides/);
 

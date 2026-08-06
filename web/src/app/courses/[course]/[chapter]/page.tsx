@@ -29,7 +29,7 @@ export default async function ChapterPage({ params }: { params: Promise<{ course
       <SiteHeader />
       <main className="mx-auto max-w-7xl px-5 py-10 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[15rem_minmax(0,48rem)] lg:justify-center">
-          <aside className="hidden lg:block"><div className="sticky top-26"><Link className="mb-7 flex items-center gap-2 text-sm text-slate-500 hover:text-slate-950" href={`/courses/${course}`}><ArrowLeft className="size-4" />返回课程目录</Link><span className="font-mono text-xs font-semibold tracking-[0.16em] text-slate-400">本章目录</span><nav className="mt-4 border-l border-slate-200" aria-label="本章目录">{meta.sections.map((section) => <a className="block border-l-2 border-transparent py-2 pl-4 text-sm text-slate-500 transition hover:border-blue-500 hover:text-blue-700" href={`#${section.id}`} key={section.id}>{section.title}</a>)}</nav></div></aside>
+          <aside className="hidden lg:block"><div className="sticky top-26 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2"><Link className="mb-7 flex items-center gap-2 text-sm text-slate-500 hover:text-slate-950" href={`/courses/${course}`}><ArrowLeft className="size-4" />返回课程目录</Link><span className="font-mono text-xs font-semibold tracking-[0.16em] text-slate-400">本章目录</span><nav className="mt-4 border-l border-slate-200" aria-label="本章目录">{meta.sections.map((section) => <a className="block border-l-2 border-transparent py-2 pl-4 text-sm text-slate-500 transition hover:border-blue-500 hover:text-blue-700" href={`#${section.id}`} key={section.id}>{section.title}</a>)}</nav></div></aside>
 
           <article>
             <header className="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-sm md:p-10">

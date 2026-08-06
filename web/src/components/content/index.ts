@@ -5,4 +5,5 @@ export {
   Comparison,
   ConceptCard,
   ProcessFlow,
+  WorkBuddyGallery,
 } from "./content-blocks";

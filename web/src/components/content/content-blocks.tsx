@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { ArrowRight, CheckCircle2, CircleAlert, Layers3 } from "lucide-react";
+import Image from "next/image";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -52,6 +53,45 @@ export function CaseStudy({
       <h3 className="mb-4 text-2xl font-semibold tracking-tight">{title}</h3>
       <div className="case-study-content text-slate-300">{children}</div>
     </section>
+  );
+}
+
+export function WorkBuddyGallery() {
+  const screenshots = [
+    {
+      src: "/images/workbuddy/task-home.png",
+      alt: "WorkBuddy 任务首页，展示任务、工作空间、材料、权限和模型入口",
+      label: "任务工作区",
+      description: "观察任务记录、工作空间、材料入口、权限设置和模型选择。",
+    },
+    {
+      src: "/images/workbuddy/capability-market.png",
+      alt: "WorkBuddy 能力市场，展示专家、技能和连接器入口",
+      label: "能力入口",
+      description: "观察专家、技能和连接器怎样扩展软件能够完成的动作。",
+    },
+  ];
+
+  return (
+    <div className="my-8 grid gap-6">
+      {screenshots.map((screenshot) => (
+        <figure className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" key={screenshot.src}>
+          <div className="relative aspect-[1252/837] bg-slate-100">
+            <Image
+              alt={screenshot.alt}
+              className="object-contain"
+              fill
+              sizes="(min-width: 1024px) 48rem, 100vw"
+              src={screenshot.src}
+            />
+          </div>
+          <figcaption className="border-t border-slate-100 px-5 py-4">
+            <strong className="block text-sm text-slate-950">{screenshot.label}</strong>
+            <span className="mt-1 block text-sm leading-6 text-slate-500">{screenshot.description}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
   );
 }
 
