@@ -34,6 +34,7 @@ export function SlideFrame({
   title,
   lead,
   dark = false,
+  compact = false,
   children,
   className,
 }: {
@@ -41,18 +42,19 @@ export function SlideFrame({
   title: string;
   lead?: string;
   dark?: boolean;
+  compact?: boolean;
   children?: ReactNode;
   className?: string;
 }) {
   return (
-    <section className={cn("relative flex h-full flex-col overflow-hidden rounded-[2.25rem] p-[4.2%]", dark ? "bg-slate-950 text-white" : "bg-[#f7f9fc] text-slate-950", className)}>
+    <section className={cn("relative flex h-full flex-col overflow-hidden rounded-[2.25rem]", compact ? "p-[3.1%]" : "p-[4.2%]", dark ? "bg-slate-950 text-white" : "bg-[#f7f9fc] text-slate-950", className)}>
       <div className="absolute right-[4%] top-[4%] size-[12%] rounded-full bg-blue-500/8 blur-2xl" />
       <header className="relative shrink-0">
         <span className={cn("font-mono text-[clamp(11px,0.82vw,16px)] font-semibold tracking-[0.18em]", dark ? "text-cyan-300" : "text-blue-600")}>{eyebrow}</span>
-        <h1 className="mt-[1.2%] max-w-[92%] text-[clamp(24px,3.1vw,60px)] font-semibold leading-[1.08] tracking-[-0.045em]">{title}</h1>
-        {lead && <p className={cn("mt-[1.1%] max-w-[82%] text-[clamp(16px,1.25vw,24px)] leading-relaxed", dark ? "text-slate-300" : "text-slate-500")}>{lead}</p>}
+        <h1 className={cn("max-w-[92%] font-semibold leading-[1.08] tracking-[-0.045em]", compact ? "mt-[.7%] text-[clamp(24px,2.75vw,53px)]" : "mt-[1.2%] text-[clamp(24px,3.1vw,60px)]")}>{title}</h1>
+        {lead && <p className={cn("max-w-[82%] leading-relaxed", compact ? "mt-[.7%] text-[clamp(15px,1.12vw,21px)]" : "mt-[1.1%] text-[clamp(16px,1.25vw,24px)]", dark ? "text-slate-300" : "text-slate-500")}>{lead}</p>}
       </header>
-      <div className="relative mt-[3%] min-h-0 flex-1 pb-[5.5%]">{children}</div>
+      <div className={cn("relative min-h-0 flex-1", compact ? "mt-[1.8%] pb-[4.8%]" : "mt-[3%] pb-[5.5%]")}>{children}</div>
     </section>
   );
 }

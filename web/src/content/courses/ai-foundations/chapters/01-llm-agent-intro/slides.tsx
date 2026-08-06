@@ -72,16 +72,16 @@ const slides: DeckSlide[] = [
     learningNotes: {
       summary: "WorkBuddy 是用户实际操作的完整 AI 应用，不是某一个大模型。它把任务入口、模型、材料、权限、能力组件和任务记录组织在同一个软件里。",
       points: [
-        "左图的任务工作区同时出现任务、空间、模型选择、文件和权限，说明一次结果并不只由模型名称决定。",
+        "第一个视图的任务工作区同时出现任务、空间、模型选择、文件和权限，说明一次结果并不只由模型名称决定。",
         "同一个应用可以连接多个模型；模型是应用调用的能力之一，不等于整个 WorkBuddy。",
         "文件被添加到软件、软件有权读取文件、文件内容进入本次模型输入，是三个不同状态。",
-        "右图的专家、技能和连接器是应用层能力入口：它们可能组合提示规则、模型、工具、数据源和权限。",
+        "第二个视图的专家、技能和连接器是应用层能力入口：它们可能组合提示规则、模型、工具、数据源和权限。",
         "专家入口不一定代表另一个模型，也不表示相关知识已经永久存在于模型内部。",
         "这些截图用于观察软件结构，不代表所有版本都采用完全相同的界面或固定实现。",
       ],
       connection: "下一页会把普通对话与任务型智能体放在一起比较，进一步判断软件何时只是生成一次回答，何时会维护状态并持续推进。",
     },
-    content: <SlideFrame eyebrow="02 · 观察窗口" title="WorkBuddy 是一个 AI 应用，不是一个模型" lead="借助真实界面，先观察任务、模型、材料、权限和能力入口怎样被组合在同一个软件里。"><WorkBuddyOverview /><Reveal className="absolute inset-0" order={2}><SlideTakeaway>WorkBuddy 把模型、文件、权限、技能和任务记录组合成一个可以操作的 AI 应用。</SlideTakeaway></Reveal></SlideFrame>,
+    content: <SlideFrame compact eyebrow="02 · 观察窗口" title="WorkBuddy 是一个 AI 应用，不是一个模型" lead="观察任务、模型、材料、权限和能力入口怎样组合在同一个软件里。"><WorkBuddyOverview /><Reveal className="absolute inset-0" order={2}><SlideTakeaway>WorkBuddy 把模型、文件、权限、技能和任务记录组合成一个可以操作的 AI 应用。</SlideTakeaway></Reveal></SlideFrame>,
   },
   {
     id: "chat-vs-agent",

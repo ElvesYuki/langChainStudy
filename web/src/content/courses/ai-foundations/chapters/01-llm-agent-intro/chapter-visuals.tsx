@@ -137,6 +137,8 @@ export function CaseWorkbench() {
 
 export function WorkBuddyOverview() {
   const revealStep = Math.min(useRevealStep(), 2);
+  const setRevealStep = useRevealStepSetter();
+  const [manualSelection, setManualSelection] = useState(0);
   const panels = [
     {
       order: 1,
@@ -146,9 +148,11 @@ export function WorkBuddyOverview() {
       alt: "WorkBuddy 任务首页，包含任务、工作空间、模型选择、文件与权限入口",
       caption: "从任务入口选择模型、添加材料，并在工作空间与权限范围内推进。",
       chips: ["任务入口", "模型选择", "文件与权限"],
+      observations: ["左侧组织任务与工作空间", "中部组合模型、材料和输入", "底部明确工作空间与权限"],
       activeClass: "border-cyan-300 shadow-[0_24px_70px_rgba(8,145,178,.14)]",
       accentClass: "bg-cyan-500",
       chipClass: "border-cyan-200 bg-cyan-50 text-cyan-800",
+      textClass: "text-cyan-700",
     },
     {
       order: 2,
@@ -158,52 +162,51 @@ export function WorkBuddyOverview() {
       alt: "WorkBuddy 专家、技能与连接器页面，展示多种场景化能力入口",
       caption: "专家、技能和连接器，把常见任务与外部能力封装成可选择的入口。",
       chips: ["专家", "技能", "连接器"],
+      observations: ["顶部区分专家、技能和连接器", "场景覆盖内容、数据、法律等工作", "入口背后组合模型、规则与工具"],
       activeClass: "border-violet-300 shadow-[0_24px_70px_rgba(124,58,237,.13)]",
       accentClass: "bg-violet-500",
       chipClass: "border-violet-200 bg-violet-50 text-violet-800",
+      textClass: "text-violet-700",
     },
   ];
+  const selectedIndex = setRevealStep ? (revealStep >= 2 ? 1 : 0) : manualSelection;
+  const selected = panels[selectedIndex];
 
   return (
-    <div className="grid h-full min-h-0 grid-cols-2 gap-[2.4%] pb-[4.5%]">
-      {panels.map((panel) => {
-        const active = revealStep >= panel.order;
-        return (
-          <article
-            className={cn(
-              "relative flex min-h-0 flex-col overflow-hidden rounded-[1.7rem] border bg-white transition-[opacity,filter,border-color,box-shadow] duration-500",
-              active ? panel.activeClass : "border-slate-200 opacity-55 grayscale-[.65] shadow-[0_16px_45px_rgba(15,23,42,.06)]",
-            )}
-            key={panel.title}
-          >
-            <span className={cn("absolute inset-x-0 top-0 h-1", active ? panel.accentClass : "bg-slate-200")} />
-            <div className="flex items-end justify-between gap-[4%] px-[5%] pb-[2.4%] pt-[3.6%]">
-              <div>
-                <Kicker>{panel.eyebrow}</Kicker>
-                <h2 className="mt-1 text-[clamp(22px,1.8vw,35px)] font-semibold leading-none tracking-[-.035em] text-slate-950">{panel.title}</h2>
-              </div>
-              <span className="font-mono text-[clamp(11px,.8vw,15px)] text-slate-400">0{panel.order}</span>
-            </div>
+    <div className="grid h-full min-h-0 grid-cols-[.21fr_minmax(0,1fr)_.29fr] gap-[1.8%] pb-[4.5%]">
+      <aside className="flex min-h-0 flex-col rounded-[1.6rem] border border-slate-200 bg-white px-[7%] py-[6%] shadow-[0_16px_45px_rgba(15,23,42,.06)]">
+        <Kicker>REAL INTERFACE</Kicker>
+        <strong className="mt-[4%] text-[clamp(17px,1.35vw,26px)] tracking-[-.025em] text-slate-950">两个观察窗口</strong>
+        <div className="mt-[10%] space-y-[6%]">
+          {panels.map((panel, index) => {
+            const active = selectedIndex === index;
+            return <button className={cn("relative w-full overflow-hidden rounded-[1.1rem] border px-[7%] py-[7%] text-left transition-all", active ? panel.activeClass : "border-slate-200 bg-slate-50 text-slate-400")} data-deck-space-advance key={panel.title} onClick={() => setRevealStep ? setRevealStep(panel.order) : setManualSelection(index)}><span className={cn("absolute inset-y-0 left-0 w-1", active ? panel.accentClass : "bg-slate-200")} /><span className="font-mono text-[clamp(10px,.68vw,15px)]">0{panel.order}</span><strong className="mt-[4%] block whitespace-nowrap text-[clamp(13px,1vw,19px)] text-slate-900">{panel.title}</strong><span className="mt-[3%] block text-[clamp(10px,.72vw,15px)]">{panel.eyebrow}</span></button>;
+          })}
+        </div>
+        <p className="mt-auto border-t border-slate-100 pt-[7%] text-[clamp(10px,.78vw,15px)] leading-relaxed text-slate-400">界面会随版本变化，本页只观察稳定的软件结构。</p>
+      </aside>
 
-            <div className="relative mx-[3%] min-h-0 flex-1 overflow-hidden rounded-[1rem] border border-slate-200 bg-slate-50">
-              <Image
-                alt={panel.alt}
-                className="object-contain"
-                fill
-                sizes="(max-width: 1200px) 50vw, 760px"
-                src={panel.image}
-              />
-            </div>
+      <figure className={cn("relative min-h-0 overflow-hidden rounded-[1.6rem] border bg-white p-[.8%] transition-[border-color,box-shadow] duration-500", selected.activeClass)}>
+        <Image alt={selected.alt} className="object-contain" fill priority sizes="(max-width: 1200px) 66vw, 1040px" src={selected.image} />
+      </figure>
 
-            <Reveal className="px-[5%] pb-[4%] pt-[2.8%]" order={panel.order}>
-              <p className="text-[clamp(13px,1.02vw,20px)] leading-[1.5] text-slate-700">{panel.caption}</p>
-              <div className="mt-[2.2%] flex flex-wrap gap-2">
-                {panel.chips.map((chip) => <span className={cn("rounded-full border px-[3%] py-[1.1%] text-[clamp(11px,.78vw,15px)] font-medium", panel.chipClass)} key={chip}>{chip}</span>)}
-              </div>
-            </Reveal>
-          </article>
-        );
-      })}
+      <aside className="flex min-h-0 flex-col rounded-[1.6rem] border border-slate-200 bg-white px-[7%] py-[6%] shadow-[0_16px_45px_rgba(15,23,42,.06)]">
+        <div className="flex items-center justify-between gap-[4%]"><Kicker>{selected.eyebrow}</Kicker><span className="shrink-0 rounded-full border border-emerald-200 bg-emerald-50 px-[4%] py-[1.5%] text-[clamp(10px,.7vw,15px)] text-emerald-700">完整界面 · 未裁切</span></div>
+        <h2 className="mt-[4%] text-[clamp(21px,1.75vw,34px)] font-semibold tracking-[-.035em] text-slate-950">{selected.title}</h2>
+        <Reveal className="mt-[3%]" order={selected.order}>
+          <p className="text-[clamp(13px,1vw,19px)] leading-relaxed text-slate-600">{selected.caption}</p>
+          <div className="mt-[5%] flex flex-wrap gap-2">
+            {selected.chips.map((chip) => <span className={cn("rounded-full border px-[4%] py-[1.6%] text-[clamp(10px,.76vw,15px)] font-medium", selected.chipClass)} key={chip}>{chip}</span>)}
+          </div>
+        </Reveal>
+
+        <Reveal className="mt-auto border-t border-slate-100 pt-[6%]" order={selected.order}>
+          <span className="font-mono text-[clamp(10px,.7vw,15px)] tracking-[.12em] text-slate-400">画面中可以观察</span>
+          <ul className="mt-[5%] space-y-[4%]">
+            {selected.observations.map((item) => <li className="flex gap-[4%] text-[clamp(11px,.88vw,17px)] leading-snug text-slate-600" key={item}><CheckCircle2 className={cn("mt-[.1em] size-[1.05em] shrink-0", selected.textClass)} />{item}</li>)}
+          </ul>
+        </Reveal>
+      </aside>
     </div>
   );
 }

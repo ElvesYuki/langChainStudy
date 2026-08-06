@@ -23,6 +23,7 @@ test("the first chapter separates detailed MDX from the 24-slide presentation", 
   assert.equal(slideIds.length, 24);
   assert.match(deck, /id: "workbuddy-overview"/);
   assert.match(visuals, /function WorkBuddyOverview/);
+  assert.match(visuals, /export function WorkBuddyOverview[\s\S]*grid-cols-\[\.21fr_minmax\(0,1fr\)_\.29fr\][\s\S]*object-contain[\s\S]*完整界面 · 未裁切/);
   assert.match(visuals, /function ConceptExplorer/);
   assert.match(visuals, /function ToolCallConsole/);
   assert.match(visuals, /function ResponsibilitySwimlanes/);
