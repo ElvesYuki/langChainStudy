@@ -92,12 +92,14 @@ test("reveal steps follow semantic groups and match each slide declaration", asy
   assert.equal(stepsFor("failures"), 4);
   assert.equal(stepsFor("scenarios"), 3);
   assert.equal(stepsFor("material-workflow"), 3);
-  assert.equal(stepsFor("summary"), 6);
+  assert.equal(stepsFor("summary"), 4);
   assert.match(visuals, /groups\.map\(\(group, index\) => <Reveal className="min-h-0" key=\{group\.label\} order=\{index \+ 1\}>/);
-  assert.match(visuals, /export function SummaryChain[\s\S]*order=\{6\}/);
+  assert.match(visuals, /export function SummaryChain[\s\S]*上下文[\s\S]*大模型[\s\S]*工具/);
+  assert.match(visuals, /export function SummaryChain[\s\S]*AI 应用[\s\S]*智能体[\s\S]*order=\{4\}/);
   assert.match(visuals, /export function FailureBranches[\s\S]*有限重试[\s\S]*等待授权[\s\S]*停止并接管/);
   assert.match(visuals, /export function MaterialWorkflow[\s\S]*OCR \+ 原图[\s\S]*工具读取、计算与检查/);
   assert.match(visuals, /export function ScenarioMatrix[\s\S]*汇总与沟通[\s\S]*分析与归纳[\s\S]*精确与变更[\s\S]*共同边界/);
+  assert.match(visuals, /export function QuizPanels[\s\S]*const revealStep = useRevealStep\(\)[\s\S]*revealStep < order[\s\S]*<Reveal className="h-full" order=\{order\}>/);
 });
 
 test("the presentation uses a light canvas without full-slide dark surfaces", async () => {
